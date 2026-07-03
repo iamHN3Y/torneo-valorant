@@ -1,0 +1,1845 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reglamento Oficial · Copa México VALORANT 2026 · v1.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Oswald:wght@400;500;600;700&family=Barlow:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Barlow+Semi+Condensed:wght@500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#0E1822; --void-2:#0B131B; --panel:#15212C; --panel-2:#1A2A37;
+  --line:#283A48; --line-soft:rgba(120,140,156,.16);
+  --red:#FF4655; --red-deep:#BD3944;
+  --bone:#ECE8E1; --bone-dim:#C7CBCB; --muted:#7E8C99; --muted-2:#5C6B78;
+  --teal:#19E8C8; --gold:#E8C37A; --gold-deep:#B8943A;
+  --maxw:980px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--void);color:var(--bone);
+  font-family:'Barlow',system-ui,sans-serif;font-size:16.5px;line-height:1.62;
+  -webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.35;
+  background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),
+    linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+  background-size:46px 46px;
+  -webkit-mask-image:radial-gradient(circle at 50% 30%,#000 0%,transparent 80%);
+  mask-image:radial-gradient(circle at 50% 30%,#000 0%,transparent 80%)}
+#bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--red);z-index:50}
+.wrap{position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;padding:0 26px}
+
+/* ---- COVER ---- */
+.cover{min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+  position:relative;padding:60px 0 40px}
+.frame{position:absolute;inset:26px;border:1px solid var(--line);pointer-events:none}
+.frame::before,.frame::after,.bracket-tr,.bracket-bl{position:absolute;width:30px;height:30px;
+  border-color:var(--red);border-style:solid;content:""}
+.frame::before{top:-1px;left:-1px;border-width:2px 0 0 2px}
+.frame::after{bottom:-1px;right:-1px;border-width:0 2px 2px 0}
+.bracket-tr{top:-1px;right:-1px;border-width:2px 2px 0 0}
+.bracket-bl{bottom:-1px;left:-1px;border-width:0 0 2px 2px}
+.eyebrow{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.42em;
+  text-transform:uppercase;color:var(--red);font-weight:600;display:flex;align-items:center;gap:14px}
+.eyebrow::after{content:"";height:1px;flex:1;background:var(--line)}
+.cover h1{font-family:'Anton',sans-serif;font-weight:400;
+  font-size:clamp(54px,12vw,150px);line-height:.86;letter-spacing:.01em;
+  text-transform:uppercase;margin:26px 0 0;color:var(--bone)}
+.cover h1 .slash{color:var(--red)}
+.cover h1 .yr{-webkit-text-stroke:2px var(--bone);color:transparent}
+.cover .sub{font-family:'Oswald',sans-serif;font-weight:500;letter-spacing:.34em;
+  text-transform:uppercase;font-size:clamp(15px,2.4vw,22px);color:var(--bone-dim);margin-top:24px}
+.reticle{width:46px;height:46px;position:relative;margin:32px 0 0}
+.reticle::before,.reticle::after{content:"";position:absolute;background:var(--red)}
+.reticle::before{left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%)}
+.reticle::after{top:50%;left:0;right:0;height:2px;transform:translateY(-50%)}
+.reticle span{position:absolute;inset:13px;border:2px solid var(--bone);border-radius:50%}
+.cover-meta{position:absolute;left:26px;right:26px;bottom:44px;display:flex;
+  justify-content:space-between;flex-wrap:wrap;gap:14px;
+  font-family:'JetBrains Mono',monospace;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--muted)}
+.cover-meta b{color:var(--bone-dim);font-weight:600}
+
+/* ---- LEAD / TOC ---- */
+.lead{border-left:3px solid var(--red);padding:6px 0 6px 22px;margin:0 0 14px;
+  font-size:18px;color:var(--bone-dim)}
+.toc{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:30px}
+@media(max-width:680px){.toc{grid-template-columns:1fr}}
+.toc a{display:flex;gap:16px;align-items:baseline;text-decoration:none;color:var(--bone-dim);
+  background:var(--panel);border:1px solid var(--line);padding:15px 18px;transition:.18s;
+  clip-path:polygon(0 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%)}
+.toc a:hover{border-color:var(--red);color:var(--bone);transform:translateX(3px)}
+.toc a .n{font-family:'Anton';font-size:22px;color:var(--red);line-height:1;min-width:34px}
+.toc a.anx .n{color:var(--gold)}
+.toc a .t{font-family:'Oswald';font-weight:500;letter-spacing:.04em;text-transform:uppercase;font-size:15px}
+.toc a small{display:block;color:var(--muted);font-family:'Barlow';text-transform:none;
+  letter-spacing:0;font-weight:400;font-size:12.5px;margin-top:2px}
+
+/* ---- SECTION HEADER ---- */
+.titulo{margin:84px 0 30px;position:relative}
+.titulo .kicker{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.34em;
+  color:var(--red);text-transform:uppercase}
+.titulo.anx .kicker{color:var(--gold)}
+.titulo h2{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;
+  font-size:clamp(30px,5.5vw,52px);line-height:.96;margin:10px 0 0;display:flex;
+  align-items:baseline;gap:18px;letter-spacing:.01em}
+.titulo h2 .romano{-webkit-text-stroke:1.5px var(--red);color:transparent;font-size:.9em}
+.titulo.anx h2 .romano{-webkit-text-stroke:1.5px var(--gold);color:transparent}
+.titulo .rule{height:2px;margin-top:18px;background:var(--line)}
+.titulo .rule::before{content:"";display:block;width:64px;height:100%;background:var(--red)}
+.titulo.anx .rule::before{background:var(--gold)}
+
+/* ---- ARTICLE ---- */
+.art{position:relative;padding:18px 0 18px 76px;border-bottom:1px solid var(--line-soft)}
+.art:last-child{border-bottom:0}
+.art .num{position:absolute;left:0;top:18px;width:58px;text-align:right}
+.art .num b{font-family:'Anton';font-size:30px;color:var(--bone);line-height:.8;display:block}
+.art .num span{font-family:'JetBrains Mono';font-size:9.5px;letter-spacing:.2em;color:var(--red);
+  text-transform:uppercase}
+.art.anx-art .num span{color:var(--gold)}
+.art::before{content:"";position:absolute;left:66px;top:22px;width:2px;height:26px;background:var(--red)}
+.art.anx-art::before{background:var(--gold)}
+.art h3{font-family:'Oswald';font-weight:600;text-transform:uppercase;letter-spacing:.05em;
+  font-size:17px;margin:0 0 8px;color:var(--bone)}
+.art p{margin:0 0 10px}
+.art p:last-child{margin-bottom:0}
+ol.clauses{margin:6px 0 0;padding:0;list-style:none;counter-reset:cl}
+ol.clauses>li{position:relative;padding:6px 0 6px 30px;counter-increment:cl}
+ol.clauses>li::before{content:counter(cl,decimal)".";position:absolute;left:0;top:6px;
+  font-family:'JetBrains Mono';font-size:12.5px;color:var(--red);font-weight:600}
+ol.clauses ul{margin:6px 0 2px;padding-left:18px}
+ol.clauses ul li{margin:3px 0}
+strong{color:var(--bone);font-weight:600}
+.term{color:var(--teal);font-weight:600}
+.field{display:inline-block;min-width:80px;border-bottom:1.5px dashed var(--red-deep);
+  color:var(--red);font-family:'JetBrains Mono';font-size:.9em;padding:0 6px;
+  background:rgba(255,70,85,.06)}
+
+/* ---- CALLOUTS ---- */
+.box{margin:16px 0;padding:16px 18px;border:1px solid var(--line);background:var(--panel-2);
+  clip-path:polygon(14px 0,100% 0,100% 100%,0 100%,0 14px)}
+.box .bx-h{font-family:'Oswald';font-weight:600;text-transform:uppercase;letter-spacing:.14em;
+  font-size:12.5px;margin-bottom:6px;display:flex;align-items:center;gap:9px}
+.box .bx-h::before{content:"";width:9px;height:9px;background:var(--red);
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.box.warn{border-color:var(--red-deep)} .box.warn .bx-h{color:var(--red)}
+.box.note .bx-h{color:var(--teal)} .box.note .bx-h::before{background:var(--teal)}
+.box.ex .bx-h{color:var(--gold)} .box.ex .bx-h::before{background:var(--gold)}
+.box p{margin:4px 0;font-size:14.5px;color:var(--bone-dim)}
+
+/* ---- TABLES ---- */
+.tbl{margin:16px 0;overflow-x:auto;border:1px solid var(--line)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:460px}
+thead th{background:var(--void-2);font-family:'Oswald';font-weight:600;text-transform:uppercase;
+  letter-spacing:.08em;font-size:12px;color:var(--bone);text-align:left;padding:11px 14px;
+  border-bottom:2px solid var(--red)}
+thead.gold-head th{border-bottom-color:var(--gold)}
+tbody td{padding:10px 14px;border-bottom:1px solid var(--line-soft);color:var(--bone-dim);vertical-align:top}
+tbody tr:nth-child(even){background:rgba(255,255,255,.018)}
+tbody tr:hover{background:rgba(255,70,85,.05)}
+td .sev{font-family:'Oswald';font-weight:600;text-transform:uppercase;font-size:11px;
+  padding:2px 8px;border:1px solid currentColor;letter-spacing:.06em;white-space:nowrap}
+.s-leve{color:var(--teal)} .s-grave{color:var(--gold)} .s-max{color:var(--red)}
+
+/* ---- MAP POOL ---- */
+.pool{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0 4px}
+.map{font-family:'Oswald';font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  font-size:13px;padding:8px 14px 8px 12px;border:1px solid var(--line);background:var(--panel);
+  display:flex;align-items:center;gap:9px;
+  clip-path:polygon(8px 0,100% 0,100% 100%,0 100%,0 8px)}
+.map .dot{width:7px;height:7px;border-radius:50%;background:var(--teal)}
+.map-lab{margin:16px 0 18px}
+.map-menu{display:grid;grid-template-columns:repeat(7,minmax(96px,1fr));gap:8px;margin-bottom:12px}
+.map-card{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--bone);
+  padding:9px 9px 8px;display:grid;gap:7px;cursor:pointer;text-align:left;
+  clip-path:polygon(8px 0,100% 0,100% 100%,0 100%,0 8px)}
+.map-card:hover,.map-card.active{border-color:var(--teal);background:#1B2D38}
+.map-card.active{box-shadow:inset 0 -2px 0 var(--teal)}
+.map-card .label{font-family:'Oswald';font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:12px}
+.map-banner{display:block;width:100%;height:45px;border:1px solid rgba(25,232,200,.18);
+  background-size:cover;background-position:center;position:relative;overflow:hidden}
+.map-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(6,16,20,.30),rgba(6,16,20,.08))}
+.map-thumb{width:100%;aspect-ratio:1.45/1;border:1px solid rgba(25,232,200,.18);background:#0A131B}
+.tac-map{display:block;width:100%;height:auto}
+.tac-map .land{fill:#162633;stroke:#375061;stroke-width:2}
+.tac-map .route{fill:none;stroke:#647785;stroke-width:8;stroke-linecap:round;stroke-linejoin:round;opacity:.72}
+.tac-map .route.thin{stroke-width:4;opacity:.58}
+.tac-map .site{fill:rgba(255,70,85,.14);stroke:var(--red);stroke-width:2}
+.tac-map .site.c{stroke:var(--gold);fill:rgba(232,195,122,.16)}
+.tac-map .mid{fill:rgba(25,232,200,.12);stroke:var(--teal);stroke-width:1.6}
+.tac-map .mark{fill:var(--bone);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700}
+.map-stage{border:1px solid var(--line);background:#050B0F;padding:14px;
+  display:grid;grid-template-columns:minmax(420px,1.55fr) minmax(240px,.75fr);gap:18px;align-items:stretch}
+.map-panel{display:none}
+.map-panel.active{display:contents}
+.map-view{border:1px solid rgba(25,232,200,.28);background:#061014;padding:10px;min-height:420px;display:flex;align-items:center}
+.map-view .tac-map{filter:drop-shadow(0 0 10px rgba(25,232,200,.14))}
+.real-map{display:block;width:100%;max-height:430px;object-fit:contain;
+  filter:drop-shadow(0 0 18px rgba(25,232,200,.18))}
+.map-view .tac-map .land{fill:#0D2E3F;stroke:var(--teal);stroke-width:2.2;stroke-linejoin:miter}
+.map-view .tac-map .route{fill:none;stroke:var(--teal);stroke-width:2;stroke-linecap:square;stroke-linejoin:miter;opacity:.95}
+.map-view .tac-map .route.thin{stroke-width:1.2;opacity:.82}
+.map-view .tac-map .site{fill:rgba(25,232,200,.20);stroke:var(--teal);stroke-width:1.4}
+.map-view .tac-map .site.c{fill:rgba(25,232,200,.20);stroke:var(--teal)}
+.map-view .tac-map .mid{fill:rgba(25,232,200,.10);stroke:var(--teal);stroke-width:1.4}
+.map-view .tac-map .mark{fill:#fff;font-family:'Oswald';font-size:18px;font-weight:700}
+.map-copy .ey{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--teal);font-weight:600}
+.map-copy h4{font-family:'Anton';font-weight:400;text-transform:uppercase;font-size:44px;line-height:.9;margin:10px 0 8px;color:var(--bone)}
+.map-copy p{color:var(--bone-dim);font-size:14.5px;margin:0 0 10px}
+.map-tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
+.map-tags span{font-family:'JetBrains Mono';font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  border:1px solid var(--line);color:var(--muted);padding:4px 7px;background:rgba(255,255,255,.025)}
+.planner-ui{display:grid;grid-template-columns:142px 1fr;gap:14px;width:100%;align-items:stretch}
+.planner-side{border-right:1px solid rgba(120,140,156,.24);padding-right:12px;display:flex;flex-direction:column;gap:10px}
+.planner-title{min-height:48px;padding:10px 12px;background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(25,232,200,.10));
+  font-family:'Anton';font-size:27px;line-height:1;text-transform:uppercase;letter-spacing:.02em;color:#fff}
+.planner-mode{align-self:flex-start;border:1px solid var(--line);background:#27323E;color:#fff;padding:7px 9px;
+  font-family:'Oswald';font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.planner-mode::before{content:"↻";color:var(--red);font-size:17px;margin-right:6px;vertical-align:-1px}
+.planner-label{font-family:'Oswald';font-size:18px;font-weight:700;color:#fff}
+.planner-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
+.planner-steps span{display:grid;place-items:center;min-height:28px;background:#101A24;color:#fff;font-family:'Oswald'}
+.planner-steps span:first-child{background:#1D7895}
+.planner-tools{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.planner-tools span{height:28px;background:#26313D;border-radius:3px}
+.blueprint{min-height:380px;display:flex;align-items:center}
+.blueprint .land{fill:#0D2E3F;stroke:var(--teal);stroke-width:2.2;stroke-linejoin:miter}
+.blueprint .inner{fill:none;stroke:var(--teal);stroke-width:1.7;stroke-linejoin:miter;stroke-linecap:square}
+.blueprint .thin{fill:none;stroke:var(--teal);stroke-width:1;opacity:.8}
+.blueprint .site{fill:rgba(25,232,200,.20);stroke:none}
+.blueprint .rail{stroke:#F2876E;stroke-width:1.4;opacity:.9}
+.blueprint .mark{fill:#fff;font-family:'Oswald';font-size:22px;font-weight:700}
+.blueprint .orb{fill:none;stroke:var(--teal);stroke-width:2}
+
+/* ---- VETO ---- */
+.veto{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0;align-items:center;
+  font-family:'Barlow Semi Condensed';font-size:14px}
+.veto .step{padding:7px 12px;border:1px solid var(--line);background:var(--panel);
+  display:flex;gap:8px;align-items:center}
+.veto .step b{font-family:'JetBrains Mono';font-size:11px;color:var(--muted)}
+.veto .ban{border-color:var(--red-deep)} .veto .ban b{color:var(--red)}
+.veto .pick{border-color:var(--teal)} .veto .pick b{color:var(--teal)}
+.veto .arr{color:var(--muted-2)}
+.veto-lab{margin:16px 0 18px;border:1px solid var(--line);background:#071018;padding:14px}
+.veto-control{display:flex;align-items:center;justify-content:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.veto-tabs{display:flex;gap:6px}
+.veto-tabs button,.veto-reset{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--bone);
+  min-height:34px;padding:0 12px;font-family:'Oswald';font-weight:700;text-transform:uppercase;letter-spacing:.07em;cursor:pointer}
+.veto-tabs button.active{border-color:var(--teal);background:#16323B;color:#fff}
+.veto-reset{color:var(--muted);font-size:12px}
+.veto-status{border-left:3px solid var(--teal);padding:8px 11px;margin-bottom:12px;background:rgba(25,232,200,.06);
+  font-family:'JetBrains Mono';font-size:12px;color:var(--bone-dim)}
+.veto-picker{display:grid;grid-template-columns:repeat(7,minmax(86px,1fr));gap:8px;margin-bottom:14px}
+.veto-map{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--bone);
+  padding:7px;display:grid;gap:6px;text-align:left;cursor:pointer;clip-path:polygon(7px 0,100% 0,100% 100%,0 100%,0 7px)}
+.veto-map:hover{border-color:var(--teal)}
+.veto-map[disabled]{opacity:.38;cursor:not-allowed}
+.veto-map.selected{border-color:var(--red-deep);background:#241820}
+.veto-map .map-banner{height:38px}
+.veto-map span:last-child{font-family:'Oswald';font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.06em}
+.veto-flow{display:flex;flex-wrap:wrap;gap:8px;align-items:stretch}
+.veto-slot{min-width:104px;border:1px solid var(--line);background:var(--panel);padding:9px 10px;position:relative}
+.veto-slot::after{content:"";position:absolute;right:-7px;top:50%;width:6px;height:1px;background:var(--muted-2)}
+.veto-slot:last-child::after{display:none}
+.veto-slot.ban{border-color:var(--red-deep)} .veto-slot.pick{border-color:var(--teal)}
+.veto-slot.current{box-shadow:0 0 0 1px var(--teal),0 0 24px rgba(25,232,200,.12)}
+.veto-slot .role{display:block;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.veto-slot.ban .role{color:var(--red)} .veto-slot.pick .role{color:var(--teal)}
+.veto-slot .chosen{display:block;font-family:'Oswald';font-size:14px;font-weight:700;text-transform:uppercase;color:var(--bone)}
+.veto-static{display:none;margin-top:16px}
+
+/* ---- DOCUMENT INTERACTIONS ---- */
+.reader-hub{margin:22px 0 26px;border:1px solid var(--line);background:linear-gradient(135deg,#101B24,#152734);padding:16px}
+.reader-search{display:grid;grid-template-columns:1fr auto;gap:8px}
+.reader-search input{width:100%;min-height:42px;border:1px solid var(--line);background:#071018;color:var(--bone);
+  padding:0 13px;font-family:'Barlow';font-size:15px}
+.reader-search button,.filter-chip,.calc-box button,.appeal-tabs button{appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--bone);
+  min-height:38px;padding:0 12px;font-family:'Oswald';font-weight:700;text-transform:uppercase;letter-spacing:.07em;cursor:pointer}
+.reader-meta{margin-top:9px;font-family:'JetBrains Mono';font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.reader-empty{display:none;margin-top:10px;color:var(--red);font-family:'Oswald';text-transform:uppercase}
+.art.search-hide,.titulo.search-hide{display:none!important}
+.art.search-hit{background:rgba(25,232,200,.035)}
+.term{cursor:pointer}
+.term.active{background:rgba(25,232,200,.12);outline:1px solid rgba(25,232,200,.35);padding:0 3px}
+.glossary-card{display:none;margin:12px 0;padding:13px 15px;border:1px solid rgba(25,232,200,.38);background:#071018}
+.glossary-card.show{display:block}
+.glossary-card .g-term{font-family:'Anton';font-size:28px;text-transform:uppercase;color:var(--bone);line-height:1}
+.glossary-card .g-def{margin-top:5px;color:var(--bone-dim)}
+.filter-bar{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0}
+.filter-chip.active{border-color:var(--teal);background:#16323B}
+tr.discipline-hide{display:none}
+.calc-box{margin:16px 0;border:1px solid rgba(25,232,200,.32);background:#071018;padding:14px}
+.calc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.calc-grid label{display:grid;gap:5px;font-family:'JetBrains Mono';font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.calc-grid select,.calc-grid input{min-height:38px;border:1px solid var(--line);background:#101B24;color:var(--bone);padding:0 9px}
+.calc-result{margin-top:12px;border-left:3px solid var(--teal);padding:10px 12px;background:rgba(25,232,200,.07);
+  font-family:'Oswald';font-size:18px;color:var(--bone)}
+.appeal-tabs{display:flex;flex-wrap:wrap;gap:7px;margin:12px 0}
+.appeal-tabs button.active{border-color:var(--teal);background:#16323B}
+.flow-step.dim{opacity:.35}
+.flow-step.focus{background:rgba(25,232,200,.04)}
+
+/* ---- FORMULA ---- */
+.formula-block{margin:16px 0;background:var(--void-2);border:1px solid var(--teal);
+  padding:18px 20px;font-family:'JetBrains Mono',monospace}
+.formula-block .fx-label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:12px;font-weight:600}
+.formula-block .fx-main{font-size:17px;color:var(--bone);font-weight:600;letter-spacing:.04em;
+  margin-bottom:14px}
+.formula-block .fx-vars{font-size:12px;color:var(--muted);line-height:2}
+.formula-block .fx-vars b{color:var(--bone-dim)}
+
+/* ---- APPEAL FLOW ---- */
+.flow{display:grid;gap:0;margin:18px 0}
+.flow-step{display:grid;grid-template-columns:56px 1fr;gap:0;position:relative}
+.flow-step:not(:last-child)::after{content:"";position:absolute;left:26px;top:52px;
+  bottom:-1px;width:2px;background:var(--line)}
+.flow-step .fs-num{width:52px;height:52px;border:2px solid var(--red);display:flex;
+  align-items:center;justify-content:center;font-family:'Anton';font-size:20px;
+  color:var(--red);position:relative;z-index:1;background:var(--void);flex-shrink:0;margin-top:2px}
+.flow-step .fs-body{padding:4px 0 24px 18px}
+.flow-step .fs-title{font-family:'Oswald';font-weight:600;text-transform:uppercase;
+  letter-spacing:.06em;font-size:15px;color:var(--bone);margin-bottom:4px}
+.flow-step .fs-sub{font-size:13.5px;color:var(--muted)}
+.flow-step .fs-tag{display:inline-block;font-family:'JetBrains Mono';font-size:10px;
+  letter-spacing:.18em;padding:2px 8px;border:1px solid var(--line);color:var(--muted);
+  text-transform:uppercase;margin-top:4px}
+.flow-step .fs-tag.red{border-color:var(--red-deep);color:var(--red)}
+.flow-step .fs-tag.teal{border-color:var(--teal);color:var(--teal)}
+
+/* ---- CALENDAR TIMELINE ---- */
+.cal{display:grid;grid-template-columns:80px 1fr;gap:0;margin:18px 0;border:1px solid var(--line)}
+.cal-row{display:contents}
+.cal-row .week{font-family:'JetBrains Mono';font-size:11px;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--muted);padding:12px 14px;
+  border-bottom:1px solid var(--line-soft);border-right:1px solid var(--line);
+  display:flex;align-items:flex-start;background:var(--void-2)}
+.cal-row .ev{padding:12px 16px;border-bottom:1px solid var(--line-soft)}
+.cal-row:last-child .week,.cal-row:last-child .ev{border-bottom:0}
+.cal-row .ev strong{color:var(--bone);font-size:14px;display:block;margin-bottom:2px}
+.cal-row .ev span{color:var(--muted);font-size:13px}
+.cal-row.highlight .week{background:rgba(255,70,85,.08);color:var(--red)}
+.cal-row.highlight .ev{background:rgba(255,70,85,.04)}
+
+/* ---- CHECKLIST ---- */
+.checklist{margin:14px 0;display:flex;flex-direction:column;gap:6px}
+.ch-item{display:flex;gap:14px;align-items:flex-start;padding:11px 14px;
+  border:1px solid var(--line);background:var(--panel)}
+.ch-item .ch-box{width:20px;height:20px;border:2px solid var(--red);flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;margin-top:1px}
+.ch-item .ch-box::after{content:"";width:8px;height:8px;background:var(--red);
+  clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.ch-item .ch-text{font-size:14.5px;color:var(--bone-dim)}
+.ch-item .ch-text strong{color:var(--bone);display:block;font-size:14px;margin-bottom:2px}
+
+/* ---- RANKING TABLE HIGHLIGHT ---- */
+td.pts{font-family:'JetBrains Mono';font-size:13px;color:var(--bone);font-weight:600}
+td.hi{color:var(--gold);font-weight:600}
+
+/* ---- FOOTER ---- */
+footer{margin-top:90px;border-top:1px solid var(--line);padding:34px 0 70px;position:relative;z-index:1}
+footer .sig{font-family:'Anton';font-size:clamp(26px,5vw,42px);text-transform:uppercase;
+  color:var(--bone);line-height:.9}
+footer .sig .slash{color:var(--red)}
+footer p{color:var(--muted);font-size:13px;max-width:560px;margin:14px 0 0}
+footer .legal{margin-top:22px;font-family:'JetBrains Mono';font-size:10.5px;letter-spacing:.08em;
+  color:var(--muted-2);text-transform:uppercase}
+.backtop{position:fixed;right:20px;bottom:20px;z-index:40;width:46px;height:46px;
+  border:1px solid var(--red);background:rgba(14,24,34,.85);color:var(--red);cursor:pointer;
+  font-family:'Anton';font-size:20px;opacity:0;pointer-events:none;transition:.25s;
+  clip-path:polygon(10px 0,100% 0,100% 100%,0 100%,0 10px)}
+.backtop.show{opacity:1;pointer-events:auto}
+.backtop:hover{background:var(--red);color:var(--void)}
+
+/* ---- POLISH PASS: SCREEN EXPERIENCE ---- */
+:root{
+  --paper:#F6F1E8;
+  --ink:#18212A;
+  --ink-soft:#4A5560;
+}
+body{
+  background:
+    linear-gradient(135deg,rgba(255,70,85,.10),transparent 28%),
+    linear-gradient(315deg,rgba(25,232,200,.08),transparent 32%),
+    var(--void);
+}
+main.wrap{padding-top:18px}
+.doc-tools{
+  position:fixed;left:18px;top:18px;z-index:60;display:flex;flex-direction:column;gap:8px;width:132px;
+  padding:6px;border:1px solid rgba(236,232,225,.16);background:rgba(11,19,27,.78);
+  backdrop-filter:blur(12px);box-shadow:0 18px 42px rgba(0,0,0,.28)
+}
+.doc-tools button,.doc-tools a{
+  appearance:none;border:1px solid var(--line);background:var(--panel);color:var(--bone);
+  min-height:36px;padding:0 12px;font-family:'Oswald',system-ui,sans-serif;font-size:12px;
+  letter-spacing:.08em;text-transform:uppercase;text-decoration:none;display:inline-flex;
+  align-items:center;justify-content:center;gap:8px;cursor:pointer
+}
+.doc-tools button,.doc-tools a{width:100%}
+.doc-tools button:hover,.doc-tools a:hover{border-color:var(--red);color:#fff;background:#1e2d39}
+.doc-tools .primary{background:var(--red);border-color:var(--red);color:var(--void);font-weight:700}
+[id]{scroll-margin-top:98px}
+.cover{
+  overflow:hidden;background:
+    radial-gradient(circle at 78% 22%,rgba(255,70,85,.20),transparent 24%),
+    linear-gradient(180deg,rgba(14,24,34,.42),rgba(14,24,34,.95));
+}
+.cover::before{
+  content:"CMX";position:absolute;right:-.08em;top:.05em;font-family:'Anton',Impact,sans-serif;
+  font-size:min(31vw,410px);line-height:.75;color:rgba(236,232,225,.035);
+  letter-spacing:.02em;pointer-events:none
+}
+.cover::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:34%;
+  background:linear-gradient(180deg,transparent,rgba(11,19,27,.70));pointer-events:none
+}
+.cover .wrap{z-index:2}
+.cover h1{max-width:980px;text-shadow:0 16px 50px rgba(0,0,0,.34)}
+.cover .sub{max-width:880px}
+.cover-info{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:760px;
+  margin-top:26px
+}
+.cover-info .pill{
+  border:1px solid rgba(236,232,225,.18);background:rgba(21,33,44,.74);
+  padding:12px 14px;min-height:68px
+}
+.cover-info b{
+  display:block;font-family:'Anton',Impact,sans-serif;font-weight:400;font-size:28px;
+  line-height:1;color:var(--bone)
+}
+.cover-info span{
+  display:block;margin-top:6px;font-family:'JetBrains Mono',Consolas,monospace;font-size:10px;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)
+}
+.lead{
+  position:relative;border-left:0;padding:22px 24px 22px 28px;background:linear-gradient(90deg,rgba(255,70,85,.12),rgba(21,33,44,.58));
+  border:1px solid rgba(255,70,85,.35)
+}
+.lead::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--red)}
+.toc a,.box,.map,.veto .step,.ch-item,.formula-block,.tbl{box-shadow:0 10px 28px rgba(0,0,0,.10)}
+.titulo{scroll-margin-top:48px}
+.titulo .kicker::after{content:"";display:inline-block;width:34px;height:1px;margin-left:12px;background:currentColor;vertical-align:middle;opacity:.55}
+.art{
+  transition:background-color .18s ease,border-color .18s ease;
+  border-bottom-color:rgba(120,140,156,.20)
+}
+.art:hover{background:rgba(236,232,225,.025);border-bottom-color:rgba(255,70,85,.22)}
+.art h3{font-size:18px}
+.art p,.art li{max-width:76ch}
+.tbl{border-radius:2px}
+table{table-layout:auto}
+th,td{overflow-wrap:anywhere}
+footer{padding-bottom:96px}
+
+@media screen and (min-width:821px) and (max-width:1180px){
+  .doc-tools{position:absolute}
+}
+
+@media screen and (max-width:820px){
+  .doc-tools{left:12px;right:12px;top:auto;bottom:12px;justify-content:flex-end;flex-direction:row;width:auto}
+  .doc-tools a{display:inline-flex}
+  .cover{padding-top:92px}
+  .cover-info{grid-template-columns:1fr}
+  .map-menu{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .map-stage{grid-template-columns:1fr}
+  .map-panel.active{display:block}
+  .art{padding-left:0}
+  .art .num{position:relative;left:auto;top:auto;width:auto;text-align:left;margin-bottom:8px}
+  .art::before{display:none}
+  .titulo h2{display:block}
+}
+
+@media screen and (max-width:560px){
+  html{overflow-x:hidden;scroll-padding-bottom:112px}
+  body{overflow-x:hidden}
+  body{font-size:15.5px;line-height:1.56}
+  .wrap{padding:0 18px}
+  main.wrap{padding-top:8px;padding-bottom:132px}
+  .reader-hub,.map-lab,.veto-lab,.calc-box,.appeal-tabs,.filter-bar,.titulo,.art{scroll-margin-bottom:112px}
+  #bar{height:2px}
+  .doc-tools{
+    left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));top:auto;
+    display:grid;grid-template-columns:1.35fr 1fr 1fr;gap:6px;padding:6px;
+    background:rgba(11,19,27,.88)
+  }
+  .doc-tools button,.doc-tools a{
+    min-height:44px;padding:0 8px;font-size:10.5px;letter-spacing:.055em;white-space:nowrap
+  }
+  .cover{
+    min-height:100svh;padding:42px 0 92px;justify-content:center;
+    background:
+      radial-gradient(circle at 84% 12%,rgba(255,70,85,.20),transparent 30%),
+      linear-gradient(180deg,rgba(14,24,34,.50),rgba(14,24,34,.98))
+  }
+  .cover::before{font-size:88vw;right:-.24em;top:22px}
+  .cover::after{height:44%}
+  .frame{inset:12px}
+  .frame::before,.frame::after,.bracket-tr,.bracket-bl{width:22px;height:22px}
+  .eyebrow{
+    font-size:9.5px;letter-spacing:.22em;gap:10px;line-height:1.4;
+    display:block;max-width:260px
+  }
+  .eyebrow::after{display:block;margin-top:10px;width:72px}
+  .cover h1{
+    font-size:clamp(42px,15.8vw,64px);line-height:.88;margin-top:20px;
+    overflow-wrap:normal
+  }
+  .cover h1 .yr{-webkit-text-stroke:1px var(--bone)}
+  .cover .sub{font-size:12.5px;letter-spacing:.16em;line-height:1.55;margin-top:18px}
+  .cover-info{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin-top:20px}
+  .cover-info .pill{padding:9px 8px;min-height:58px}
+  .cover-info b{font-size:22px}
+  .cover-info span{font-size:8px;letter-spacing:.08em;line-height:1.35}
+  .reticle{width:34px;height:34px;margin-top:22px}
+  .reticle span{inset:10px}
+  .cover-meta{
+    left:18px;right:18px;bottom:70px;display:grid;gap:6px;
+    font-size:9px;letter-spacing:.08em;line-height:1.45
+  }
+  .lead{font-size:16px;line-height:1.58;padding:16px 16px 16px 18px;margin-top:8px}
+  .box{clip-path:none;padding:14px 15px;margin:14px 0}
+  .box .bx-h{font-size:11.5px;letter-spacing:.09em}
+  .box p{font-size:14px}
+  .toc{gap:9px;margin-top:20px}
+  .toc a{
+    clip-path:none;padding:13px 14px;gap:12px;align-items:flex-start;
+    min-height:72px;touch-action:manipulation
+  }
+  .toc a .n{font-size:20px;min-width:28px;padding-top:1px}
+  .toc a .t{font-size:13.5px;line-height:1.2}
+  .toc a small{font-size:12px;line-height:1.25;margin-top:4px}
+  .reader-hub{padding:13px}
+  .reader-search{grid-template-columns:1fr}
+  .calc-grid{grid-template-columns:1fr 1fr}
+  .titulo{margin:54px 0 18px}
+  .titulo .kicker{font-size:10px;letter-spacing:.18em}
+  .titulo .kicker::after{width:24px}
+  .titulo h2{font-size:clamp(28px,10.5vw,40px);line-height:1.03}
+  .titulo h2 .romano{display:block;margin-bottom:4px}
+  .titulo .rule{margin-top:12px}
+  .art{padding:15px 0 17px}
+  .art .num{
+    display:inline-grid;grid-auto-flow:column;align-items:end;gap:7px;margin-bottom:8px
+  }
+  .art .num b{font-size:24px}
+  .art .num span{font-size:8.5px;letter-spacing:.15em;padding-bottom:1px}
+  .art h3{font-size:16px;line-height:1.25;margin-bottom:8px}
+  .art p,.art li{max-width:none}
+  ol.clauses>li{padding-left:24px}
+  .tbl{
+    overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px -18px 14px 0;
+    border-left:2px solid var(--red);border-right:0;
+    background:
+      linear-gradient(90deg,transparent,rgba(25,232,200,.13)) right/26px 100% no-repeat,
+      var(--panel)
+  }
+  table{min-width:620px;font-size:13px}
+  thead th{padding:9px 10px;font-size:10.5px}
+  tbody td{padding:9px 10px}
+  .pool{gap:7px}
+  .map{clip-path:none;font-size:12px;padding:7px 10px}
+  .map-lab{margin:14px 0}
+  .map-menu{
+    display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:8px;
+    margin:0 -18px 12px 0;padding:0 18px 4px 0;scroll-snap-type:x proximity
+  }
+  .map-card{min-width:112px;padding:8px;clip-path:none;scroll-snap-align:start}
+  .map-card .label{font-size:11px}
+  .map-thumb{aspect-ratio:1.5/1}
+  .map-stage{display:block;padding:12px;margin-right:0}
+  .map-panel.active{display:block}
+  .map-view{padding:8px}
+  .map-copy{margin-top:12px}
+  .map-copy h4{font-size:34px}
+  .map-copy p{font-size:13.5px}
+  .map-tags span{font-size:8.5px}
+  .veto-lab{padding:12px}
+  .veto-control{display:grid;grid-template-columns:1fr auto;align-items:stretch}
+  .veto-tabs{display:grid;grid-template-columns:1fr 1fr}
+  .veto-picker{display:flex;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:8px;margin-right:-18px;padding-right:18px}
+  .veto-map{min-width:112px;clip-path:none}
+  .veto-flow{display:grid;grid-template-columns:1fr;gap:7px}
+  .veto-slot::after{display:none}
+  .veto{gap:6px}
+  .veto .step{padding:6px 9px}
+  .veto .arr{display:none}
+  .formula-block{padding:14px 15px;overflow-x:auto}
+  .formula-block .fx-main{font-size:14px;line-height:1.55}
+  .flow-step{grid-template-columns:42px 1fr}
+  .flow-step .fs-num{width:38px;height:38px;font-size:17px}
+  .flow-step:not(:last-child)::after{left:18px;top:40px}
+  .flow-step .fs-body{padding-left:10px}
+  .cal{grid-template-columns:1fr;border:0;gap:7px}
+  .cal-row{display:grid;grid-template-columns:74px 1fr;border:1px solid var(--line);background:var(--panel)}
+  .cal-row .week,.cal-row .ev{border-bottom:0}
+  .cal-row .week{padding:10px 9px;font-size:9px;letter-spacing:.12em}
+  .cal-row .ev{padding:10px 12px}
+  .cal-row .ev strong{font-size:13px}
+  .cal-row .ev span{font-size:12px;line-height:1.35}
+  .ch-item{padding:10px 12px;gap:10px}
+  .ch-item .ch-box{width:17px;height:17px}
+  .ch-item .ch-text{font-size:13.5px;line-height:1.42}
+  footer{margin-top:58px;padding-bottom:96px}
+  footer .sig{font-size:34px}
+  footer p{font-size:12.5px}
+  footer .legal{font-size:9px;line-height:1.65}
+  .backtop{display:none}
+}
+
+/* ---- PRINT ---- */
+@page{
+  size:A4;
+  margin:14mm 13mm 16mm;
+}
+@media print{
+  *{box-shadow:none!important;text-shadow:none!important;filter:none!important}
+  html{scroll-behavior:auto}
+  body{
+    background:#fff!important;color:var(--ink)!important;font-size:9.8pt;line-height:1.42;
+    font-family:'Barlow','Segoe UI',Arial,sans-serif;-webkit-print-color-adjust:exact;
+    print-color-adjust:exact
+  }
+  body::before,#bar,.backtop,.doc-tools{display:none!important}
+  .wrap{max-width:none!important;padding:0!important}
+  a{color:inherit;text-decoration:none}
+  .cover{
+    min-height:0;height:252mm;page-break-after:always;break-after:page;padding:13mm 0 12mm;
+    display:flex;justify-content:center;background:#101A24!important;color:#ECE8E1!important;
+    overflow:hidden
+  }
+  .cover::before{font-size:112mm;right:-8mm;top:12mm;color:rgba(236,232,225,.045)!important}
+  .cover::after{display:none}
+  .frame{display:block;inset:8mm;border-color:rgba(236,232,225,.24)}
+  .frame::before,.frame::after,.bracket-tr,.bracket-bl{display:block}
+  .eyebrow{font-size:8.4pt;letter-spacing:.26em;color:#FF4655!important}
+  .eyebrow::after{background:rgba(236,232,225,.30)}
+  .cover h1{
+    font-size:58pt;line-height:.89;margin-top:14mm;color:#ECE8E1!important;
+    page-break-after:avoid;break-after:avoid
+  }
+  .cover h1 .yr{-webkit-text-stroke:1.1pt #ECE8E1;color:transparent!important}
+  .cover .sub{font-size:13pt;letter-spacing:.22em;color:#C7CBCB!important}
+  .cover-info{grid-template-columns:repeat(3,1fr);gap:5mm;margin-top:10mm}
+  .cover-info .pill{border-color:rgba(236,232,225,.22);background:rgba(255,255,255,.045);min-height:18mm;padding:4mm}
+  .cover-info b{font-size:18pt;color:#ECE8E1!important}
+  .cover-info span{font-size:6.8pt;color:#AAB4BC!important}
+  .reticle{margin-top:9mm}
+  .cover-meta{
+    left:13mm;right:13mm;bottom:10mm;font-size:6.8pt;letter-spacing:.09em;color:#AAB4BC!important
+  }
+  main.wrap>section:first-child{break-after:page;page-break-after:always}
+  section{break-inside:auto}
+  .lead{
+    color:var(--ink)!important;background:#fff!important;border:1px solid #CDD3D8;
+    border-left:4pt solid #FF4655;padding:8pt 10pt;margin-bottom:9pt;font-size:10.5pt
+  }
+  .lead::before{display:none}
+  .toc{grid-template-columns:repeat(2,1fr);gap:6pt;margin-top:12pt}
+  .toc a{
+    background:#fff!important;color:var(--ink)!important;border:1px solid #D7DDE2;
+    padding:7pt 8pt;clip-path:none;break-inside:avoid;page-break-inside:avoid
+  }
+  .toc a .n{font-size:14pt;color:#BD3944!important}
+  .toc a.anx .n{color:#9B7629!important}
+  .toc a .t{font-size:9pt}
+  .toc a small{font-size:7.2pt;color:var(--ink-soft)!important}
+  .titulo{
+    page-break-before:always;break-before:page;margin:0 0 12pt;padding-top:0;
+    page-break-after:avoid;break-after:avoid
+  }
+  .titulo .kicker{font-size:7.5pt;letter-spacing:.18em;color:#BD3944!important}
+  .titulo.anx .kicker{color:#9B7629!important}
+  .titulo h2{font-size:27pt;line-height:1;color:var(--ink)!important;page-break-after:avoid;break-after:avoid}
+  .titulo h2 .romano{-webkit-text-stroke:.8pt #BD3944;color:transparent!important}
+  .titulo.anx h2 .romano{-webkit-text-stroke:.8pt #9B7629;color:transparent!important}
+  .titulo .rule{height:1pt;background:#D7DDE2;margin-top:8pt}
+  .titulo .rule::before{background:#BD3944;width:40mm}
+  .titulo.anx .rule::before{background:#9B7629}
+  .art{
+    padding:8pt 0 8pt 31pt;border-bottom:1px solid #DEE3E7;break-inside:auto;
+    page-break-inside:auto;background:transparent!important
+  }
+  .art .num{top:8pt;width:24pt}
+  .art .num b{font-size:17pt;color:var(--ink)!important}
+  .art .num span{font-size:5.8pt;letter-spacing:.12em;color:#BD3944!important}
+  .art.anx-art .num span{color:#9B7629!important}
+  .art::before{left:27pt;top:10pt;height:17pt;width:1.3pt;background:#BD3944}
+  .art.anx-art::before{background:#9B7629}
+  .art h3{
+    font-size:11.2pt;line-height:1.2;margin-bottom:4pt;color:var(--ink)!important;
+    page-break-after:avoid;break-after:avoid
+  }
+  .art p,.art li{max-width:none;color:var(--ink-soft)!important}
+  .art p{margin-bottom:5pt}
+  strong{color:var(--ink)!important}
+  .term{color:#087D70!important}
+  ol.clauses>li{padding:3pt 0 3pt 18pt}
+  ol.clauses>li::before{top:3pt;color:#BD3944!important;font-size:8pt}
+  .field{
+    min-width:0;color:#BD3944!important;background:#FFF3F4!important;border-bottom:1px dashed #BD3944;
+    padding:0 3pt
+  }
+  .box,.formula-block,.ch-item,.tbl,.map,.map-card,.map-stage,.map-view,.veto .step{
+    background:#fff!important;border:1px solid #CDD3D8!important;clip-path:none!important
+  }
+  .box{padding:8pt 9pt;margin:8pt 0;break-inside:avoid;page-break-inside:avoid}
+  .box .bx-h{font-size:8pt;letter-spacing:.08em;color:#BD3944!important;margin-bottom:3pt}
+  .box.note .bx-h{color:#087D70!important}
+  .box.ex .bx-h{color:#9B7629!important}
+  .box p{font-size:8.8pt;color:var(--ink-soft)!important}
+  .tbl{overflow:visible;margin:8pt 0;break-inside:avoid;page-break-inside:avoid}
+  table{min-width:0!important;width:100%;font-size:8.2pt;table-layout:fixed}
+  thead{display:table-header-group}
+  tr{break-inside:avoid;page-break-inside:avoid}
+  thead th{
+    background:#EEF1F4!important;color:var(--ink)!important;border-bottom:1.5pt solid #BD3944;
+    padding:5pt 6pt;font-size:7.4pt
+  }
+  thead.gold-head th{border-bottom-color:#9B7629}
+  tbody td{color:var(--ink-soft)!important;border-bottom:1px solid #E5E9ED;padding:5pt 6pt}
+  tbody tr:nth-child(even){background:#FAFBFC!important}
+  td .sev{font-size:6.8pt;padding:1pt 4pt}
+  .pool{gap:4pt;margin:7pt 0 2pt}
+  .map{font-size:8pt;padding:4pt 6pt}
+  .map .dot{background:#087D70}
+  .map-lab{margin:8pt 0;break-inside:auto;page-break-inside:auto}
+  .map-menu{display:none}
+  .map-stage{display:grid;grid-template-columns:1fr 1fr;gap:7pt;padding:0;border:0!important;background:transparent!important}
+  .map-panel,.map-panel.active{display:block;break-inside:avoid;page-break-inside:avoid}
+  .map-view{padding:4pt;margin-bottom:4pt}
+  .map-copy .ey{font-size:5.8pt;color:#087D70!important}
+  .map-copy h4{font-size:17pt;color:var(--ink)!important;margin:2pt 0 3pt}
+  .map-copy p{font-size:7.7pt;color:var(--ink-soft)!important}
+  .map-tags{gap:3pt;margin-top:4pt}
+  .map-tags span{font-size:5.8pt;color:#59636D!important;border-color:#D7DDE2;background:#fff!important}
+  .tac-map .land{fill:#F6F8FA;stroke:#9AA6AF}
+  .tac-map .route{stroke:#8B98A3}
+  .tac-map .site{fill:#FFF3F4;stroke:#BD3944}
+  .tac-map .site.c{fill:#FFF8E7;stroke:#9B7629}
+  .tac-map .mid{fill:#E9FBF8;stroke:#087D70}
+  .tac-map .mark{fill:#18212A}
+  .veto{gap:3pt;font-size:8pt;margin:6pt 0}
+  .veto .step{padding:3pt 5pt}
+  .veto .arr{color:#77828C!important}
+  .veto-lab{display:none!important}
+  .veto-static{display:block!important}
+  .reader-hub,.filter-bar,.calc-box,.appeal-tabs,.glossary-card{display:none!important}
+  .art.search-hide,.titulo.search-hide{display:block!important}
+  tr.discipline-hide{display:table-row!important}
+  .formula-block{padding:8pt 9pt;break-inside:avoid;page-break-inside:avoid}
+  .formula-block .fx-label{font-size:6.8pt;color:#087D70!important}
+  .formula-block .fx-main{font-size:10pt;color:var(--ink)!important}
+  .formula-block .fx-vars{font-size:7.8pt;color:var(--ink-soft)!important}
+  .flow{margin:8pt 0}
+  .flow-step{grid-template-columns:26pt 1fr;break-inside:avoid;page-break-inside:avoid}
+  .flow-step .fs-num{width:23pt;height:23pt;font-size:10pt;background:#fff;color:#BD3944;border-color:#BD3944}
+  .flow-step:not(:last-child)::after{left:11pt;top:24pt;background:#D7DDE2}
+  .flow-step .fs-body{padding:1pt 0 9pt 8pt}
+  .flow-step .fs-title{font-size:8.8pt;color:var(--ink)!important}
+  .flow-step .fs-sub{font-size:8pt;color:var(--ink-soft)!important}
+  .flow-step .fs-tag{font-size:6.6pt;color:var(--ink-soft)!important}
+  .cal{grid-template-columns:22mm 1fr;margin:8pt 0;border-color:#CDD3D8}
+  .cal-row .week{font-size:6.8pt;letter-spacing:.10em;padding:6pt;background:#EEF1F4!important;color:#59636D!important}
+  .cal-row .ev{padding:6pt}
+  .cal-row .ev strong{font-size:8.8pt;color:var(--ink)!important}
+  .cal-row .ev span{font-size:7.8pt;color:var(--ink-soft)!important}
+  .cal-row.highlight .week,.cal-row.highlight .ev{background:#FFF3F4!important}
+  .checklist{gap:3pt;margin:7pt 0}
+  .ch-item{padding:5pt 6pt;break-inside:avoid;page-break-inside:avoid}
+  .ch-item .ch-box{width:11pt;height:11pt;border-width:1.2pt;border-color:#BD3944}
+  .ch-item .ch-box::after{width:4pt;height:4pt;background:#BD3944}
+  .ch-item .ch-text{font-size:8.5pt;color:var(--ink-soft)!important}
+  .ch-item .ch-text strong{font-size:8.5pt;color:var(--ink)!important}
+  td.pts{color:var(--ink)!important}
+  td.hi{color:#9B7629!important}
+  footer{
+    margin-top:18pt;border-top:1px solid #CDD3D8;padding:10pt 0 0;break-before:page;
+    page-break-before:always;color:var(--ink-soft)!important
+  }
+  footer .sig{font-size:24pt;color:var(--ink)!important}
+  footer p{font-size:8.5pt;color:var(--ink-soft)!important;max-width:none}
+  footer .legal{font-size:6.8pt;color:#69737D!important}
+}
+</style>
+</head>
+<body>
+<div id="bar"></div>
+<div class="doc-tools" aria-label="Herramientas del documento">
+  <button class="primary" type="button" onclick="window.print()">Imprimir / PDF</button>
+  <a href="#t1">Reglamento</a>
+  <a href="#t11">Anexos</a>
+</div>
+
+<!-- ===== PORTADA ===== -->
+<header class="cover">
+  <div class="frame"><span class="bracket-tr"></span><span class="bracket-bl"></span></div>
+  <div class="wrap">
+    <div class="eyebrow">Reglamento Oficial · Competición Nacional</div>
+    <h1>Copa<span class="slash">/</span>México<br>VALORANT <span class="yr">2026</span></h1>
+    <div class="sub">General · Operativo · Disciplinario</div>
+    <div class="cover-info" aria-label="Resumen del documento">
+      <div class="pill"><b>54</b><span>Artículos y anexos</span></div>
+      <div class="pill"><b>11</b><span>Títulos normativos</span></div>
+      <div class="pill"><b>A4</b><span>Preparado para PDF</span></div>
+    </div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:18px;border-left:2px solid var(--red);padding-left:13px;max-width:520px;line-height:1.9">Torneo comunitario · No afiliado, patrocinado ni avalado por Riot Games<br>VALORANT © Riot Games, Inc.</div>
+    <div class="reticle"><span></span></div>
+  </div>
+  <div class="cover-meta wrap" style="position:absolute">
+    <div>Edición <b>I</b> · Temporada <b>2026</b></div>
+    <div>Documento <b>v1.3</b> · Vigente desde <b>__/__/2026</b></div>
+    <div>Servidor competitivo · <b>LATAM-N / México</b></div>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- PREÁMBULO -->
+<section style="margin-top:40px">
+  <p class="lead">La <strong>Copa México VALORANT 2026</strong> es un torneo comunitario nacional de carácter abierto y proyección internacional. Este reglamento es la única fuente normativa del certamen. Inscribirse equivale a aceptarlo en su totalidad.</p>
+  <p style="color:var(--muted);font-size:14.5px">Sustituye cualquier versión previa. Los campos marcados <span class="field">por definir</span> serán publicados en los canales oficiales antes del cierre de inscripciones.</p>
+  <div class="box warn"><div class="bx-h">Aviso legal · Relación con Riot Games</div>
+    <p>La <strong>Copa México VALORANT 2026</strong> es un <strong>torneo comunitario independiente</strong>. <strong>No está afiliada, patrocinada, avalada ni operada por Riot Games, Inc. ni por el equipo de VALORANT esports.</strong> Se organiza bajo la licencia comunitaria de las <em>VALORANT Community Competition Guidelines</em> (18 jun 2026), una licencia limitada, no exclusiva y revocable. Riot conserva el derecho de intervenir o cancelar el evento.</p>
+  </div>
+
+  <div class="reader-hub" id="buscador-reglamento" data-reader-hub>
+    <div class="reader-search">
+      <input type="search" id="doc-search" placeholder="Buscar artículos, sanciones, mapas, ranking..." aria-label="Buscar dentro del reglamento">
+      <button type="button" data-search-clear>Limpiar</button>
+    </div>
+    <div class="reader-meta" data-search-meta>54 artículos y anexos disponibles</div>
+    <div class="reader-empty" data-search-empty>No hay coincidencias visibles.</div>
+  </div>
+
+  <div class="toc">
+    <a href="#t1"><span class="n">I</span><span class="t">Disposiciones generales<small>Objeto, definiciones, jerarquía y vigencia</small></span></a>
+    <a href="#t2"><span class="n">II</span><span class="t">Gobernanza<small>Comité, arbitraje, conflictos de interés</small></span></a>
+    <a href="#t3"><span class="n">III</span><span class="t">Elegibilidad y registro<small>Jugadores, cupos, rosters, suplencias</small></span></a>
+    <a href="#t4"><span class="n">IV</span><span class="t">Formato competitivo<small>Fases, calendario y desempates</small></span></a>
+    <a href="#t5"><span class="n">V</span><span class="t">Reglas de partida<small>Servidor, mapas, vetos, pausas, desconexiones</small></span></a>
+    <a href="#t6"><span class="n">VI</span><span class="t">Integridad y conducta<small>Anti-trampas, amaño, régimen disciplinario</small></span></a>
+    <a href="#t7"><span class="n">VII</span><span class="t">Medios y marca<small>Transmisión oficial, patrocinios, PI</small></span></a>
+    <a href="#t8"><span class="n">VIII</span><span class="t">Premios y ranking<small>Bolsa, MVP, ranking nacional de equipos</small></span></a>
+    <a href="#t9"><span class="n">IX</span><span class="t">Apelaciones y ética<small>Protocolo formal, datos, jurisdicción</small></span></a>
+    <a href="#t10"><span class="n">X</span><span class="t">Circuito internacional<small>Selección Nacional, Copa América, Mundial</small></span></a>
+    <a href="#t11" class="anx"><span class="n">XI</span><span class="t">Anexos operativos<small>Calendario, identidad, árbitros, protesta</small></span></a>
+  </div>
+</section>
+
+<!-- ===== TÍTULO I ===== -->
+<section id="t1">
+  <div class="titulo"><div class="kicker">// Título I</div>
+    <h2><span class="romano">I</span> Disposiciones generales</h2><div class="rule"></div></div>
+
+  <div class="art"><div class="num"><b>01</b><span>Art.</span></div>
+    <h3>Objeto del reglamento</h3>
+    <p>Este documento regula la organización, la competición y la conducta en la Copa México VALORANT 2026 (<strong>"la Copa"</strong>). Su finalidad es garantizar una competencia justa, transparente y reproducible en todas sus fases.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>02</b><span>Art.</span></div>
+    <h3>Ámbito y aceptación</h3>
+    <p>Aplica a todo participante: jugadores, suplentes, capitanes, entrenadores, mánagers, equipos, personal técnico y staff. El registro implica aceptación íntegra. El desconocimiento no exime de sanción.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>03</b><span>Art.</span></div>
+    <h3>Vigencia y modificaciones</h3>
+    <p>El reglamento entra en vigor con su publicación y rige hasta la entrega de premios. El CO puede modificarlo con <span class="field">24 h</span> de anticipación, salvo correcciones urgentes de integridad competitiva, que aplican de inmediato.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>04</b><span>Art.</span></div>
+    <h3>Jerarquía interpretativa</h3>
+    <ol class="clauses">
+      <li>Resolución expresa del <strong>Comité de Competición</strong> para el caso concreto.</li>
+      <li>Este reglamento y sus Anexos.</li>
+      <li><em>VALORANT Community Competition Guidelines</em> y políticas de Riot Games.</li>
+      <li>Reglas del modo competitivo base de VALORANT.</li>
+    </ol>
+    <div class="box note"><div class="bx-h">Criterio rector</div><p>Ante vacío normativo, el Comité resuelve buscando el resultado más justo y deportivo, deja constancia escrita y el criterio sienta precedente dentro de la misma edición.</p></div>
+  </div>
+
+  <div class="art"><div class="num"><b>05</b><span>Art.</span></div>
+    <h3>Definiciones</h3>
+    <ol class="clauses">
+      <li><span class="term">Roster</span>: conjunto de jugadores inscritos y elegibles por un equipo en una fase.</li>
+      <li><span class="term">Titular / Suplente</span>: jugador de la alineación activa / jugador inscrito de reserva.</li>
+      <li><span class="term">Stand-in</span>: jugador externo autorizado excepcionalmente para cubrir una baja.</li>
+      <li><span class="term">Capitán</span>: único interlocutor oficial del equipo ante el arbitraje.</li>
+      <li><span class="term">Bo1 / Bo3 / Bo5</span>: serie al mejor de uno, tres o cinco mapas.</li>
+      <li><span class="term">Veto</span>: proceso de baneo y selección de mapas y lados previo a cada serie.</li>
+      <li><span class="term">Rehost</span>: reinicio de partida autorizado para restaurar un estado válido.</li>
+      <li><span class="term">W.O. (walkover)</span>: victoria adjudicada por incomparecencia o descalificación.</li>
+      <li><span class="term">Admin</span>: miembro del arbitraje con autoridad sobre lobby y partida.</li>
+      <li><span class="term">CO</span>: Comité Organizador.</li>
+      <li><span class="term">Cc</span>: Comité de Competición.</li>
+    </ol>
+    <div class="glossary-card" data-glossary-card>
+      <div class="g-term" data-glossary-term>Glosario</div>
+      <div class="g-def" data-glossary-def>Selecciona un término resaltado para ver su definición.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TÍTULO II ===== -->
+<section id="t2">
+  <div class="titulo"><div class="kicker">// Título II</div>
+    <h2><span class="romano">II</span> Gobernanza del torneo</h2><div class="rule"></div></div>
+
+  <div class="art"><div class="num"><b>06</b><span>Art.</span></div>
+    <h3>Comité Organizador</h3>
+    <p>El CO es la máxima autoridad administrativa. Aprueba inscripciones, fija calendario, sedes y premios, designa al arbitraje y resuelve en última instancia las apelaciones disciplinarias. Sus decisiones son definitivas e inapelables.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>07</b><span>Art.</span></div>
+    <h3>Comité de Competición y arbitraje</h3>
+    <p>El Cc interpreta el reglamento y resuelve protestas en primera instancia. Los admins ejercen autoridad directa sobre el lobby: validan rosters, autorizan pausas y rehosts, y registran incidencias. Sus instrucciones in-game son de cumplimiento inmediato; toda inconformidad se canaliza por la vía del Título IX.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>08</b><span>Art.</span></div>
+    <h3>Canales oficiales</h3>
+    <p>Las comunicaciones válidas son únicamente las emitidas por los canales oficiales del torneo (servidor de Discord y correo del CO). El capitán es responsable de mantenerse disponible e informado durante todas las jornadas en que su equipo compita.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>09</b><span>Art.</span></div>
+    <h3>Conflictos de interés</h3>
+    <ol class="clauses">
+      <li>Ningún integrante del arbitraje puede dirigir una partida en la que participe un equipo con el que tenga vínculo personal, familiar, económico o de pertenencia pasada o presente.</li>
+      <li>Detectado el conflicto, el admin debe excusarse de inmediato; el CO lo sustituye.</li>
+      <li>Un admin que oculte un conflicto y dirija igualmente la partida incurre en falta grave sujeta a destitución y revisión del resultado.</li>
+      <li>Los miembros del CO no pueden participar como jugadores o miembros de equipos en la misma edición del torneo.</li>
+      <li>Toda decisión adoptada bajo conflicto de interés no declarado puede anularse de oficio.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== TÍTULO III ===== -->
+<section id="t3">
+  <div class="titulo"><div class="kicker">// Título III</div>
+    <h2><span class="romano">III</span> Elegibilidad y registro</h2><div class="rule"></div></div>
+
+  <div class="art"><div class="num"><b>10</b><span>Art.</span></div>
+    <h3>Requisitos del jugador</h3>
+    <ol class="clauses">
+      <li>Edad mínima de <strong>16 años</strong> cumplidos al inicio del torneo. Menores de 18 requieren consentimiento escrito de padre, madre o tutor legal.</li>
+      <li>Cuenta de Riot activa en la región <strong>LATAM-Norte / México</strong>, sin restricciones ni sanciones de Vanguard vigentes.</li>
+      <li>Pertenecer a un único equipo. Un jugador no puede figurar en dos rosters simultáneamente.</li>
+      <li>Identidad verificable: el nombre real y la cuenta declarada deben coincidir con los documentos solicitados (ver Anexo B).</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>11</b><span>Art.</span></div>
+    <h3>Nacionalidad y representación</h3>
+    <p>La nacionalidad <strong>no es requisito</strong> para competir. La única condición de origen es que cada roster mantenga permanentemente <strong>al menos un (1) jugador de nacionalidad mexicana</strong> entre sus 5 titulares. No hay límite de jugadores extranjeros, siempre que se respete esta base y los requisitos de cuenta del Art. 10.</p>
+    <p>La participación en la Selección Nacional y en torneos internacionales del circuito (Título X) requiere acreditar nacionalidad mexicana de cada representante.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>12</b><span>Art.</span></div>
+    <h3>Cupos máximos y registro</h3>
+    <ol class="clauses">
+      <li>El torneo admite un máximo de <strong>64 equipos</strong>: tope de <strong>448 jugadores registrados</strong> (64 × 7).</li>
+      <li>Cada equipo inscribe <strong>5 titulares + hasta 2 suplentes</strong>; un capitán y, en su caso, entrenador.</li>
+      <li>Los cupos se asignan por orden de inscripción válida (registro completo + cuota cubierta). Alcanzado el cupo se habilita lista de espera.</li>
+      <li>Se requiere nombre de equipo, etiqueta (tag) y logotipo aptos para transmisión en vivo.</li>
+      <li>La cuota de inscripción es de <span class="field">por definir</span>. No es reembolsable salvo cancelación del torneo por causas del CO.</li>
+    </ol>
+    <div class="box note"><div class="bx-h">Cupos del torneo</div><p><strong>64 equipos</strong> máximo · roster de <strong>5 + 2</strong> · hasta <strong>448 jugadores</strong> en total. Inscripción por orden de llegada.</p></div>
+  </div>
+
+  <div class="art"><div class="num"><b>13</b><span>Art.</span></div>
+    <h3>Cierre de roster</h3>
+    <p>Al cierre de inscripciones el roster queda bloqueado para la fase de grupos. Entre fases se abre una ventana de ajustes de <span class="field">72 h</span>. Un jugador eliminado no puede reintegrarse a un equipo distinto dentro de la misma edición.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>14</b><span>Art.</span></div>
+    <h3>Capitán y responsables</h3>
+    <p>El capitán es el único habilitado para realizar vetos, solicitar pausas, presentar protestas y recibir notificaciones. Responde por la conducta de su equipo. Puede delegar por escrito en un co-capitán ante el arbitraje.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>15</b><span>Art.</span></div>
+    <h3>Sustituciones y stand-ins</h3>
+    <ol class="clauses">
+      <li>Las sustituciones entre jugadores inscritos son libres <strong>entre mapas</strong>; nunca a mitad de un mapa salvo desconexión irrecuperable.</li>
+      <li>El uso de un stand-in externo requiere autorización previa del arbitraje, procede solo por fuerza mayor y se permite como máximo en <strong>1 serie por fase</strong>.</li>
+      <li>Un stand-in no puede ser jugador eliminado de la Copa ni superar el tope competitivo del Art. 16.</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>16</b><span>Art.</span></div>
+    <h3>Restricciones competitivas · Puntos por roster</h3>
+    <p>Para la rama amateur, ningún roster puede superar <strong>30 puntos</strong> entre sus 5 titulares. La rama élite no tiene tope de puntos.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Rango (acto vigente)</th><th>Puntos</th><th>Restricción adicional</th></tr></thead>
+      <tbody>
+        <tr><td>Hierro – Oro</td><td class="pts">2</td><td>—</td></tr>
+        <tr><td>Platino</td><td class="pts">4</td><td>—</td></tr>
+        <tr><td>Diamante</td><td class="pts">6</td><td>—</td></tr>
+        <tr><td>Ascendente</td><td class="pts">8</td><td>—</td></tr>
+        <tr><td>Inmortal</td><td class="pts">11</td><td>Máx. 2 por roster</td></tr>
+        <tr><td>Radiante</td><td class="pts">14</td><td>Máx. 1 por roster</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+</section>
+
+<!-- ===== TÍTULO IV ===== -->
+<section id="t4">
+  <div class="titulo"><div class="kicker">// Título IV</div>
+    <h2><span class="romano">IV</span> Formato competitivo</h2><div class="rule"></div></div>
+
+  <div class="art"><div class="num"><b>17</b><span>Art.</span></div>
+    <h3>Estructura general</h3>
+    <ol class="clauses">
+      <li><strong>Clasificatorias abiertas</strong> — Eliminación simple, Bo1; semis y final del bracket en Bo3.</li>
+      <li><strong>Fase de grupos</strong> — Grupos en doble eliminación (formato GSL), Bo3.</li>
+      <li><strong>Playoffs</strong> — Doble eliminación entre clasificados, Bo3.</li>
+      <li><strong>Gran Final</strong> — Bo5. El equipo del upper bracket puede iniciar con ventaja de un mapa <span class="field">(opcional)</span>.</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>18</b><span>Art.</span></div>
+    <h3>Fase de grupos</h3>
+    <p>Formato GSL: partida de apertura ganadores, apertura perdedores, ganadores, perdedores y decisiva. Clasifican los dos primeros de cada grupo. Todas las series son Bo3.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>19</b><span>Art.</span></div>
+    <h3>Playoffs</h3>
+    <p>Doble eliminación. Una derrota envía al lower bracket; la segunda elimina. Series Bo3 hasta la Gran Final (Bo5). Sembrado determinado por posición en grupos.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>20</b><span>Art.</span></div>
+    <h3>Puntualidad y W.O.</h3>
+    <ol class="clauses">
+      <li>Hora oficial: <strong>UTC−6 (CDMX)</strong>.</li>
+      <li>Tolerancia: <strong>15 minutos</strong> desde la hora citada para tener 5 jugadores elegibles en lobby.</li>
+      <li>Vencida la tolerancia sin alineación, se adjudica <strong>W.O.</strong> a favor del rival. Segunda incomparecencia en la fase implica eliminación.</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>21</b><span>Art.</span></div>
+    <h3>Desempates de grupo</h3>
+    <p>Igualdad de récord se resuelve, en estricto orden, por: resultado directo (head-to-head) → diferencia de mapas → diferencia de rondas → rondas a favor → mapa de desempate Bo1.</p>
+  </div>
+</section>
+
+<!-- ===== TÍTULO V ===== -->
+<section id="t5">
+  <div class="titulo"><div class="kicker">// Título V</div>
+    <h2><span class="romano">V</span> Reglas de partida</h2><div class="rule"></div></div>
+
+  <div class="art"><div class="num"><b>22</b><span>Art.</span></div>
+    <h3>Configuración del servidor</h3>
+    <ol class="clauses">
+      <li>Modo <strong>Torneo</strong> con código de partida personalizado, sin trampas activadas.</li>
+      <li>Servidor: menor latencia acordada entre <strong>México City</strong> y <strong>Dallas</strong>; en desacuerdo, decide el arbitraje.</li>
+      <li>Primero a <strong>13</strong> rondas. En empate 12-12: prórroga de doble cara con economía reiniciada, primer equipo en abrir 2 de ventaja gana.</li>
+      <li>Espectadores: solo observadores autorizados por arbitraje y producción oficial.</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>23</b><span>Art.</span></div>
+    <h3>Pool de mapas oficial</h3>
+    <p>El pool replica el competitivo activo de VALORANT al inicio de cada fase. Para la Temporada V26, Acto 3:</p>
+    <div class="map-lab" id="pool-mapas" data-map-lab>
+      <div class="map-menu" role="tablist" aria-label="Mapas del pool oficial">
+        <button class="map-card active" type="button" role="tab" aria-selected="true" data-map-target="ascent">
+          <span class="map-banner" style="background-image:url('assets/maps/ascent-banner.png')" aria-hidden="true"></span>
+          <span class="label">Ascent</span>
+        </button>
+        <button class="map-card" type="button" role="tab" aria-selected="false" data-map-target="breeze">
+          <span class="map-banner" style="background-image:url('assets/maps/breeze-banner.png')" aria-hidden="true"></span>
+          <span class="label">Breeze</span>
+        </button>
+        <button class="map-card" type="button" role="tab" aria-selected="false" data-map-target="fracture">
+          <span class="map-banner" style="background-image:url('assets/maps/fracture-banner.png')" aria-hidden="true"></span>
+          <span class="label">Fracture</span>
+        </button>
+        <button class="map-card" type="button" role="tab" aria-selected="false" data-map-target="haven">
+          <span class="map-banner" style="background-image:url('assets/maps/haven-banner.png')" aria-hidden="true"></span>
+          <span class="label">Haven</span>
+        </button>
+        <button class="map-card" type="button" role="tab" aria-selected="false" data-map-target="lotus">
+          <span class="map-banner" style="background-image:url('assets/maps/lotus-banner.png')" aria-hidden="true"></span>
+          <span class="label">Lotus</span>
+        </button>
+        <button class="map-card" type="button" role="tab" aria-selected="false" data-map-target="pearl">
+          <span class="map-banner" style="background-image:url('assets/maps/pearl-banner.png')" aria-hidden="true"></span>
+          <span class="label">Pearl</span>
+        </button>
+        <button class="map-card" type="button" role="tab" aria-selected="false" data-map-target="split">
+          <span class="map-banner" style="background-image:url('assets/maps/split-banner.png')" aria-hidden="true"></span>
+          <span class="label">Split</span>
+        </button>
+      </div>
+      <div class="map-stage" id="map-preview">
+        <div class="map-panel active" data-map-panel="ascent">
+          <div class="map-view">
+            <img class="real-map" src="assets/maps/ascent-map.png" alt="Minimapa oficial de Ascent">
+          </div>
+          <div class="map-copy"><div class="ey">// mapa seleccionado</div><h4>Ascent</h4><p>Mapa de dos sitios con un centro muy valioso. El minimapa muestra el eje medio y los accesos laterales hacia A y B, útil para explicar vetos y preparación general.</p><div class="map-tags"><span>2 sitios</span><span>mid fuerte</span><span>puertas</span></div></div>
+        </div>
+        <div class="map-panel" data-map-panel="breeze">
+          <div class="map-view">
+            <img class="real-map" src="assets/maps/breeze-map.png" alt="Minimapa oficial de Breeze">
+          </div>
+          <div class="map-copy"><div class="ey">// mapa seleccionado</div><h4>Breeze</h4><p>Diseñado como una isla amplia con líneas largas. El minimapa permite revisar carriles abiertos, control de flancos y un centro ancho que conecta ambos sitios.</p><div class="map-tags"><span>2 sitios</span><span>largas distancias</span><span>flancos</span></div></div>
+        </div>
+        <div class="map-panel" data-map-panel="fracture">
+          <div class="map-view">
+            <img class="real-map" src="assets/maps/fracture-map.png" alt="Minimapa oficial de Fracture">
+          </div>
+          <div class="map-copy"><div class="ey">// mapa seleccionado</div><h4>Fracture</h4><p>Instalación partida en dos con presión desde lados opuestos. El minimapa muestra carriles envolventes y zonas defensivas divididas alrededor del centro.</p><div class="map-tags"><span>2 sitios</span><span>ataques dobles</span><span>rotación rápida</span></div></div>
+        </div>
+        <div class="map-panel" data-map-panel="haven">
+          <div class="map-view">
+            <img class="real-map" src="assets/maps/haven-map.png" alt="Minimapa oficial de Haven">
+          </div>
+          <div class="map-copy"><div class="ey">// mapa seleccionado</div><h4>Haven</h4><p>Mapa de tres sitios. El minimapa separa A, B y C para dejar claro que las defensas deben repartir recursos y que los vetos cambian mucho por composición.</p><div class="map-tags"><span>3 sitios</span><span>rotaciones largas</span><span>control amplio</span></div></div>
+        </div>
+        <div class="map-panel" data-map-panel="lotus">
+          <div class="map-view">
+            <img class="real-map" src="assets/maps/lotus-map.png" alt="Minimapa oficial de Lotus">
+          </div>
+          <div class="map-copy"><div class="ey">// mapa seleccionado</div><h4>Lotus</h4><p>Estructura antigua de tres sitios con rutas dinámicas. El minimapa remarca el centro y los accesos entre A, B y C para visualizar presión y rotaciones.</p><div class="map-tags"><span>3 sitios</span><span>puertas giratorias</span><span>presión central</span></div></div>
+        </div>
+        <div class="map-panel" data-map-panel="pearl">
+          <div class="map-view">
+            <img class="real-map" src="assets/maps/pearl-map.png" alt="Minimapa oficial de Pearl">
+          </div>
+          <div class="map-copy"><div class="ey">// mapa seleccionado</div><h4>Pearl</h4><p>Ciudad submarina de dos sitios, sin mecánicas especiales. El minimapa separa un mid compacto y alas largas para preparar control de espacios.</p><div class="map-tags"><span>2 sitios</span><span>mid compacto</span><span>alas largas</span></div></div>
+        </div>
+        <div class="map-panel" data-map-panel="split">
+          <div class="map-view">
+            <img class="real-map" src="assets/maps/split-map.png" alt="Minimapa oficial de Split">
+          </div>
+          <div class="map-copy"><div class="ey">// mapa seleccionado</div><h4>Split</h4><p>Mapa vertical con centro elevado, torres y cuerdas. El minimapa muestra cómo mid conecta ambos sitios y por qué el control superior pesa tanto.</p><div class="map-tags"><span>2 sitios</span><span>mid elevado</span><span>cuerdas</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="box note"><div class="bx-h">Sincronía con Riot</div><p>Si Riot rota el pool entre fases, el CO publica el pool actualizado al menos 72 h antes de la jornada afectada. El pool queda congelado al inicio de cada fase.</p></div>
+  </div>
+
+  <div class="art"><div class="num"><b>24</b><span>Art.</span></div>
+    <h3>Sistema de vetos</h3>
+    <p>El derecho a iniciar el veto se decide por volado administrado, o en playoffs lo ejerce el equipo mejor sembrado.</p>
+    <div class="veto-lab" id="veto-simulador" data-veto-lab>
+      <div class="veto-control">
+        <div class="veto-tabs" role="tablist" aria-label="Formato de veto">
+          <button class="active" type="button" data-veto-format="bo1">Bo1</button>
+          <button type="button" data-veto-format="bo3">Bo3</button>
+        </div>
+        <button class="veto-reset" type="button" data-veto-reset>Reiniciar</button>
+      </div>
+      <div class="veto-status" data-veto-status>Selecciona un mapa para iniciar el veto.</div>
+      <div class="veto-picker" aria-label="Pool seleccionable de mapas">
+        <button class="veto-map" type="button" data-veto-map="Ascent"><span class="map-banner" style="background-image:url('assets/maps/ascent-banner.png')" aria-hidden="true"></span><span>Ascent</span></button>
+        <button class="veto-map" type="button" data-veto-map="Breeze"><span class="map-banner" style="background-image:url('assets/maps/breeze-banner.png')" aria-hidden="true"></span><span>Breeze</span></button>
+        <button class="veto-map" type="button" data-veto-map="Fracture"><span class="map-banner" style="background-image:url('assets/maps/fracture-banner.png')" aria-hidden="true"></span><span>Fracture</span></button>
+        <button class="veto-map" type="button" data-veto-map="Haven"><span class="map-banner" style="background-image:url('assets/maps/haven-banner.png')" aria-hidden="true"></span><span>Haven</span></button>
+        <button class="veto-map" type="button" data-veto-map="Lotus"><span class="map-banner" style="background-image:url('assets/maps/lotus-banner.png')" aria-hidden="true"></span><span>Lotus</span></button>
+        <button class="veto-map" type="button" data-veto-map="Pearl"><span class="map-banner" style="background-image:url('assets/maps/pearl-banner.png')" aria-hidden="true"></span><span>Pearl</span></button>
+        <button class="veto-map" type="button" data-veto-map="Split"><span class="map-banner" style="background-image:url('assets/maps/split-banner.png')" aria-hidden="true"></span><span>Split</span></button>
+      </div>
+      <div class="veto-flow" data-veto-flow></div>
+    </div>
+    <div class="veto-static">
+      <p style="margin-top:12px;font-family:'Oswald';text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--muted)">Bo1 — 7 mapas</p>
+      <div class="veto">
+        <span class="step ban"><b>A</b>ban</span><span class="arr">→</span>
+        <span class="step ban"><b>B</b>ban</span><span class="arr">→</span>
+        <span class="step ban"><b>A</b>ban</span><span class="arr">→</span>
+        <span class="step ban"><b>B</b>ban</span><span class="arr">→</span>
+        <span class="step ban"><b>A</b>ban</span><span class="arr">→</span>
+        <span class="step ban"><b>B</b>ban</span><span class="arr">→</span>
+        <span class="step pick"><b>—</b>mapa restante</span>
+      </div>
+      <p style="margin-top:14px;font-family:'Oswald';text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--muted)">Bo3</p>
+      <div class="veto">
+        <span class="step ban"><b>A</b>ban</span><span class="arr">→</span>
+        <span class="step ban"><b>B</b>ban</span><span class="arr">→</span>
+        <span class="step pick"><b>A</b>pick M1</span><span class="arr">→</span>
+        <span class="step pick"><b>B</b>pick M2</span><span class="arr">→</span>
+        <span class="step ban"><b>A</b>ban</span><span class="arr">→</span>
+        <span class="step ban"><b>B</b>ban</span><span class="arr">→</span>
+        <span class="step pick"><b>—</b>decisivo</span>
+      </div>
+    </div>
+    <p>Quien no elige el mapa escoge el lado inicial. En el mapa decisivo, el lado se define por knife round.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>25</b><span>Art.</span></div>
+    <h3>Protocolo de lobby</h3>
+    <p>El admin crea o valida el lobby, fija la contraseña y verifica las cinco cuentas por equipo. Ambos capitanes confirman alineación y configuración antes del primer disparo. Discrepancias detectadas después del inicio se resuelven por protesta sin detener la partida, salvo orden expresa del arbitraje.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>26</b><span>Art.</span></div>
+    <h3>Pausas técnicas y tácticas</h3>
+    <div class="tbl"><table>
+      <thead><tr><th>Tipo</th><th>Quién la solicita</th><th>Duración</th><th>Límite</th></tr></thead>
+      <tbody>
+        <tr><td>Táctica</td><td>Capitán (entre rondas)</td><td>Máx. 60 s por uso</td><td>Máx. 4 min acumulados por equipo y mapa</td></tr>
+        <tr><td>Técnica</td><td>Arbitraje</td><td>Lo necesario</td><td>Recomendado ≤ 10 min; reloj congelado</td></tr>
+      </tbody>
+    </table></div>
+    <p>Pausar sin causa o de forma reiterada para alterar el ritmo rival constituye conducta antideportiva (Título VI).</p>
+  </div>
+
+  <div class="art"><div class="num"><b>27</b><span>Art.</span></div>
+    <h3>Desconexiones y rehosts</h3>
+    <ol class="clauses">
+      <li>Desconexión en fase de compra o en el primer cruce, antes de que se produzca daño: procede rehost.</li>
+      <li>Desconexión avanzada la ronda: se juega en inferioridad; al reconectar, el jugador se reincorpora.</li>
+      <li>Caída de servidor o bug que altere el resultado: el arbitraje puede ordenar rejugar la ronda o el mapa desde un estado válido.</li>
+      <li>Explotar bugs o zonas no intencionadas del mapa está prohibido y se sanciona como trampa.</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>28</b><span>Art.</span></div>
+    <h3>Reprogramaciones</h3>
+    <p>Solicitudes con al menos <span class="field">24 h</span> de anticipación, acuerdo de ambos capitanes y visto bueno del CO. No proceden en playoffs salvo fuerza mayor documentada. Ningún partido puede salirse de la ventana de la fase.</p>
+  </div>
+</section>
+
+<!-- ===== TÍTULO VI ===== -->
+<section id="t6">
+  <div class="titulo"><div class="kicker">// Título VI</div>
+    <h2><span class="romano">VI</span> Integridad y conducta</h2><div class="rule"></div></div>
+
+  <div class="art"><div class="num"><b>29</b><span>Art.</span></div>
+    <h3>Anti-trampas</h3>
+    <p>Es obligatorio mantener activo <strong>Riot Vanguard</strong>. Se prohíbe todo software de trampa: aimbots, wallhacks, triggerbots, macros y scripts que automaticen acciones de juego. El equipo debe cooperar con toda investigación, incluida revisión de demos y, si se requiere, grabación de pantalla.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>30</b><span>Art.</span></div>
+    <h3>Hardware y software prohibido</h3>
+    <p>Quedan vedados: dispositivos que ejecuten macros de juego, overlays que entreguen información no disponible para el rival, y cualquier herramienta que comunique a un jugador datos de la partida desde el exterior.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>31</b><span>Art.</span></div>
+    <h3>Smurfing</h3>
+    <p>Se prohíbe competir con una cuenta que no refleje el nivel real del jugador para eludir el tope competitivo (Art. 16) o falsear el sembrado. La verificación de identidad y de historial de cuenta puede ser ejercida por el arbitraje en cualquier momento.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>32</b><span>Art.</span></div>
+    <h3>Suplantación de identidad</h3>
+    <p>Que una persona distinta a la registrada dispute una partida (<em>ringer</em>) es una falta muy grave: implica derrota inmediata del mapa o serie y puede derivar en descalificación del equipo y veto del infractor en ediciones futuras.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>33</b><span>Art.</span></div>
+    <h3>Conducta antideportiva</h3>
+    <p>Comprende toxicidad, acoso, discurso de odio, amenazas, evasión de reglas, stream sniping y el aprovechamiento de información del adversario por canales indebidos. La Copa es un espacio de respeto dentro y fuera del servidor.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>34</b><span>Art.</span></div>
+    <h3>Amaño de resultados y apuestas</h3>
+    <ol class="clauses">
+      <li>Se prohíbe absolutamente pactar, ofrecer, aceptar o insinuar la manipulación de resultados (<em>match-fixing</em>), ya sea mediante acuerdo entre equipos, con terceros, a cambio de dinero, ítems, posicionamiento futuro o cualquier otra contraprestación.</li>
+      <li>Se prohíbe apostar directa o indirectamente sobre partidas en las que el propio participante o alguien de su roster compita.</li>
+      <li>Todo indicio de amaño debe ser reportado de inmediato al CO. Omitir información sobre un amaño conocido es coparticipación.</li>
+      <li>Esta es la falta más grave del reglamento. Conlleva la sanción máxima y puede derivar en acciones legales conforme a la legislación mexicana.</li>
+    </ol>
+    <div class="box warn"><div class="bx-h">Tolerancia cero</div><p>El match-fixing daña a toda la comunidad. No hay atenuantes ni segunda oportunidad: descalificación, anulación de resultados y veto indefinido para todos los implicados.</p></div>
+  </div>
+
+  <div class="art" id="sanciones"><div class="num"><b>35</b><span>Art.</span></div>
+    <h3>Régimen disciplinario completo</h3>
+    <p>Las faltas se tipifican en tres niveles de gravedad. La reincidencia eleva la gravedad un nivel. Toda sanción se notifica por escrito al capitán en un plazo máximo de <strong>6 horas</strong> tras la resolución.</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Conducta</th><th>Gravedad</th><th>Sanción base</th><th>Ventana de apelación</th></tr></thead>
+      <tbody>
+        <tr><td>Retraso dentro de tolerancia</td><td><span class="sev s-leve">Leve</span></td><td>Amonestación escrita</td><td>12 h</td></tr>
+        <tr><td>Pausa indebida puntual</td><td><span class="sev s-leve">Leve</span></td><td>Amonestación; 2.ª vez: pérdida de ronda</td><td>12 h</td></tr>
+        <tr><td>Lenguaje ofensivo leve</td><td><span class="sev s-leve">Leve</span></td><td>Amonestación + posible pérdida de ronda</td><td>12 h</td></tr>
+        <tr><td>Acoso, lenguaje ofensivo grave</td><td><span class="sev s-grave">Grave</span></td><td>Suspensión 1 jornada + pérdida de mapa</td><td>24 h</td></tr>
+        <tr><td>Incomparecencia / 2.ª incomparecencia</td><td><span class="sev s-grave">Grave</span></td><td>W.O. / eliminación de la fase</td><td>24 h</td></tr>
+        <tr><td>Roster inelegible jugado</td><td><span class="sev s-grave">Grave</span></td><td>Pérdida del/los mapas disputados</td><td>24 h</td></tr>
+        <tr><td>Stream sniping confirmado</td><td><span class="sev s-grave">Grave</span></td><td>Pérdida de mapa o serie</td><td>24 h</td></tr>
+        <tr><td>Smurfing confirmado</td><td><span class="sev s-grave">Grave</span></td><td>Pérdida de serie + revisión del roster</td><td>24 h</td></tr>
+        <tr><td>Exploit de bug o zona prohibida</td><td><span class="sev s-grave">Grave</span></td><td>Pérdida del mapa; reincidencia: serie</td><td>24 h</td></tr>
+        <tr><td>Trampa (cheat) confirmada</td><td><span class="sev s-max">Muy Grave</span></td><td>Descalificación del equipo + veto del jugador</td><td>48 h (solo CO)</td></tr>
+        <tr><td>Suplantación de identidad</td><td><span class="sev s-max">Muy Grave</span></td><td>Descalificación + veto del infractor</td><td>48 h (solo CO)</td></tr>
+        <tr><td>Amaño de resultados</td><td><span class="sev s-max">Muy Grave</span></td><td>Descalificación + veto indefinido + acciones legales</td><td>No aplica</td></tr>
+      </tbody>
+    </table></div>
+    <div class="box warn"><div class="bx-h">Sanción muy grave</div><p>La descalificación retira al equipo del torneo, anula sus resultados de la fase en curso y excluye al infractor de premios. El CO puede extender el veto a ediciones posteriores. Las sanciones muy graves solo son apelables ante el CO dentro de las 48 h siguientes a la notificación.</p></div>
+  </div>
+</section>
+
+<!-- ===== TÍTULO VII ===== -->
+<section id="t7">
+  <div class="titulo"><div class="kicker">// Título VII</div>
+    <h2><span class="romano">VII</span> Medios, marca y comercial</h2><div class="rule"></div></div>
+
+  <div class="art"><div class="num"><b>36</b><span>Art.</span></div>
+    <h3>Transmisión oficial — producción y estándares</h3>
+    <ol class="clauses">
+      <li>La transmisión oficial se emite únicamente por plataformas digitales (Twitch, YouTube u otras acordadas). <strong>Está prohibida la emisión por televisión lineal.</strong></li>
+      <li>Configuración mínima recomendada: resolución <strong>1080p / 60 fps</strong>, bitrate de salida <strong>≥ 6 000 kbps</strong>.</li>
+      <li>Solo los observadores designados por el CO pueden acceder al lobby como espectadores durante una partida oficial.</li>
+      <li>Los observadores deben guardar todas las demos que el arbitraje pueda solicitarles durante las siguientes <strong>72 h</strong> al cierre del torneo.</li>
+      <li>El CO puede cobrar acceso de espectador o entradas, conforme a las directrices de Riot.</li>
+      <li>Los clips y highlights de la producción oficial pueden ser redistribuidos libremente con atribución al torneo. Los assets de VALORANT usados en producción no pueden emplearse para promover patrocinadores.</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>37</b><span>Art.</span></div>
+    <h3>Streaming de jugadores</h3>
+    <ol class="clauses">
+      <li>Los jugadores pueden retransmitir su perspectiva con un <strong>retraso mínimo de 3 minutos</strong> respecto a la partida en vivo.</li>
+      <li>El retraso es responsabilidad del jugador. Si el CO detecta un retraso insuficiente que derive en stream sniping propio o de un rival, se aplica la sanción del Art. 35.</li>
+      <li>Durante la Gran Final, el CO puede solicitar que los jugadores suspendan sus streams individuales en favor de la señal oficial.</li>
+      <li>Los jugadores conservan todos los derechos sobre el contenido de sus propios canales, salvo lo cedido al CO en el Art. 38.</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>38</b><span>Art.</span></div>
+    <h3>Derechos audiovisuales</h3>
+    <p>Al inscribirse, los participantes ceden al CO su imagen, nombre de juego y voz para la cobertura, difusión y archivo del torneo, sin contraprestación adicional salvo acuerdo expreso. Riot puede usar, adaptar y distribuir material del torneo conforme a sus directrices comunitarias.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>39</b><span>Art.</span></div>
+    <h3>Patrocinios</h3>
+    <p>Los equipos y el CO pueden cerrar acuerdos de patrocinio sujetos a aprobación previa. Un patrocinador puede figurar como "presenta" o "con el apoyo de", pero <strong>no puede incorporarse al nombre del torneo</strong>. Categorías prohibidas por las directrices de Riot:</p>
+    <ol class="clauses">
+      <li>Apuestas, casas de apuestas y casinos.</li>
+      <li>Operadores de fantasy esports, incluido el daily fantasy.</li>
+      <li>Medicamentos de prescripción o no autorizados, incluidos productos de CBD.</li>
+      <li>Armas de fuego, municiones y accesorios.</li>
+      <li>Pornografía o plataformas de contenido para adultos.</li>
+      <li>Tabaco y parafernalia.</li>
+      <li>Alcohol e intoxicantes regulados por la ley.</li>
+      <li>Mercados de ítems virtuales falsificados o ilegales; vendedores que incumplan los ToS de Riot.</li>
+      <li>Criptomonedas, NFT o instrumentos financieros no regulados.</li>
+      <li>Campañas políticas; organizaciones benéficas de advocacy partidista o sin reputación acreditada.</li>
+      <li>Cualquier contenido ilícito, amenazante, obsceno, acosador o discriminatorio.</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>40</b><span>Art.</span></div>
+    <h3>Propiedad intelectual y licencia comunitaria</h3>
+    <ol class="clauses">
+      <li><em>VALORANT</em> y todos sus elementos son marcas registradas de <strong>Riot Games, Inc.</strong></li>
+      <li>El torneo opera bajo la licencia comunitaria de las <em>VALORANT Community Competition Guidelines</em>: personal, no exclusiva, intransferible y revocable.</li>
+      <li>El CO se identifica como torneo comunitario, registra el evento en el formulario de visibilidad de Riot (pw: VALevent) y no emplea logotipos de Riot ni marcas de eventos oficiales ("Masters", "Champions").</li>
+      <li>Los assets de VALORANT se usan solo para promover el torneo, nunca para comercializar a patrocinadores. Riot tiene la última palabra sobre su uso.</li>
+      <li>El CO es el único responsable de que el evento cumpla la legislación aplicable.</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== TÍTULO VIII ===== -->
+<section id="t8">
+  <div class="titulo"><div class="kicker">// Título VIII</div>
+    <h2><span class="romano">VIII</span> Premios y ranking</h2><div class="rule"></div></div>
+
+  <div class="art"><div class="num"><b>41</b><span>Art.</span></div>
+    <h3>Premiación</h3>
+    <p>La bolsa total es de <span class="field">$ por definir MXN</span>, distribuida así:</p>
+    <div class="tbl"><table>
+      <thead><tr><th>Posición</th><th>Reparto (%)</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>Campeón</td><td class="hi">50 %</td><td>+ cupo Copa América (Art. 48)</td></tr>
+        <tr><td>Subcampeón</td><td>25 %</td><td>—</td></tr>
+        <tr><td>3.er lugar</td><td>15 %</td><td>—</td></tr>
+        <tr><td>4.º lugar</td><td>10 %</td><td>—</td></tr>
+      </tbody>
+    </table></div>
+    <p>Pago dentro de los <span class="field">30</span> días posteriores a la final, previa entrega de datos fiscales. Las retenciones conforme a la legislación mexicana corren por cuenta del beneficiario.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>42</b><span>Art.</span></div>
+    <h3>MVP y reconocimientos individuales</h3>
+    <p>Se otorga MVP de torneo y MVP de la Gran Final. Se reconocen además el quinteto ideal y la jugada del torneo. La selección combina métricas objetivas (ACS ≥ 220, KDA, KAST, impacto en mapas decisivos) con votación del panel de transmisión. Un jugador sancionado durante el torneo no puede ser nominado a reconocimientos individuales.</p>
+  </div>
+
+  <div class="art" id="ranking-equipos"><div class="num"><b>43</b><span>Art.</span></div>
+    <h3>Ranking nacional de equipos — sistema de puntuación</h3>
+    <p>El <strong>Ranking Nacional de Equipos</strong> es una clasificación acumulada e independiente del bracket de cada edición. Funciona como una tabla histórica de rendimiento, similar al ranking FIFA: no cambia el resultado oficial de una partida ya jugada, pero mide la fuerza competitiva reciente de cada equipo para siembras, invitaciones, cupos preferentes y reconocimiento nacional.</p>
+    <ol class="clauses">
+      <li><strong>Unidad de ranking:</strong> los puntos pertenecen al equipo inscrito, no a jugadores individuales. Cambios de roster no transfieren puntos a otro equipo.</li>
+      <li><strong>Ventana de vigencia:</strong> el ranking considera los resultados oficiales de los últimos <strong>12 meses naturales</strong>. Los puntos más antiguos salen automáticamente del cálculo al cumplirse ese plazo.</li>
+      <li><strong>Actualización:</strong> el CO actualiza la tabla al cierre de cada fase oficial y publica el corte final dentro de las <strong>72 h</strong> posteriores a la Gran Final.</li>
+      <li><strong>Independencia competitiva:</strong> el ranking no otorga victorias, rondas, mapas ni desempates dentro de una partida. Solo se usa antes o después de las fases para ordenar equipos, definir sembrados y asignar beneficios deportivos permitidos por este reglamento.</li>
+      <li><strong>Continuidad del equipo:</strong> si un equipo cambia de nombre, conserva sus puntos cuando mantiene al menos <strong>3 jugadores</strong> del roster base registrado en su última participación. Si no cumple esa continuidad, el CO puede considerarlo un equipo nuevo.</li>
+    </ol>
+    <div class="formula-block">
+      <div class="fx-label">// Fórmula de ranking</div>
+      <div class="fx-main">PR = Base + Fase + Rival + Bonus - Penalización</div>
+      <div class="fx-vars">
+        <b>PR</b> = Puntos de ranking agregados al equipo en el corte publicado<br>
+        <b>Base</b> = Puntos por posición final alcanzada en la edición<br>
+        <b>Fase</b> = Puntos por avance competitivo dentro del torneo<br>
+        <b>Rival</b> = Ajuste por vencer equipos ubicados arriba en el ranking vigente<br>
+        <b>Bonus</b> = Premios deportivos adicionales por desempeño verificable<br>
+        <b>Penalización</b> = Deducciones por W.O., sanciones, roster inelegible o conducta grave
+      </div>
+    </div>
+    <div class="tbl"><table>
+      <thead class="gold-head"><tr><th>Concepto</th><th>Condición</th><th>Puntos</th><th>Aplicación</th></tr></thead>
+      <tbody>
+        <tr><td>Campeón</td><td>Gana la Gran Final</td><td class="hi">+400</td><td>Una vez por edición</td></tr>
+        <tr><td>Subcampeón</td><td>Pierde la Gran Final</td><td class="pts">+260</td><td>Una vez por edición</td></tr>
+        <tr><td>Top 4</td><td>Alcanza semifinales o final de lower bracket</td><td class="pts">+160</td><td>Una vez por edición</td></tr>
+        <tr><td>Top 8</td><td>Alcanza playoffs</td><td class="pts">+90</td><td>Una vez por edición</td></tr>
+        <tr><td>Clasifica a grupos</td><td>Supera clasificatorias abiertas</td><td class="pts">+45</td><td>Una vez por edición</td></tr>
+        <tr><td>Victoria de mapa</td><td>Mapa ganado en serie oficial</td><td class="pts">+8</td><td>Acumulable</td></tr>
+        <tr><td>Victoria de serie</td><td>Bo1, Bo3 o Bo5 ganado</td><td class="pts">+20</td><td>Acumulable</td></tr>
+        <tr><td>Victoria contra rival superior</td><td>Vence a equipo ubicado 5+ puestos arriba en el ranking vigente</td><td class="pts">+15</td><td>Acumulable; máximo +60 por edición</td></tr>
+        <tr><td>Consistencia</td><td>Participa sin W.O. y completa todas sus series programadas</td><td class="pts">+25</td><td>Una vez por edición</td></tr>
+        <tr><td>Penalización por W.O.</td><td>Incomparecencia o abandono injustificado</td><td class="pts">-40</td><td>Por incidencia</td></tr>
+        <tr><td>Penalización disciplinaria</td><td>Falta grave o muy grave confirmada</td><td class="pts">-75 a -250</td><td>Según resolución del CO</td></tr>
+      </tbody>
+    </table></div>
+    <div class="calc-box" id="ranking-calculadora" data-ranking-calc>
+      <div class="box ex" style="margin-top:0"><div class="bx-h">Calculadora rápida de ranking</div><p>Selecciona el resultado y agrega victorias/bonos para estimar los puntos del corte.</p></div>
+      <div class="calc-grid">
+        <label>Resultado
+          <select data-calc-base>
+            <option value="0">Sin bono de posición</option>
+            <option value="45">Clasifica a grupos (+45)</option>
+            <option value="90">Top 8 (+90)</option>
+            <option value="160">Top 4 (+160)</option>
+            <option value="260">Subcampeón (+260)</option>
+            <option value="400">Campeón (+400)</option>
+          </select>
+        </label>
+        <label>Mapas ganados
+          <input type="number" min="0" max="30" value="0" data-calc-maps>
+        </label>
+        <label>Series ganadas
+          <input type="number" min="0" max="15" value="0" data-calc-series>
+        </label>
+        <label>Rivales superiores
+          <input type="number" min="0" max="4" value="0" data-calc-rivals>
+        </label>
+        <label>Consistencia
+          <select data-calc-consistency><option value="25">Sin W.O. (+25)</option><option value="0">No aplica</option></select>
+        </label>
+        <label>W.O.
+          <input type="number" min="0" max="5" value="0" data-calc-wo>
+        </label>
+        <label>Penalización
+          <input type="number" min="0" max="250" value="0" data-calc-penalty>
+        </label>
+      </div>
+      <div class="calc-result" data-calc-result>Resultado estimado: 25 puntos</div>
+    </div>
+    <div class="box note"><div class="bx-h">Ejemplo de cálculo</div><p>Si un equipo termina Top 4 (+160), gana 5 mapas (+40), gana 2 series (+40), vence una vez a un rival superior (+15) y no registra W.O. (+25), suma <strong>280 puntos de ranking</strong> en ese corte. Esos puntos se agregan a su acumulado vigente de 12 meses.</p></div>
+    <p>El ranking ordena a los equipos por puntos totales vigentes. En caso de empate, se aplican estos criterios: <strong>1)</strong> mejor resultado más reciente, <strong>2)</strong> mayor número de series ganadas, <strong>3)</strong> mayor diferencial de mapas, <strong>4)</strong> menor número de sanciones, <strong>5)</strong> decisión del CO.</p>
+    <p>El ranking acumulado determina sembrados preferentes, invitaciones, prioridad de cupos y representación de equipos en eventos vinculados al circuito (Art. 49). El CO puede publicar una tabla separada de rendimiento individual para premios o convocatoria, pero esa tabla no sustituye al Ranking Nacional de Equipos.</p>
+  </div>
+</section>
+
+<!-- ===== TÍTULO IX ===== -->
+<section id="t9">
+  <div class="titulo"><div class="kicker">// Título IX</div>
+    <h2><span class="romano">IX</span> Apelaciones, ética y disposiciones finales</h2><div class="rule"></div></div>
+
+  <div class="art" id="apelaciones"><div class="num"><b>44</b><span>Art.</span></div>
+    <h3>Procedimiento formal de apelaciones</h3>
+    <p>Toda protesta se tramita en las siguientes etapas, sin excepción:</p>
+    <div class="appeal-tabs" data-appeal-tabs>
+      <button class="active" type="button" data-appeal-step="all">Todo</button>
+      <button type="button" data-appeal-step="1">1 Objeción</button>
+      <button type="button" data-appeal-step="2">2 Protesta</button>
+      <button type="button" data-appeal-step="3">3 Cc</button>
+      <button type="button" data-appeal-step="4">4 CO</button>
+      <button type="button" data-appeal-step="5">5 Final</button>
+    </div>
+    <div class="flow" data-appeal-flow>
+      <div class="flow-step">
+        <div class="fs-num">1</div>
+        <div class="fs-body">
+          <div class="fs-title">Registro de objeción en partida</div>
+          <div class="fs-sub">El capitán comunica verbalmente al admin la objeción antes de que concluya el mapa o serie afectados. Silencio equivale a renuncia.</div>
+          <span class="fs-tag">in-game · capitán</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">2</div>
+        <div class="fs-body">
+          <div class="fs-title">Protesta formal escrita</div>
+          <div class="fs-sub">Dentro de los <strong>30 min</strong> posteriores al cierre del mapa o serie, el capitán envía formulario de protesta (ver Anexo D) con capturas, video o demo. Protestas sin evidencia son inadmisibles.</div>
+          <span class="fs-tag red">plazo 30 min · canal oficial</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">3</div>
+        <div class="fs-body">
+          <div class="fs-title">Primera instancia — Comité de Competición</div>
+          <div class="fs-sub">El Cc analiza la evidencia y notifica su resolución por escrito dentro de las <strong>24 h</strong> siguientes a la recepción. Si la serie sigue en curso, la resolución puede aplicarse al siguiente mapa o posponerse hasta el cierre.</div>
+          <span class="fs-tag teal">resolución 24 h · Cc</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">4</div>
+        <div class="fs-body">
+          <div class="fs-title">Apelación ante el CO</div>
+          <div class="fs-sub">Si el capitán no está conforme con la resolución del Cc, puede apelar al CO dentro de las <strong>24 h</strong> siguientes a la notificación. La apelación debe incluir los argumentos adicionales no expuestos en la protesta original.</div>
+          <span class="fs-tag red">plazo 24 h · capitán</span>
+        </div>
+      </div>
+      <div class="flow-step">
+        <div class="fs-num">5</div>
+        <div class="fs-body">
+          <div class="fs-title">Dictamen final del CO</div>
+          <div class="fs-sub">El CO emite su dictamen dentro de las <strong>48 h</strong> siguientes a la recepción de la apelación. Esta resolución es <strong>definitiva e inapelable</strong>. Si el torneo sigue en curso, el dictamen aplica a la siguiente partida disponible.</div>
+          <span class="fs-tag teal">resolución 48 h · inapelable</span>
+        </div>
+      </div>
+    </div>
+    <div class="box note"><div class="bx-h">Partida en curso durante apelación</div><p>Las series no se interrumpen por una protesta pendiente salvo orden expresa del arbitraje. Los resultados pueden ser modificados retroactivamente si el dictamen así lo determina.</p></div>
+  </div>
+
+  <div class="art"><div class="num"><b>45</b><span>Art.</span></div>
+    <h3>Protección de datos personales</h3>
+    <p>Los datos recabados se tratan conforme a la <strong>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</strong> y al aviso de privacidad del torneo, únicamente para organización, competición y difusión. El titular puede ejercer sus derechos ARCO por los canales oficiales.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>46</b><span>Art.</span></div>
+    <h3>Código de ética</h3>
+    <p>Participar en la Copa supone: competir con respeto, honestidad y juego limpio; aceptar las decisiones del arbitraje sin agredir al staff; y representar dignamente a la comunidad mexicana de VALORANT dentro y fuera del servidor. La buena fe es la norma, no la excepción.</p>
+  </div>
+
+  <div class="art"><div class="num"><b>47</b><span>Art.</span></div>
+    <h3>Aceptación, separabilidad y jurisdicción</h3>
+    <p>La inscripción constituye aceptación plena. La nulidad de una cláusula no afecta la validez de las demás. Para interpretación y cumplimiento, las partes se sujetan a la legislación mexicana y a los tribunales competentes de <span class="field">por definir</span>.</p>
+  </div>
+</section>
+
+<!-- ===== TÍTULO X ===== -->
+<section id="t10">
+  <div class="titulo"><div class="kicker">// Título X</div>
+    <h2><span class="romano">X</span> Circuito internacional</h2><div class="rule"></div></div>
+
+  <div class="art"><div class="num"><b>48</b><span>Art.</span></div>
+    <h3>Copa América — estructura y clasificación</h3>
+    <ol class="clauses">
+      <li>La Copa América es el torneo regional de la organización para <strong>LATAM-Norte</strong> (México, Guatemala, Honduras, El Salvador, Costa Rica, Panamá y, eventualmente, Colombia y Venezuela).</li>
+      <li>Formato: <strong>8 equipos</strong> — fase de grupos doble eliminación (GSL) + playoffs de eliminación simple + Gran Final Bo5.</li>
+      <li>Sede: rotación entre países participantes; la primera edición se disputará en <span class="field">por definir</span>.</li>
+      <li>México obtiene <strong>2 cupos directos</strong>: campeón y subcampeón de la Copa México. El tercer cupo se juega en una repesca regional.</li>
+      <li>Todos los representantes de México deben acreditar nacionalidad mexicana (Art. 11) y no tener sanciones graves vigentes.</li>
+      <li>El pool de mapas es el oficial de VALORANT competitivo vigente al inicio del torneo.</li>
+    </ol>
+  </div>
+
+  <div class="art"><div class="num"><b>49</b><span>Art.</span></div>
+    <h3>Mundial de Naciones — estructura y clasificación</h3>
+    <ol class="clauses">
+      <li>El Mundial de Naciones es el evento máximo del circuito comunitario. Congrega a <strong>16 selecciones nacionales</strong> de diversas regiones.</li>
+      <li>Formato: fase de grupos (<strong>4 grupos de 4</strong>) + cuartos de final + semis + Gran Final Bo5.</li>
+      <li>Periodicidad: <strong>anual</strong>, sede rotativa.</li>
+      <li>Clasificación de México: el campeón de la Copa América representa a México. En caso de renuncia, el cupo pasa al subcampeón mexicano con mejor ranking de temporada.</li>
+      <li>Cada selección se compone de <strong>5 titulares + 2 suplentes</strong>, todos de nacionalidad mexicana acreditada.</li>
+    </ol>
+    <div class="box ex"><div class="bx-h">Camino de México</div><p>Copa México (2 cupos) → Copa América (clasificado como LATAM-N #1) → Mundial de Naciones. El ranking acumulado de temporada desempata cupos en caso de empate.</p></div>
+  </div>
+
+  <div class="art"><div class="num"><b>50</b><span>Art.</span></div>
+    <h3>Selección Nacional — criterios de convocatoria</h3>
+    <p>La Selección Nacional se forma con los mejores jugadores mexicanos del circuito. Para ser convocado:</p>
+    <ol class="clauses">
+      <li><strong>Rendimiento individual:</strong> figurar entre los 15 mejores jugadores del corte individual publicado por el CO, considerando estadísticas oficiales, impacto competitivo y participación en equipos ubicados en el Ranking Nacional de Equipos (Art. 43).</li>
+      <li><strong>Historial limpio:</strong> no haber recibido ninguna sanción de nivel Grave o Muy Grave en los últimos <strong>6 meses naturales</strong>.</li>
+      <li><strong>Disponibilidad:</strong> confirmar por escrito la disponibilidad para todas las fechas del torneo internacional antes del plazo de inscripción.</li>
+      <li><strong>Participación mínima:</strong> haber disputado al menos <strong>1 edición</strong> de la Copa México en los últimos 12 meses.</li>
+      <li><strong>Cuenta activa:</strong> cumplir los requisitos del Art. 10 (cuenta LATAM-N sin restricciones).</li>
+    </ol>
+    <p>El seleccionador designado por el CO puede convocar discrecionalmente hasta <strong>2 comodines</strong> fuera del ranking si considera que su nivel y perfil estratégico benefician al equipo, siempre que cumplan los requisitos 2, 3 y 5.</p>
+    <div class="box ex"><div class="bx-h">Proceso de convocatoria</div><p><strong>Paso 1:</strong> publicación del ranking tras la Copa. <strong>Paso 2:</strong> invitación formal a los candidatos. <strong>Paso 3:</strong> confirmación / renuncia en 72 h. <strong>Paso 4:</strong> anuncio oficial de la selección. <strong>Paso 5:</strong> período de práctica conjunta antes del torneo.</p></div>
+  </div>
+</section>
+
+<!-- ===== TÍTULO XI — ANEXOS ===== -->
+<section id="t11">
+  <div class="titulo anx"><div class="kicker">// Título XI · Anexos operativos</div>
+    <h2><span class="romano" style="-webkit-text-stroke:1.5px var(--gold);color:transparent">XI</span> Anexos</h2><div class="rule"></div></div>
+
+  <!-- ANEXO A -->
+  <div class="art anx-art"><div class="num"><b>A</b><span>Anx.</span></div>
+    <h3>Calendario modelo de temporada</h3>
+    <p>El calendario definitivo lo publica el CO antes del inicio de inscripciones. Este modelo orienta la planificación de equipos y patrocinadores.</p>
+    <div class="cal">
+      <div class="cal-row"><div class="week">Sem. 1–2</div><div class="ev"><strong>Inscripciones abiertas</strong><span>Registro de equipos, pago de cuota y carga de roster</span></div></div>
+      <div class="cal-row"><div class="week">Sem. 3</div><div class="ev"><strong>Verificación y cierre de roster</strong><span>Validación de identidades, tope de puntos y cupos; publicación del cuadro de clasificatorias</span></div></div>
+      <div class="cal-row highlight"><div class="week">Sem. 4–5</div><div class="ev"><strong>Clasificatorias abiertas</strong><span>Bo1 con semis y final en Bo3 · Determina los 32 equipos que pasan a grupos</span></div></div>
+      <div class="cal-row"><div class="week">Sem. 6–8</div><div class="ev"><strong>Fase de grupos</strong><span>8 grupos de 4 equipos · Formato GSL · Bo3 · Clasifican 16 equipos (2 por grupo)</span></div></div>
+      <div class="cal-row highlight"><div class="week">Sem. 9–11</div><div class="ev"><strong>Playoffs</strong><span>Doble eliminación con los 16 clasificados · Bo3 · Se define el Top 4</span></div></div>
+      <div class="cal-row highlight"><div class="week">Sem. 12</div><div class="ev"><strong>Gran Final</strong><span>Bo5 · Transmisión oficial con producción completa · Entrega de premios y trofeos</span></div></div>
+      <div class="cal-row"><div class="week">Post</div><div class="ev"><strong>Cierre y proyección</strong><span>Publicación del Ranking Nacional · Convocatoria Selección Nacional · Anuncio de Copa América</span></div></div>
+    </div>
+  </div>
+
+  <!-- ANEXO B -->
+  <div class="art anx-art"><div class="num"><b>B</b><span>Anx.</span></div>
+    <h3>Protocolo de verificación de identidad</h3>
+    <p>Toda la documentación se envía al correo oficial del CO en formato PDF o imagen de alta resolución. No se aceptan fotocopias ilegibles.</p>
+    <p style="margin-top:10px;font-family:'Oswald';font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)">Documentos requeridos por jugador:</p>
+    <div class="checklist">
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text"><strong>ID oficial vigente</strong>INE, pasaporte, cédula profesional o documento equivalente del país de origen. Nombre y foto visibles.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text"><strong>CURP (solo jugadores mexicanos)</strong>Documento en PDF descargado del sitio oficial de la SEGOB.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text"><strong>Captura del perfil de VALORANT</strong>Screenshot que muestre: nombre de usuario, etiqueta, rango del acto vigente e historial de partidas recientes (mínimo 10 partidas en los últimos 30 días).</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text"><strong>Correo de verificación de la cuenta Riot</strong>Reenvío o captura del email de confirmación de la cuenta declarada, para validar titularidad.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text"><strong>Formulario de inscripción firmado</strong>Incluye aceptación del reglamento y, para menores de 18, firma del tutor legal.</div></div>
+    </div>
+    <p style="margin-top:14px"><strong>Proceso:</strong> el staff verifica en un plazo de <strong>72 h</strong> tras la recepción y notifica al capitán si el jugador está aprobado o si falta documentación. El jugador tiene <strong>24 h adicionales</strong> para subsanar; si no lo hace, su inscripción queda nula. Los documentos se almacenan cifrados, se usan exclusivamente para verificar elegibilidad y se eliminan <strong>30 días</strong> después del cierre del torneo.</p>
+  </div>
+
+  <!-- ANEXO C -->
+  <div class="art anx-art"><div class="num"><b>C</b><span>Anx.</span></div>
+    <h3>Manual operativo del árbitro</h3>
+    <p style="font-family:'Oswald';font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px">Antes de la partida</p>
+    <div class="checklist">
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Verificar la identidad de los 5 + 5 jugadores (nombre real vs. cuenta en lobby) contra el roster oficial.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Confirmar que la sala está en modo Torneo con la configuración correcta y sin espectadores no autorizados.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Dirigir el proceso de veto, cronometrar y registrar las elecciones de cada equipo.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Notificar a ambos capitanes el inicio de la partida y confirmar su aceptación.</div></div>
+    </div>
+    <p style="font-family:'Oswald';font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:14px 0 8px">Durante la partida</p>
+    <div class="checklist">
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Registrar en la hoja de incidencias toda pausa, desconexión o protesta verbal de capitán.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Gestionar pausas: verificar que se soliciten entre rondas y que no excedan los límites del Art. 26.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Ante un posible rehost: pausar, evaluar en 2 min si procede y, si lo aprueba, ejecutar antes de que la ronda avance.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">No revelar información táctica a ningún equipo ni comentar en público el desarrollo durante la partida.</div></div>
+    </div>
+    <p style="font-family:'Oswald';font-size:13px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:14px 0 8px">Al cierre de la partida</p>
+    <div class="checklist">
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Capturar el marcador final y registrarlo en el sistema oficial antes de cerrar el lobby.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Guardar la demo del servidor durante 72 h mínimo.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Si se recibió protesta verbal, abrir inmediatamente el expediente y notificar al Cc.</div></div>
+      <div class="ch-item"><div class="ch-box"></div><div class="ch-text">Enviar el informe de la jornada al Cc con incidencias, tiempos y resultado en un plazo de 2 h.</div></div>
+    </div>
+  </div>
+
+  <!-- ANEXO D -->
+  <div class="art anx-art"><div class="num"><b>D</b><span>Anx.</span></div>
+    <h3>Formulario tipo de protesta</h3>
+    <p>Este modelo debe enviarse por el canal oficial dentro de los 30 minutos posteriores al cierre de la partida o mapa afectados. Protestas incompletas son inadmisibles.</p>
+    <div class="tbl"><table>
+      <thead class="gold-head"><tr><th>Campo</th><th>Descripción y formato requerido</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Equipo protestante</strong></td><td>Nombre oficial del equipo tal como aparece en el roster</td></tr>
+        <tr><td><strong>Capitán</strong></td><td>Nombre real + nombre de usuario VALORANT</td></tr>
+        <tr><td><strong>Fecha y hora del incidente</strong></td><td>Formato DD/MM/AAAA · HH:MM (UTC−6)</td></tr>
+        <tr><td><strong>Equipo rival</strong></td><td>Nombre oficial</td></tr>
+        <tr><td><strong>Fase / Mapa afectado</strong></td><td>Ej.: "Grupos · Mapa 2 (Lotus) · Ronda 18"</td></tr>
+        <tr><td><strong>Artículo presuntamente infringido</strong></td><td>Número(s) de artículo de este reglamento</td></tr>
+        <tr><td><strong>Descripción del incidente</strong></td><td>Narración cronológica y objetiva, máx. 300 palabras</td></tr>
+        <tr><td><strong>Evidencia adjunta</strong></td><td>Capturas en PNG/JPG, video en MP4/MOV o enlace a demo. Mínimo 1 archivo</td></tr>
+        <tr><td><strong>Resultado solicitado</strong></td><td>Qué resolución pide el equipo (pérdida de ronda, rehost, W.O., revisión disciplinaria, etc.)</td></tr>
+        <tr><td><strong>Firma del capitán</strong></td><td>Texto: "Declaro que la información es veraz y acepto las consecuencias de una protesta infundada"</td></tr>
+      </tbody>
+    </table></div>
+    <div class="box warn"><div class="bx-h">Protesta infundada o maliciosa</div><p>Presentar una protesta a sabiendas de que carece de fundamento para ganar tiempo o perjudicar al rival constituye conducta antideportiva de nivel Grave (Art. 35).</p></div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap">
+  <div class="sig">Copa<span class="slash">/</span>México VALORANT 2026</div>
+  <p>Reglamento General, Operativo y Disciplinario — Edición I · v1.3. Documento controlado por el Comité Organizador. Toda versión impresa es de referencia; prevalece la publicada en los canales oficiales.</p>
+  <div class="legal">VALORANT © Riot Games, Inc. · Torneo comunitario independiente — no afiliado, patrocinado ni avalado por Riot Games · Operado bajo las VALORANT Community Competition Guidelines · Documento v1.3</div>
+</footer>
+
+<button class="backtop" id="backtop" aria-label="Volver al inicio">↑</button>
+<script>
+  const bar=document.getElementById('bar'),bt=document.getElementById('backtop');
+  document.addEventListener('scroll',()=>{
+    const h=document.documentElement;
+    bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%';
+    bt.classList.toggle('show',h.scrollTop>700);
+  },{passive:true});
+  bt.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+  document.querySelectorAll('[data-map-lab]').forEach(lab=>{
+    const cards=[...lab.querySelectorAll('[data-map-target]')];
+    const panels=[...lab.querySelectorAll('[data-map-panel]')];
+    cards.forEach(card=>{
+      card.addEventListener('click',()=>{
+        const id=card.dataset.mapTarget;
+        cards.forEach(item=>{
+          const on=item===card;
+          item.classList.toggle('active',on);
+          item.setAttribute('aria-selected',on?'true':'false');
+        });
+        panels.forEach(panel=>panel.classList.toggle('active',panel.dataset.mapPanel===id));
+      });
+    });
+  });
+  document.querySelectorAll('[data-veto-lab]').forEach(lab=>{
+    const configs={
+      bo1:[
+        {type:'ban',team:'A',label:'A ban'},
+        {type:'ban',team:'B',label:'B ban'},
+        {type:'ban',team:'A',label:'A ban'},
+        {type:'ban',team:'B',label:'B ban'},
+        {type:'ban',team:'A',label:'A ban'},
+        {type:'ban',team:'B',label:'B ban'},
+        {type:'pick',team:'—',label:'mapa restante',auto:true}
+      ],
+      bo3:[
+        {type:'ban',team:'A',label:'A ban'},
+        {type:'ban',team:'B',label:'B ban'},
+        {type:'pick',team:'A',label:'A pick M1'},
+        {type:'pick',team:'B',label:'B pick M2'},
+        {type:'ban',team:'A',label:'A ban'},
+        {type:'ban',team:'B',label:'B ban'},
+        {type:'pick',team:'—',label:'decisivo',auto:true}
+      ]
+    };
+    const tabs=[...lab.querySelectorAll('[data-veto-format]')];
+    const reset=lab.querySelector('[data-veto-reset]');
+    const status=lab.querySelector('[data-veto-status]');
+    const maps=[...lab.querySelectorAll('[data-veto-map]')];
+    const flow=lab.querySelector('[data-veto-flow]');
+    let format='bo1';
+    let choices=[];
+    const remaining=()=>maps.map(m=>m.dataset.vetoMap).filter(name=>!choices.some(c=>c.map===name));
+    const currentStep=()=>configs[format][choices.length];
+    const labelFor=s=>{
+      if(!s) return 'Veto completo.';
+      if(s.auto) return `Resultado final: ${s.label}.`;
+      return `Turno ${choices.length+1}: Equipo ${s.team} ${s.type==='ban'?'banea':'elige'} un mapa.`;
+    };
+    const sync=()=>{
+      const cfg=configs[format];
+      flow.innerHTML=cfg.map((step,i)=>{
+        const chosen=choices[i]?.map || 'pendiente';
+        const cls=[step.type,i===choices.length&&!step.auto?'current':''].filter(Boolean).join(' ');
+        return `<div class="veto-slot ${cls}"><span class="role">${step.label}</span><span class="chosen">${chosen}</span></div>`;
+      }).join('');
+      maps.forEach(btn=>{
+        const used=choices.some(c=>c.map===btn.dataset.vetoMap);
+        btn.disabled=used || !currentStep() || currentStep().auto;
+        btn.classList.toggle('selected',used);
+      });
+      status.textContent=labelFor(currentStep());
+    };
+    const finalizeIfNeeded=()=>{
+      const step=currentStep();
+      if(step?.auto){
+        const last=remaining()[0];
+        if(last) choices.push({...step,map:last});
+      }
+    };
+    const restart=(next=format)=>{
+      format=next;
+      choices=[];
+      tabs.forEach(tab=>tab.classList.toggle('active',tab.dataset.vetoFormat===format));
+      sync();
+    };
+    tabs.forEach(tab=>tab.addEventListener('click',()=>restart(tab.dataset.vetoFormat)));
+    reset.addEventListener('click',()=>restart(format));
+    maps.forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const step=currentStep();
+        if(!step || step.auto || choices.some(c=>c.map===btn.dataset.vetoMap)) return;
+        choices.push({...step,map:btn.dataset.vetoMap});
+        finalizeIfNeeded();
+        sync();
+      });
+    });
+    sync();
+  });
+  const searchInput=document.getElementById('doc-search');
+  if(searchInput){
+    const clear=document.querySelector('[data-search-clear]');
+    const meta=document.querySelector('[data-search-meta]');
+    const empty=document.querySelector('[data-search-empty]');
+    const articles=[...document.querySelectorAll('main .art')];
+    const titles=[...document.querySelectorAll('main .titulo')];
+    const normalize=s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+    const updateSearch=()=>{
+      const q=normalize(searchInput.value.trim());
+      let count=0;
+      articles.forEach(art=>{
+        const hit=!q || normalize(art.innerText).includes(q);
+        art.classList.toggle('search-hide',!hit);
+        art.classList.toggle('search-hit',!!q&&hit);
+        if(hit) count++;
+      });
+      titles.forEach(title=>{
+        const section=title.closest('section');
+        const visible=section&&[...section.querySelectorAll('.art')].some(a=>!a.classList.contains('search-hide'));
+        title.classList.toggle('search-hide',!!q&&!visible);
+      });
+      meta.textContent=q?`${count} coincidencias visibles`:`${articles.length} artículos y anexos disponibles`;
+      empty.style.display=q&&count===0?'block':'none';
+    };
+    searchInput.addEventListener('input',updateSearch);
+    clear.addEventListener('click',()=>{searchInput.value='';updateSearch();searchInput.focus();});
+  }
+  document.querySelectorAll('.art').forEach(art=>{
+    const card=art.querySelector('[data-glossary-card]');
+    if(!card) return;
+    const outTerm=card.querySelector('[data-glossary-term]');
+    const outDef=card.querySelector('[data-glossary-def]');
+    art.querySelectorAll('.term').forEach(term=>{
+      term.addEventListener('click',()=>{
+        art.querySelectorAll('.term').forEach(t=>t.classList.remove('active'));
+        term.classList.add('active');
+        const li=term.closest('li');
+        outTerm.textContent=term.textContent;
+        outDef.textContent=li?li.textContent.replace(term.textContent,'').replace(/^:\s*/,''):'';
+        card.classList.add('show');
+      });
+    });
+  });
+  document.querySelectorAll('.art').forEach(art=>{
+    if(!art.textContent.includes('Régimen disciplinario completo')) return;
+    const table=art.querySelector('table');
+    if(!table) return;
+    const bar=document.createElement('div');
+    bar.className='filter-bar';
+    bar.innerHTML='<button class="filter-chip active" type="button" data-sev-filter="all">Todas</button><button class="filter-chip" type="button" data-sev-filter="s-leve">Leves</button><button class="filter-chip" type="button" data-sev-filter="s-grave">Graves</button><button class="filter-chip" type="button" data-sev-filter="s-max">Muy graves</button>';
+    table.closest('.tbl').before(bar);
+    const rows=[...table.querySelectorAll('tbody tr')];
+    bar.querySelectorAll('[data-sev-filter]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        bar.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));
+        const f=btn.dataset.sevFilter;
+        rows.forEach(row=>{
+          const show=f==='all'||!!row.querySelector('.'+f);
+          row.classList.toggle('discipline-hide',!show);
+        });
+      });
+    });
+  });
+  document.querySelectorAll('[data-ranking-calc]').forEach(calc=>{
+    const get=sel=>calc.querySelector(sel);
+    const result=get('[data-calc-result]');
+    const inputs=[...calc.querySelectorAll('select,input')];
+    const update=()=>{
+      const base=Number(get('[data-calc-base]').value);
+      const maps=Number(get('[data-calc-maps]').value||0)*8;
+      const series=Number(get('[data-calc-series]').value||0)*20;
+      const rivals=Math.min(Number(get('[data-calc-rivals]').value||0)*15,60);
+      const consistency=Number(get('[data-calc-consistency]').value);
+      const wo=Number(get('[data-calc-wo]').value||0)*40;
+      const penalty=Number(get('[data-calc-penalty]').value||0);
+      const total=base+maps+series+rivals+consistency-wo-penalty;
+      result.textContent=`Resultado estimado: ${total} puntos`;
+    };
+    inputs.forEach(input=>input.addEventListener('input',update));
+    inputs.forEach(input=>input.addEventListener('change',update));
+    update();
+  });
+  document.querySelectorAll('[data-appeal-tabs]').forEach(tabs=>{
+    const flow=tabs.parentElement.querySelector('[data-appeal-flow]');
+    const steps=[...flow.querySelectorAll('.flow-step')];
+    tabs.querySelectorAll('[data-appeal-step]').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        const value=btn.dataset.appealStep;
+        tabs.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b===btn));
+        steps.forEach((step,i)=>{
+          const on=value==='all'||String(i+1)===value;
+          step.classList.toggle('dim',!on&&value!=='all');
+          step.classList.toggle('focus',on&&value!=='all');
+        });
+      });
+    });
+  });
+</script>
+</body>
+</html>

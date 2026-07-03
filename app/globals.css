@@ -1,0 +1,327 @@
+@import "tailwindcss";
+
+@theme {
+  /* Paleta extraída del reglamento oficial */
+  --color-void: #0E1822;
+  --color-void2: #0B131B;
+  --color-panel: #15212C;
+  --color-panel2: #1A2A37;
+  --color-line: #283A48;
+  --color-brand: #FF4655;
+  --color-brand-deep: #BD3944;
+  --color-bone: #ECE8E1;
+  --color-bone-dim: #C7CBCB;
+  --color-muted: #7E8C99;
+  --color-muted2: #5C6B78;
+  --color-teal: #19E8C8;
+  --color-gold: #E8C37A;
+  --color-gold-deep: #B8943A;
+
+  --font-display: var(--font-anton), Impact, sans-serif;
+  --font-head: var(--font-oswald), system-ui, sans-serif;
+  --font-sans: var(--font-barlow), system-ui, sans-serif;
+  --font-mono: var(--font-jetmono), monospace;
+
+  /* Material — sistema de elevación (dark) */
+  --elev-1: 0 1px 2px rgba(0,0,0,.40), 0 1px 3px rgba(0,0,0,.28);
+  --elev-2: 0 3px 8px rgba(0,0,0,.45), 0 2px 5px rgba(0,0,0,.30);
+  --elev-3: 0 12px 24px rgba(0,0,0,.50), 0 6px 8px rgba(0,0,0,.34);
+  --elev-4: 0 22px 44px rgba(0,0,0,.55), 0 10px 14px rgba(0,0,0,.40);
+
+  /* Motion — curvas Material */
+  --ease-standard: cubic-bezier(.2,0,0,1);
+  --ease-emphasized: cubic-bezier(.2,.8,.2,1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-bone);
+  background-image:
+    linear-gradient(135deg, rgba(255, 70, 85, 0.08), transparent 28%),
+    linear-gradient(315deg, rgba(25, 232, 200, 0.06), transparent 32%);
+  background-attachment: fixed;
+}
+
+/* Rejilla técnica de fondo, como en el reglamento */
+.grid-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+  background-image:
+    linear-gradient(rgba(120, 140, 156, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(120, 140, 156, 0.14) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(circle at 50% 20%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(circle at 50% 20%, #000 0%, transparent 75%);
+}
+
+/* Velo de scanlines global (cyberpunk, muy sutil) */
+.scanline-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(8, 14, 20, 0.35) 3px
+  );
+  background-size: 100% 3px;
+  mix-blend-mode: multiply;
+  animation: scan-drift 8s linear infinite;
+}
+
+.font-display { font-family: var(--font-display); }
+.font-head { font-family: var(--font-head); }
+.font-mono { font-family: var(--font-mono); }
+
+/* Esquina recortada estilo HUD */
+.clip-corner {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+}
+.clip-corner-tl {
+  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px);
+}
+
+/* =====================================================================
+   SISTEMA DE DISEÑO · Material (estructura) + Cyberpunk (piel)
+   ===================================================================== */
+
+/* ---- Elevación Material ---- */
+.elev-1 { box-shadow: var(--elev-1); }
+.elev-2 { box-shadow: var(--elev-2); }
+.elev-3 { box-shadow: var(--elev-3); }
+.elev-4 { box-shadow: var(--elev-4); }
+
+/* ---- Glow neón ---- */
+.glow-teal { box-shadow: 0 0 0 1px rgba(25,232,200,.45), 0 0 22px rgba(25,232,200,.22); }
+.glow-brand { box-shadow: 0 0 0 1px rgba(255,70,85,.45), 0 0 22px rgba(255,70,85,.22); }
+.glow-gold { box-shadow: 0 0 0 1px rgba(232,195,122,.45), 0 0 22px rgba(232,195,122,.20); }
+.text-glow-teal { text-shadow: 0 0 12px rgba(25,232,200,.55); }
+.text-glow-brand { text-shadow: 0 0 14px rgba(255,70,85,.55); }
+
+/* ---- Surface: card Material con borde cyber ---- */
+.surface {
+  position: relative;
+  background:
+    linear-gradient(160deg, rgba(26,42,55,.92), rgba(11,19,27,.92));
+  border: 1px solid var(--color-line);
+  box-shadow: var(--elev-2);
+  transition:
+    transform .35s var(--ease-emphasized),
+    border-color .35s var(--ease-standard),
+    box-shadow .35s var(--ease-standard);
+}
+.surface:hover {
+  border-color: rgba(25,232,200,.55);
+  box-shadow: var(--elev-3), 0 0 26px rgba(25,232,200,.14);
+}
+/* Filo neón superior que aparece al hover */
+.surface::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; top: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--color-teal), transparent);
+  opacity: 0;
+  transition: opacity .35s var(--ease-standard);
+  pointer-events: none;
+}
+.surface:hover::after { opacity: 1; }
+.surface.surface-brand:hover { border-color: rgba(255,70,85,.55); }
+.surface.surface-brand::after { background: linear-gradient(90deg, transparent, var(--color-brand), transparent); }
+.surface.surface-gold:hover { border-color: rgba(232,195,122,.55); }
+.surface.surface-gold::after { background: linear-gradient(90deg, transparent, var(--color-gold), transparent); }
+
+/* ---- Tilt 3D + glow que sigue al cursor ---- */
+.tilt {
+  position: relative;
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform .25s var(--ease-emphasized);
+  will-change: transform;
+}
+.tilt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(220px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(25,232,200,.16), transparent 60%);
+  opacity: 0;
+  transition: opacity .3s var(--ease-standard);
+  pointer-events: none;
+}
+.tilt:hover::before { opacity: 1; }
+
+/* ---- Ripple Material ---- */
+.ripple-host { position: relative; overflow: hidden; }
+.ripple-ink {
+  position: absolute;
+  border-radius: 50%;
+  transform: scale(0);
+  background: radial-gradient(circle, rgba(255,255,255,.55), rgba(255,255,255,0) 70%);
+  animation: ripple-out .6s var(--ease-standard) forwards;
+  pointer-events: none;
+}
+@keyframes ripple-out {
+  to { transform: scale(2.6); opacity: 0; }
+}
+
+/* ---- Botones cyber ---- */
+.cyber-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  font-family: var(--font-head);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 14px 26px;
+  clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px);
+  transition: transform .2s var(--ease-emphasized), box-shadow .25s var(--ease-standard), filter .2s;
+}
+.cyber-btn:active { transform: translateY(1px) scale(.99); }
+.cyber-btn-primary {
+  background: linear-gradient(135deg, var(--color-brand), var(--color-brand-deep));
+  color: var(--color-void);
+  box-shadow: 0 0 0 1px rgba(255,70,85,.5), 0 8px 22px rgba(255,70,85,.28);
+}
+.cyber-btn-primary:hover { box-shadow: 0 0 0 1px rgba(255,70,85,.8), 0 0 30px rgba(255,70,85,.45); filter: brightness(1.06); }
+.cyber-btn-ghost {
+  background: rgba(21,33,44,.7);
+  color: var(--color-bone);
+  border: 1px solid var(--color-line);
+}
+.cyber-btn-ghost:hover { border-color: var(--color-teal); box-shadow: 0 0 24px rgba(25,232,200,.22); color: #fff; }
+
+/* ---- Reveal al hacer scroll (progressive disclosure) ----
+   Visible por defecto; solo se oculta cuando el JS lo "arma" con
+   data-hidden="true". Así el contenido nunca queda invisible si el JS falla. */
+.reveal {
+  transition:
+    opacity .7s var(--ease-emphasized),
+    transform .7s var(--ease-emphasized);
+}
+.reveal[data-hidden="true"] {
+  opacity: 0;
+  transform: translateY(26px);
+}
+
+/* ---- Texto glitch ---- */
+.glitch { position: relative; display: inline-block; }
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0; top: 0;
+  width: 100%;
+  pointer-events: none;
+  clip-path: inset(0 0 0 0);
+}
+.glitch::before {
+  color: var(--color-teal);
+  transform: translate(-2px, 0);
+  animation: glitch-a 3.2s steps(2, end) infinite;
+  mix-blend-mode: screen;
+}
+.glitch::after {
+  color: var(--color-brand);
+  transform: translate(2px, 0);
+  animation: glitch-b 2.6s steps(2, end) infinite;
+  mix-blend-mode: screen;
+}
+@keyframes glitch-a {
+  0%, 92%, 100% { clip-path: inset(0 0 100% 0); transform: translate(0,0); }
+  93% { clip-path: inset(0 0 65% 0); transform: translate(-3px, -1px); }
+  96% { clip-path: inset(40% 0 35% 0); transform: translate(2px, 1px); }
+  99% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 0); }
+}
+@keyframes glitch-b {
+  0%, 90%, 100% { clip-path: inset(100% 0 0 0); transform: translate(0,0); }
+  91% { clip-path: inset(70% 0 18% 0); transform: translate(3px, 1px); }
+  95% { clip-path: inset(25% 0 55% 0); transform: translate(-2px, -1px); }
+  98% { clip-path: inset(5% 0 80% 0); transform: translate(2px, 0); }
+}
+
+/* ---- Animaciones ambientales ---- */
+@keyframes scan-drift { to { background-position: 0 -120px; } }
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: .5; }
+  50% { opacity: 1; }
+}
+@keyframes sweep-x {
+  0% { transform: translateX(-120%); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateX(120%); opacity: 0; }
+}
+@keyframes flicker {
+  0%, 100% { opacity: 1; }
+  41% { opacity: 1; }
+  42% { opacity: .35; }
+  43% { opacity: 1; }
+  77% { opacity: 1; }
+  78% { opacity: .55; }
+  79% { opacity: 1; }
+}
+.anim-float { animation: float-y 5s ease-in-out infinite; }
+.anim-flicker { animation: flicker 6s linear infinite; }
+.hero-sweep {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(25,232,200,.10), transparent);
+  animation: sweep-x 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ---- Barra de progreso animada ---- */
+.meter { position: relative; overflow: hidden; }
+.meter > span {
+  display: block;
+  height: 100%;
+  transform-origin: left;
+  animation: meter-fill 1.4s var(--ease-emphasized) both;
+}
+@keyframes meter-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+/* ---- Chip HUD ---- */
+.hud-chip {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  border: 1px solid var(--color-line);
+  color: var(--color-muted);
+  padding: 4px 8px;
+  background: rgba(255,255,255,.02);
+}
+
+/* =====================================================================
+   Accesibilidad: respeta prefers-reduced-motion
+   ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal[data-hidden="true"] { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .glitch::before, .glitch::after { display: none !important; }
+  .scanline-overlay,
+  .anim-float,
+  .anim-flicker,
+  .hero-sweep,
+  .meter > span { animation: none !important; }
+  .tilt { transform: none !important; transition: none !important; }
+  * { scroll-behavior: auto !important; }
+}

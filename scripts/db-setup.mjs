@@ -115,7 +115,7 @@ try {
       nombre: "Quetzal",
       tag: "QTZ",
       rama: "amateur",
-      estado: "en_revision",
+      estado: "aprobado",
       orden: 2,
       password: "quetzal123",
       players: [
@@ -126,17 +126,98 @@ try {
         player("Sam", "Sam#MX5", "ascendente"),
       ],
     },
+    {
+      nombre: "Aztlan",
+      tag: "AZT",
+      rama: "elite",
+      estado: "aprobado",
+      orden: 3,
+      password: "aztlan123",
+      players: [
+        player("Rex", "Rex#MX1", "inmortal", { cap: true }),
+        player("Neo", "Neo#MX2", "inmortal"),
+        player("Ivo", "Ivo#MX3", "ascendente"),
+        player("Leo", "Leo#MX4", "ascendente"),
+        player("Uri", "Uri#MX5", "diamante"),
+      ],
+    },
+    {
+      nombre: "Norte",
+      tag: "NWV",
+      rama: "elite",
+      estado: "aprobado",
+      orden: 4,
+      password: "norte123",
+      players: [
+        player("Van", "Van#MX1", "radiante", { cap: true }),
+        player("Tom", "Tom#MX2", "inmortal"),
+        player("Rob", "Rob#MX3", "ascendente"),
+        player("Gus", "Gus#MX4", "diamante"),
+        player("Hal", "Hal#MX5", "diamante"),
+      ],
+    },
   ];
 
+  const teamIds = {};
   for (const t of teams) {
-    const { nuevo } = await seedTeam(tour.id, t);
+    const { id, nuevo } = await seedTeam(tour.id, t);
+    teamIds[t.tag] = id;
     console.log(`${nuevo ? "✓ creado" : "· ya existía"}: ${t.nombre}#${t.tag}`);
+  }
+
+  // 5) Fase competitiva demo (grupo A + partidos), idempotente.
+  const [{ count: gcount }] = await sql`
+    select count(*)::int as count from tournament_group where tournament_id = ${tour.id}
+  `;
+  if (Number(gcount) === 0) {
+    const [grp] = await sql`
+      insert into tournament_group (tournament_id, nombre, orden)
+      values (${tour.id}, 'A', 0) returning id
+    `;
+    const inGroup = ["JAG", "AZT", "NWV", "QTZ"];
+    for (const tag of inGroup) {
+      await sql`
+        insert into tournament_group_team (group_id, team_id)
+        values (${grp.id}, ${teamIds[tag]}) on conflict do nothing
+      `;
+    }
+
+    const seedMatch = (groupId, ronda, aTag, bTag, sa, sb, estado, orden) =>
+      sql`
+        insert into tournament_match
+          (tournament_id, group_id, ronda, formato, team_a_id, team_b_id, score_a, score_b, estado, orden)
+        values
+          (${tour.id}, ${groupId}, ${ronda}, 'Bo3',
+           ${aTag ? teamIds[aTag] : null}, ${bTag ? teamIds[bTag] : null},
+           ${sa}, ${sb}, ${estado}, ${orden})
+      `;
+
+    // Partidos de grupo (finalizados)
+    await seedMatch(grp.id, "Grupo A", "JAG", "QTZ", 2, 0, "finalizado", 1);
+    await seedMatch(grp.id, "Grupo A", "AZT", "NWV", 2, 1, "finalizado", 2);
+    await seedMatch(grp.id, "Grupo A", "JAG", "NWV", 2, 1, "finalizado", 3);
+    await seedMatch(grp.id, "Grupo A", "AZT", "QTZ", 2, 0, "finalizado", 4);
+    await seedMatch(grp.id, "Grupo A", "JAG", "AZT", 0, 0, "en_vivo", 5);
+
+    // Playoffs (sin grupo)
+    await sql`
+      insert into tournament_match
+        (tournament_id, group_id, ronda, formato, team_a_id, team_b_id, estado, orden)
+      values
+        (${tour.id}, null, 'Semifinal', 'Bo3', ${teamIds["JAG"]}, ${teamIds["AZT"]}, 'programado', 1),
+        (${tour.id}, null, 'Gran Final', 'Bo5', null, null, 'programado', 2)
+    `;
+    console.log("✓ grupo A + partidos sembrados");
+  } else {
+    console.log("· fase competitiva ya existía");
   }
 
   console.log("\n=== Credenciales de prueba ===");
   console.log(`Comité (CO):   usuario "${CO_USER}"  ·  contraseña "${CO_PASS}"`);
   console.log(`Equipo:        "Jaguares#JAG"  ·  contraseña "jaguares123"`);
   console.log(`Equipo:        "Quetzal#QTZ"   ·  contraseña "quetzal123"`);
+  console.log(`Equipo:        "Aztlan#AZT"    ·  contraseña "aztlan123"`);
+  console.log(`Equipo:        "Norte#NWV"     ·  contraseña "norte123"`);
   console.log("\n✓ Listo.");
 } catch (err) {
   console.error("✗ Error en el setup:", err.message);

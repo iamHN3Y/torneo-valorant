@@ -8,6 +8,8 @@ import {
   setTeamNota,
   createTournament,
   updateTournamentEstado,
+  setTournamentGratuito,
+  setTournamentCuota,
   type TournamentEstado,
 } from "@/lib/repo";
 import type { EstadoInscripcion } from "@/lib/types";
@@ -111,5 +113,38 @@ export async function setTournamentEstadoAction(
     return { error: "No se pudo actualizar el torneo." };
   }
   revalidatePath("/admin");
+  return { ok: true };
+}
+
+export async function setTournamentGratuitoAction(
+  id: string,
+  gratuito: boolean
+): Promise<ActionResult> {
+  await requireCo();
+  try {
+    await setTournamentGratuito(id, gratuito);
+  } catch {
+    return { error: "No se pudo cambiar la modalidad." };
+  }
+  revalidatePath("/admin");
+  revalidatePath("/inscripcion");
+  revalidatePath("/");
+  return { ok: true };
+}
+
+export async function setTournamentCuotaAction(
+  id: string,
+  cuota: string
+): Promise<ActionResult> {
+  await requireCo();
+  const c = cuota.trim().slice(0, 60);
+  if (!c) return { error: "Escribe la cuota (ej. $250 MXN por equipo)." };
+  try {
+    await setTournamentCuota(id, c);
+  } catch {
+    return { error: "No se pudo guardar la cuota." };
+  }
+  revalidatePath("/admin");
+  revalidatePath("/inscripcion");
   return { ok: true };
 }

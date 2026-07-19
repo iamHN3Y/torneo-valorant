@@ -1,4 +1,5 @@
-import { RANKING, RANKING_CONCEPTS } from "@/lib/data";
+import { RANKING_CONCEPTS } from "@/lib/data";
+import { getRankingStandings, type RankingStanding } from "@/lib/repo";
 import Reveal from "@/components/ui/Reveal";
 import CountUp from "@/components/ui/CountUp";
 import RankingCalculator from "@/components/ui/RankingCalculator";
@@ -7,22 +8,15 @@ export const metadata = {
   title: "Ranking Nacional · Copa México VALORANT 2026",
 };
 
-function Delta({ value }: { value: number }) {
-  if (value === 0)
-    return <span className="font-mono text-xs text-muted2">—</span>;
-  const up = value > 0;
-  return (
-    <span
-      className={`font-mono text-xs ${up ? "text-teal" : "text-brand"}`}
-      title={up ? "Sube puestos" : "Baja puestos"}
-    >
-      {up ? "▲" : "▼"} {Math.abs(value)}
-    </span>
-  );
-}
-
-export default function RankingPage() {
-  const lider = RANKING[0];
+export default async function RankingPage() {
+  let standings: RankingStanding[] = [];
+  let dbError = false;
+  try {
+    standings = await getRankingStandings();
+  } catch {
+    dbError = true;
+  }
+  const lider = standings[0];
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-12">
@@ -33,9 +27,9 @@ export default function RankingPage() {
         Ranking nacional
       </h1>
       <p className="mt-3 max-w-2xl text-bone-dim">
-        Clasificación acumulada de los últimos 12 meses. Mide la fuerza
-        competitiva reciente de cada equipo para sembrados, invitaciones y cupos
-        — no cambia resultados ya jugados.
+        Clasificación acumulada de los últimos 12 meses, calculada en vivo desde
+        los resultados oficiales y los ajustes del Comité. No cambia resultados
+        ya jugados: mide la fuerza competitiva reciente.
       </p>
 
       {/* Fórmula */}
@@ -49,10 +43,10 @@ export default function RankingPage() {
             <span className="text-brand">Penalización</span>
           </div>
           <div className="mt-3 grid gap-1 text-xs text-muted sm:grid-cols-2">
-            <span><b className="text-bone-dim">Base</b> · posición final alcanzada</span>
-            <span><b className="text-bone-dim">Fase</b> · avance competitivo</span>
-            <span><b className="text-bone-dim">Rival</b> · vencer a equipos superiores</span>
-            <span><b className="text-bone-dim">Bonus</b> · desempeño verificable</span>
+            <span><b className="text-bone-dim">Serie ganada</b> · +20 (automático)</span>
+            <span><b className="text-bone-dim">Mapa ganado</b> · +8 (automático)</span>
+            <span><b className="text-bone-dim">Gran Final</b> · +400 campeón / +260 subcampeón</span>
+            <span><b className="text-bone-dim">Ajustes CO</b> · rival superior, consistencia, sanciones</span>
           </div>
         </div>
       </Reveal>
@@ -63,87 +57,107 @@ export default function RankingPage() {
           <h2 className="font-head text-xl font-semibold uppercase tracking-wide">
             Clasificación vigente
           </h2>
-          <p className="mt-1 text-sm text-muted">
-            Líder actual: <span className="text-gold">{lider.nombre}</span> con{" "}
-            <CountUp to={lider.puntos} className="font-mono text-gold" /> pts.
-          </p>
+          {lider && (
+            <p className="mt-1 text-sm text-muted">
+              Líder actual: <span className="text-gold">{lider.nombre}</span> con{" "}
+              <CountUp to={lider.puntos} className="font-mono text-gold" /> pts.
+            </p>
+          )}
         </Reveal>
 
-        <Reveal delay={100} className="mt-5">
-          <div className="surface overflow-x-auto">
-            <table className="w-full min-w-[640px] text-sm">
-              <thead>
-                <tr className="bg-void2 text-left font-head uppercase">
-                  <th className="border-b-2 border-gold p-3 text-xs">#</th>
-                  <th className="border-b-2 border-gold p-3 text-xs">Equipo</th>
-                  <th className="border-b-2 border-gold p-3 text-xs">Rama</th>
-                  <th className="border-b-2 border-gold p-3 text-xs">Puntos</th>
-                  <th className="border-b-2 border-gold p-3 text-xs">Mov.</th>
-                  <th className="border-b-2 border-gold p-3 text-xs">Series</th>
-                  <th className="border-b-2 border-gold p-3 text-xs">Dif. mapas</th>
-                  <th className="border-b-2 border-gold p-3 text-xs">Reciente</th>
-                </tr>
-              </thead>
-              <tbody>
-                {RANKING.map((r) => (
-                  <tr
-                    key={r.tag}
-                    className="group border-b border-line/40 transition odd:bg-white/[0.015] hover:bg-teal/[0.04]"
-                  >
-                    <td className="p-3">
-                      <span
-                        className={`font-display text-lg ${
-                          r.pos === 1
-                            ? "text-gold text-glow-teal"
-                            : r.pos <= 3
-                              ? "text-bone"
-                              : "text-muted"
-                        }`}
-                      >
-                        {r.pos}
-                      </span>
-                    </td>
-                    <td className="p-3">
-                      <span className="font-head font-semibold text-bone">
-                        {r.nombre}
-                      </span>
-                      <span className="ml-2 font-mono text-xs text-muted">
-                        [{r.tag}]
-                      </span>
-                    </td>
-                    <td className="p-3">
-                      <span
-                        className={`font-head text-xs uppercase ${
-                          r.rama === "elite" ? "text-gold" : "text-bone-dim"
-                        }`}
-                      >
-                        {r.rama}
-                      </span>
-                    </td>
-                    <td className="p-3">
-                      <span className="font-mono font-semibold text-bone">
-                        {r.puntos}
-                      </span>
-                    </td>
-                    <td className="p-3">
-                      <Delta value={r.delta} />
-                    </td>
-                    <td className="p-3 font-mono text-teal">{r.series}</td>
-                    <td className="p-3 font-mono text-bone-dim">
-                      {r.difMapas > 0 ? `+${r.difMapas}` : r.difMapas}
-                    </td>
-                    <td className="p-3">
-                      <span className="hud-chip">{r.ultimo}</span>
-                    </td>
+        {dbError ? (
+          <Notice text="No se pudo cargar el ranking (base de datos no disponible)." />
+        ) : standings.length === 0 ? (
+          <Notice text="Aún no hay resultados oficiales. El ranking aparecerá cuando se jueguen los primeros partidos." />
+        ) : (
+          <Reveal delay={100} className="mt-5">
+            <div className="surface overflow-x-auto">
+              <table className="w-full min-w-[720px] text-sm">
+                <thead>
+                  <tr className="bg-void2 text-left font-head uppercase">
+                    <th className="border-b-2 border-gold p-3 text-xs">#</th>
+                    <th className="border-b-2 border-gold p-3 text-xs">Equipo</th>
+                    <th className="border-b-2 border-gold p-3 text-xs">Rama</th>
+                    <th className="border-b-2 border-gold p-3 text-xs">Series</th>
+                    <th className="border-b-2 border-gold p-3 text-xs">Mapas</th>
+                    <th className="border-b-2 border-gold p-3 text-xs">Dif.</th>
+                    <th className="border-b-2 border-gold p-3 text-xs">Bonus pos.</th>
+                    <th className="border-b-2 border-gold p-3 text-xs">Ajustes</th>
+                    <th className="border-b-2 border-gold p-3 text-xs">Puntos</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Reveal>
-        <p className="mt-2 font-mono text-[10px] uppercase tracking-wider text-muted2">
-          Desempate (Art. 43): resultado más reciente → series ganadas → dif. de
-          mapas → menos sanciones → decisión del CO.
+                </thead>
+                <tbody>
+                  {standings.map((r, i) => (
+                    <tr
+                      key={r.teamId}
+                      className="group border-b border-line/40 transition odd:bg-white/[0.015] hover:bg-teal/[0.04]"
+                    >
+                      <td className="p-3">
+                        <span
+                          className={`font-display text-lg ${
+                            i === 0
+                              ? "text-gold"
+                              : i < 3
+                                ? "text-bone"
+                                : "text-muted"
+                          }`}
+                        >
+                          {i + 1}
+                        </span>
+                      </td>
+                      <td className="p-3">
+                        <span className="font-head font-semibold text-bone">
+                          {r.nombre}
+                        </span>
+                        <span className="ml-2 font-mono text-xs text-muted">
+                          [{r.tag}]
+                        </span>
+                      </td>
+                      <td className="p-3">
+                        <span
+                          className={`font-head text-xs uppercase ${
+                            r.rama === "elite" ? "text-gold" : "text-bone-dim"
+                          }`}
+                        >
+                          {r.rama}
+                        </span>
+                      </td>
+                      <td className="p-3 font-mono text-teal">{r.series}</td>
+                      <td className="p-3 font-mono text-bone-dim">{r.mapas}</td>
+                      <td className="p-3 font-mono text-bone-dim">
+                        {r.difMapas > 0 ? `+${r.difMapas}` : r.difMapas}
+                      </td>
+                      <td className="p-3 font-mono text-gold">
+                        {r.bonusPosicion > 0 ? `+${r.bonusPosicion}` : "—"}
+                      </td>
+                      <td className="p-3">
+                        {r.ajustes === 0 ? (
+                          <span className="font-mono text-muted2">—</span>
+                        ) : (
+                          <span
+                            className={`font-mono ${
+                              r.ajustes < 0 ? "text-brand" : "text-teal"
+                            }`}
+                          >
+                            {r.ajustes > 0 ? `+${r.ajustes}` : r.ajustes}
+                          </span>
+                        )}
+                      </td>
+                      <td className="p-3">
+                        <span className="font-mono font-semibold text-bone">
+                          {r.puntos}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </Reveal>
+        )}
+        <p className="mt-2 font-mono text-[10px] uppercase tracking-wider text-muted">
+          Desempate (Art. 43): puntos → series ganadas → dif. de mapas. Ventana:
+          12 meses.
         </p>
       </section>
 
@@ -199,6 +213,14 @@ export default function RankingPage() {
           ))}
         </div>
       </section>
+    </div>
+  );
+}
+
+function Notice({ text }: { text: string }) {
+  return (
+    <div className="surface clip-corner mt-6 p-6 text-center text-sm text-muted">
+      {text}
     </div>
   );
 }

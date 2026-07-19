@@ -5,6 +5,8 @@ import type { DbTournament, TournamentEstado } from "@/lib/repo";
 import {
   createTournamentAction,
   setTournamentEstadoAction,
+  setTournamentGratuitoAction,
+  setTournamentCuotaAction,
 } from "@/app/admin/actions";
 
 const ESTADOS: { value: TournamentEstado; label: string; color: string }[] = [
@@ -76,46 +78,94 @@ export default function TournamentsPanel({
 function TournamentRow({ t }: { t: DbTournament }) {
   const [pending, startTransition] = useTransition();
   const [estado, setEstado] = useState<TournamentEstado>(t.estado);
+  const [gratuito, setGratuito] = useState(t.gratuito);
+  const [cuota, setCuota] = useState(t.cuota);
   const [err, setErr] = useState<string | null>(null);
+
+  function run(fn: () => Promise<{ ok?: boolean; error?: string }>) {
+    setErr(null);
+    startTransition(async () => {
+      const res = await fn();
+      if (res.error) setErr(res.error);
+    });
+  }
 
   function change(value: TournamentEstado) {
     setEstado(value);
-    setErr(null);
-    startTransition(async () => {
-      const res = await setTournamentEstadoAction(t.id, value);
-      if (res.error) setErr(res.error);
-    });
+    run(() => setTournamentEstadoAction(t.id, value));
+  }
+
+  function toggleGratuito() {
+    const next = !gratuito;
+    setGratuito(next);
+    run(() => setTournamentGratuitoAction(t.id, next));
+  }
+
+  function saveCuota() {
+    if (cuota.trim() === t.cuota) return;
+    run(() => setTournamentCuotaAction(t.id, cuota));
   }
 
   const active = estado === "inscripciones" || estado === "en_curso";
 
   return (
     <div
-      className={`flex flex-wrap items-center justify-between gap-2 border px-3 py-2 ${
+      className={`border px-3 py-2 ${
         active ? "border-teal/50 bg-teal/5" : "border-line bg-panel"
       }`}
     >
-      <div className="min-w-0">
-        <span className="font-head text-sm font-semibold text-bone">
-          {t.nombre}
-        </span>
-        <span className="ml-2 font-mono text-[10px] uppercase text-muted">
-          {t.temporada}
-        </span>
-        {err && <div className="text-xs text-brand">{err}</div>}
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div className="min-w-0">
+          <span className="font-head text-sm font-semibold text-bone">
+            {t.nombre}
+          </span>
+          <span className="ml-2 font-mono text-[10px] uppercase text-muted">
+            {t.temporada}
+          </span>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            onClick={toggleGratuito}
+            disabled={pending}
+            className={`border px-3 py-1.5 font-head text-xs uppercase tracking-wide transition disabled:opacity-50 ${
+              gratuito
+                ? "border-teal bg-teal/10 text-teal"
+                : "border-gold bg-gold/10 text-gold"
+            }`}
+            title="Cambiar modalidad"
+          >
+            {gratuito ? "Gratuito" : "De pago"}
+          </button>
+          <select
+            value={estado}
+            disabled={pending}
+            onChange={(e) => change(e.target.value as TournamentEstado)}
+            className="min-h-[34px] border border-line bg-void2 px-2 text-xs font-head uppercase tracking-wide text-bone focus:border-teal focus:outline-none disabled:opacity-50"
+          >
+            {ESTADOS.map((s) => (
+              <option key={s.value} value={s.value}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
-      <select
-        value={estado}
-        disabled={pending}
-        onChange={(e) => change(e.target.value as TournamentEstado)}
-        className="min-h-[34px] border border-line bg-void2 px-2 text-xs font-head uppercase tracking-wide text-bone focus:border-teal focus:outline-none disabled:opacity-50"
-      >
-        {ESTADOS.map((s) => (
-          <option key={s.value} value={s.value}>
-            {s.label}
-          </option>
-        ))}
-      </select>
+      {!gratuito && (
+        <div className="mt-2 flex items-center gap-2">
+          <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
+            Cuota
+          </span>
+          <input
+            value={cuota}
+            disabled={pending}
+            onChange={(e) => setCuota(e.target.value)}
+            onBlur={saveCuota}
+            placeholder="Ej. $250 MXN por equipo"
+            className="min-h-[32px] flex-1 border border-line bg-void2 px-2 text-xs text-bone placeholder:text-muted2 focus:border-teal focus:outline-none disabled:opacity-50"
+          />
+        </div>
+      )}
+      {err && <div className="mt-1 text-xs text-brand">{err}</div>}
     </div>
   );
 }

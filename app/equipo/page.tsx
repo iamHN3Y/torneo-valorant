@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { requireTeam } from "@/lib/session";
-import { getTeamById, getPlayers } from "@/lib/repo";
+import { getTeamById, getPlayers, getTournamentById } from "@/lib/repo";
 import { validateRoster } from "@/lib/validation";
 import { ESTADO_LABEL } from "@/lib/data";
 import RosterEditor from "@/components/RosterEditor";
@@ -11,20 +11,29 @@ export const metadata = {
   title: "Mi equipo · Copa México VALORANT 2026",
 };
 
-const FLOW = ["Registro", "Pago", "Revisión", "Aprobado"];
-const FLOW_INDEX: Record<string, number> = {
-  borrador: 0,
-  pendiente_pago: 1,
-  en_revision: 2,
-  aprobado: 3,
-};
-
 export default async function EquipoPage() {
   const session = await requireTeam();
 
   const team = await getTeamById(session.id);
   if (!team) redirect("/ingresar");
   const players = await getPlayers(team.id);
+
+  // El flujo depende de la modalidad del torneo: gratuito no tiene paso de pago.
+  let gratuito = true;
+  if (team.tournamentId) {
+    try {
+      const tour = await getTournamentById(team.tournamentId);
+      if (tour) gratuito = tour.gratuito;
+    } catch {
+      // Sin dato del torneo: se asume gratuito (no muestra paso de pago).
+    }
+  }
+  const FLOW = gratuito
+    ? ["Registro", "Revisión", "Aprobado"]
+    : ["Registro", "Pago", "Revisión", "Aprobado"];
+  const FLOW_INDEX: Record<string, number> = gratuito
+    ? { borrador: 0, pendiente_pago: 1, en_revision: 1, aprobado: 2 }
+    : { borrador: 0, pendiente_pago: 1, en_revision: 2, aprobado: 3 };
 
   const validacion = validateRoster(players, team.rama);
   const est = ESTADO_LABEL[team.estado] ?? { label: team.estado, color: "text-muted" };

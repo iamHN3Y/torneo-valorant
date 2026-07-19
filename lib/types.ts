@@ -41,29 +41,5 @@ export interface Team {
   fechaRegistro?: string;
 }
 
-export interface MatchTeam {
-  nombre: string;
-  tag: string;
-  score?: number;
-}
-
-export interface Match {
-  id: string;
-  ronda: string;
-  formato: "Bo1" | "Bo3" | "Bo5";
-  a?: MatchTeam;
-  b?: MatchTeam;
-  estado: "programado" | "en_vivo" | "finalizado";
-  fecha?: string;
-  ganador?: "a" | "b";
-}
-
-export interface GroupRow {
-  pos: number;
-  nombre: string;
-  tag: string;
-  v: number; // victorias
-  d: number; // derrotas
-  difMapas: number;
-  clasificado: boolean;
-}
+// Los tipos de partidos y standings viven en lib/repo.ts (DbMatch,
+// GroupStanding, RankingStanding), derivados del esquema de Postgres.

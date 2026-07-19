@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { requireCo } from "@/lib/session";
 import { listTeams, listTournaments, type DbTeam, type DbTournament } from "@/lib/repo";
 import { logout } from "@/app/ingresar/actions";
@@ -38,9 +39,14 @@ export default async function AdminPage() {
             Panel de control
           </h1>
         </div>
-        <form action={logout}>
-          <button className="cyber-btn cyber-btn-ghost text-xs">Salir</button>
-        </form>
+        <div className="flex items-center gap-2">
+          <Link href="/admin/competicion" className="cyber-btn cyber-btn-ghost text-xs">
+            Competición →
+          </Link>
+          <form action={logout}>
+            <button className="cyber-btn cyber-btn-ghost text-xs">Salir</button>
+          </form>
+        </div>
       </div>
 
       {dbError ? (

@@ -29,6 +29,9 @@ CREATE TABLE IF NOT EXISTS tournament (
   created_at  timestamptz NOT NULL DEFAULT now()
 );
 
+-- Torneos gratuitos vs. de pago (por defecto gratuito).
+ALTER TABLE tournament ADD COLUMN IF NOT EXISTS gratuito boolean NOT NULL DEFAULT true;
+
 -- Equipos. El login es NOMBRE#TAG (único a nivel global).
 CREATE TABLE IF NOT EXISTS team (
   id                 uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -67,3 +70,56 @@ CREATE TABLE IF NOT EXISTS player (
 );
 
 CREATE INDEX IF NOT EXISTS player_team_idx ON player (team_id);
+
+-- ============================================================
+--  Fase competitiva: grupos y partidos
+-- ============================================================
+
+-- Grupos de la fase de grupos (A, B, C...).
+CREATE TABLE IF NOT EXISTS tournament_group (
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  tournament_id uuid NOT NULL REFERENCES tournament(id) ON DELETE CASCADE,
+  nombre        text NOT NULL,
+  orden         integer NOT NULL DEFAULT 0,
+  created_at    timestamptz NOT NULL DEFAULT now()
+);
+
+-- Pertenencia de equipos a grupos.
+CREATE TABLE IF NOT EXISTS tournament_group_team (
+  group_id uuid NOT NULL REFERENCES tournament_group(id) ON DELETE CASCADE,
+  team_id  uuid NOT NULL REFERENCES team(id) ON DELETE CASCADE,
+  PRIMARY KEY (group_id, team_id)
+);
+
+-- Partidos (series). group_id NULL = playoffs/bracket.
+CREATE TABLE IF NOT EXISTS tournament_match (
+  id            uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  tournament_id uuid NOT NULL REFERENCES tournament(id) ON DELETE CASCADE,
+  group_id      uuid REFERENCES tournament_group(id) ON DELETE SET NULL,
+  ronda         text NOT NULL,          -- "Grupo A", "Cuartos", "Semifinal", "Gran Final"
+  formato       text NOT NULL DEFAULT 'Bo3' CHECK (formato IN ('Bo1','Bo3','Bo5')),
+  team_a_id     uuid REFERENCES team(id) ON DELETE SET NULL,
+  team_b_id     uuid REFERENCES team(id) ON DELETE SET NULL,
+  score_a       integer NOT NULL DEFAULT 0,
+  score_b       integer NOT NULL DEFAULT 0,
+  estado        text NOT NULL DEFAULT 'programado'
+                CHECK (estado IN ('programado','en_vivo','finalizado')),
+  fecha         timestamptz,
+  orden         integer NOT NULL DEFAULT 0,
+  created_at    timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS match_tournament_idx ON tournament_match (tournament_id);
+CREATE INDEX IF NOT EXISTS match_group_idx ON tournament_match (group_id);
+
+-- Ajustes manuales de ranking del CO (Art. 43: bonos por rival superior,
+-- consistencia, y penalizaciones por W.O. o disciplina).
+CREATE TABLE IF NOT EXISTS ranking_adjustment (
+  id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  team_id    uuid NOT NULL REFERENCES team(id) ON DELETE CASCADE,
+  puntos     integer NOT NULL,
+  motivo     text NOT NULL,
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS ranking_adjustment_team_idx ON ranking_adjustment (team_id);

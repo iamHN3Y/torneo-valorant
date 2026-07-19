@@ -1,4 +1,5 @@
-import { TOURNAMENT, CALENDAR } from "@/lib/data";
+import { TOURNAMENT as FALLBACK, CALENDAR } from "@/lib/data";
+import { getActiveTournament, countTeamsOccupyingSlot } from "@/lib/repo";
 import Reveal from "@/components/ui/Reveal";
 import CountUp from "@/components/ui/CountUp";
 import CyberButton from "@/components/ui/CyberButton";
@@ -30,8 +31,24 @@ const COMO_PARTICIPAR: AccordionItem[] = [
   },
 ];
 
-export default function Home() {
-  const cupoPct = Math.round((TOURNAMENT.inscritos / TOURNAMENT.cupoMax) * 100);
+export default async function Home() {
+  // Datos reales del torneo activo (con fallback si la BD no está lista).
+  let cupoMax = FALLBACK.cupoMax;
+  let inscritos = 0;
+  let servidor = FALLBACK.servidor;
+  let gratuito = false;
+  try {
+    const tour = await getActiveTournament();
+    if (tour) {
+      cupoMax = tour.cupoMax;
+      servidor = tour.servidor;
+      gratuito = tour.gratuito && tour.estado === "inscripciones";
+      inscritos = await countTeamsOccupyingSlot(tour.id);
+    }
+  } catch {
+    // Sin BD configurada: se muestran los valores por defecto.
+  }
+  const cupoPct = cupoMax > 0 ? Math.round((inscritos / cupoMax) * 100) : 0;
 
   return (
     <div className="mx-auto max-w-6xl px-5">
@@ -69,6 +86,13 @@ export default function Home() {
             nacional rumbo a la Copa América.
           </p>
 
+          {gratuito && (
+            <div className="mt-6 inline-flex items-center gap-2 border border-teal/50 bg-teal/10 px-3 py-1.5 font-head text-xs font-bold uppercase tracking-wider text-teal glow-teal">
+              <span className="h-1.5 w-1.5 rounded-full bg-teal" />
+              Inscripción gratuita en esta edición
+            </div>
+          )}
+
           <div className="mt-8 flex flex-wrap gap-3">
             <CyberButton href="/inscripcion">Inscribe tu equipo</CyberButton>
             <CyberButton href="#como-participar" variant="ghost">
@@ -89,21 +113,31 @@ export default function Home() {
 
       {/* ===================== ESTADO DEL TORNEO ===================== */}
       <Reveal>
-        <section className="grid gap-4 sm:grid-cols-3">
+        <section aria-labelledby="estado-torneo" className="grid gap-4 sm:grid-cols-3">
+          <h2 id="estado-torneo" className="sr-only">
+            Estado del torneo
+          </h2>
           <TiltCard className="surface clip-corner p-5">
             <div className="font-mono text-[10px] uppercase tracking-widest text-muted">
               Cupos ocupados
             </div>
             <div className="mt-2 font-display text-4xl">
-              <CountUp to={TOURNAMENT.inscritos} className="text-glow-teal" />
-              <span className="text-muted">/{TOURNAMENT.cupoMax}</span>
+              <CountUp to={inscritos} className="text-glow-teal" />
+              <span className="text-muted">/{cupoMax}</span>
             </div>
-            <div className="meter mt-3 h-2 w-full overflow-hidden rounded bg-void2">
+            <div
+              className="meter mt-3 h-2 w-full overflow-hidden rounded bg-void2"
+              role="progressbar"
+              aria-valuenow={cupoPct}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={`Cupos ocupados: ${cupoPct} por ciento`}
+            >
               <span className="bg-teal" style={{ width: `${cupoPct}%` }} />
             </div>
-            <div className="mt-2 font-mono text-[10px] uppercase tracking-wider text-muted2">
-              {cupoPct}% del cupo · {TOURNAMENT.cupoMax - TOURNAMENT.inscritos}{" "}
-              lugares libres
+            <div className="mt-2 font-mono text-[10px] uppercase tracking-wider text-muted">
+              {cupoPct}% del cupo · {Math.max(cupoMax - inscritos, 0)} lugares
+              libres
             </div>
           </TiltCard>
 
@@ -122,7 +156,7 @@ export default function Home() {
               Servidor competitivo
             </div>
             <div className="mt-2 font-display text-3xl text-glow-teal">
-              {TOURNAMENT.servidor}
+              {servidor}
             </div>
             <div className="mt-1 text-sm text-bone-dim">
               México City / Dallas · UTC−6 (CDMX)

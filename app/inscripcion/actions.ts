@@ -70,14 +70,18 @@ export async function registerTeamAction(
   let teamId: string;
   try {
     const active = await getActiveTournament();
+    if (!active || active.estado !== "inscripciones") {
+      return { error: "Las inscripciones están cerradas en este momento." };
+    }
     const passwordHash = await hashPassword(password);
     teamId = await createTeam(
       {
-        tournamentId: active?.id ?? null,
+        tournamentId: active.id,
         nombre,
         tag,
         rama,
-        estado: "en_revision",
+        // Torneo gratuito: directo a revisión. De pago: pendiente de pago.
+        estado: active.gratuito ? "en_revision" : "pendiente_pago",
         passwordHash,
       },
       players

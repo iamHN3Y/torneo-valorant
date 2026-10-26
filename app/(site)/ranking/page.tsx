@@ -1,8 +1,16 @@
+import type { CSSProperties } from "react";
 import { RANKING_CONCEPTS } from "@/lib/data";
-import { getRankingStandings, type RankingStanding } from "@/lib/repo";
+import { getRankingStandings, TEAM_ACCENT_HEX, type RankingStanding } from "@/lib/repo";
+import { getSession } from "@/lib/session";
 import Reveal from "@/components/ui/Reveal";
 import CountUp from "@/components/ui/CountUp";
 import RankingCalculator from "@/components/ui/RankingCalculator";
+import Sparkline from "@/components/ui/Sparkline";
+import Sigil from "@/components/ui/Sigil";
+
+function accentHexOf(accent: string): string {
+  return TEAM_ACCENT_HEX[accent as keyof typeof TEAM_ACCENT_HEX] ?? "#7E8C99";
+}
 
 export const metadata = {
   title: "Ranking Nacional · Copa México VALORANT 2026",
@@ -17,6 +25,8 @@ export default async function RankingPage() {
     dbError = true;
   }
   const lider = standings[0];
+  const session = await getSession();
+  const ownTeamId = session?.role === "team" ? session.id : null;
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-12">
@@ -83,6 +93,13 @@ export default async function RankingPage() {
                     <th className="border-b-2 border-gold p-3 text-xs">Dif.</th>
                     <th className="border-b-2 border-gold p-3 text-xs">Bonus pos.</th>
                     <th className="border-b-2 border-gold p-3 text-xs">Ajustes</th>
+                    <th className="border-b-2 border-gold p-3 text-xs">Tendencia</th>
+                    <th
+                      className="border-b-2 border-gold p-3 text-xs"
+                      title="Diferencia entre el corte más reciente y el anterior. Con más de 8 eventos de puntuación, el historial se agrupa en 8 cortes; en ese caso el delta compara los dos últimos cortes agrupados, no necesariamente el último partido."
+                    >
+                      Δ
+                    </th>
                     <th className="border-b-2 border-gold p-3 text-xs">Puntos</th>
                   </tr>
                 </thead>
@@ -90,7 +107,10 @@ export default async function RankingPage() {
                   {standings.map((r, i) => (
                     <tr
                       key={r.teamId}
-                      className="group border-b border-line/40 transition odd:bg-white/[0.015] hover:bg-teal/[0.04]"
+                      className={`accent-stripe group border-b border-line/40 transition odd:bg-white/[0.015] hover:bg-teal/[0.04] ${
+                        r.teamId === ownTeamId ? "glow-accent" : ""
+                      }`}
+                      style={{ "--team-accent": accentHexOf(r.accent) } as CSSProperties}
                     >
                       <td className="p-3">
                         <span
@@ -106,12 +126,35 @@ export default async function RankingPage() {
                         </span>
                       </td>
                       <td className="p-3">
-                        <span className="font-head font-semibold text-bone">
-                          {r.nombre}
-                        </span>
-                        <span className="ml-2 font-mono text-xs text-muted">
-                          [{r.tag}]
-                        </span>
+                        <details className="group/detail">
+                          <summary className="flex cursor-pointer list-none items-center gap-2">
+                            <Sigil teamId={r.teamId} accent={accentHexOf(r.accent)} size={18} className="shrink-0" />
+                            <span className="font-head font-semibold text-bone underline decoration-dotted decoration-muted underline-offset-4">
+                              {r.nombre}
+                            </span>
+                            <span className="font-mono text-xs text-muted">
+                              [{r.tag}]
+                            </span>
+                            <span className="text-[10px] text-muted2 group-open/detail:hidden">
+                              ▸ desglose
+                            </span>
+                          </summary>
+                          <div className="mt-2 max-w-xs space-y-1 border-l border-line pl-3 font-mono text-xs text-bone-dim">
+                            <p>Series ganadas · +20 c/u = {r.series * 20}</p>
+                            <p>Mapas ganados · +8 c/u = {r.mapas * 8}</p>
+                            <p>Bonus de posición = {r.bonusPosicion}</p>
+                            <p>
+                              Ajustes del CO ={" "}
+                              {r.ajustes > 0 ? `+${r.ajustes}` : r.ajustes}
+                            </p>
+                            <a
+                              href="/reglamento?art=43"
+                              className="inline-block pt-1 text-teal underline decoration-dotted underline-offset-4 hover:text-bone"
+                            >
+                              Ver Art. 43 →
+                            </a>
+                          </div>
+                        </details>
                       </td>
                       <td className="p-3">
                         <span
@@ -122,12 +165,16 @@ export default async function RankingPage() {
                           {r.rama}
                         </span>
                       </td>
-                      <td className="p-3 font-mono text-teal">{r.series}</td>
-                      <td className="p-3 font-mono text-bone-dim">{r.mapas}</td>
-                      <td className="p-3 font-mono text-bone-dim">
+                      <td className="p-3 font-mono text-teal [font-variant-numeric:tabular-nums]">
+                        {r.series}
+                      </td>
+                      <td className="p-3 font-mono text-bone-dim [font-variant-numeric:tabular-nums]">
+                        {r.mapas}
+                      </td>
+                      <td className="p-3 font-mono text-bone-dim [font-variant-numeric:tabular-nums]">
                         {r.difMapas > 0 ? `+${r.difMapas}` : r.difMapas}
                       </td>
-                      <td className="p-3 font-mono text-gold">
+                      <td className="p-3 font-mono text-gold [font-variant-numeric:tabular-nums]">
                         {r.bonusPosicion > 0 ? `+${r.bonusPosicion}` : "—"}
                       </td>
                       <td className="p-3">
@@ -135,7 +182,7 @@ export default async function RankingPage() {
                           <span className="font-mono text-muted2">—</span>
                         ) : (
                           <span
-                            className={`font-mono ${
+                            className={`font-mono [font-variant-numeric:tabular-nums] ${
                               r.ajustes < 0 ? "text-brand" : "text-teal"
                             }`}
                           >
@@ -144,7 +191,23 @@ export default async function RankingPage() {
                         )}
                       </td>
                       <td className="p-3">
-                        <span className="font-mono font-semibold text-bone">
+                        <Sparkline data={r.historial} />
+                      </td>
+                      <td className="p-3">
+                        {r.delta === 0 ? (
+                          <span className="font-mono text-muted2">—</span>
+                        ) : r.delta > 0 ? (
+                          <span className="font-mono text-teal [font-variant-numeric:tabular-nums]">
+                            ▲ {r.delta}
+                          </span>
+                        ) : (
+                          <span className="font-mono text-brand [font-variant-numeric:tabular-nums]">
+                            ▼ {Math.abs(r.delta)}
+                          </span>
+                        )}
+                      </td>
+                      <td className="p-3">
+                        <span className="font-mono font-semibold text-bone [font-variant-numeric:tabular-nums]">
                           {r.puntos}
                         </span>
                       </td>

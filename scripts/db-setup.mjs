@@ -41,11 +41,17 @@ async function seedTeam(tournamentId, t) {
     where lower(nombre) = lower(${t.nombre}) and lower(tag) = lower(${t.tag})
     limit 1
   `;
-  if (exists.length) return { id: exists[0].id, nuevo: false };
+  if (exists.length) {
+    // El equipo ya existía (posiblemente de antes de Fase 5, con el accent
+    // default): igual aplicamos el accent del seed para que la demo siempre
+    // muestre 4 acentos distintos, sin tocar nada más de la fila.
+    await sql`update team set accent = ${t.accent} where id = ${exists[0].id}`;
+    return { id: exists[0].id, nuevo: false };
+  }
 
   const [team] = await sql`
-    insert into team (tournament_id, nombre, tag, rama, estado, password_hash, orden_inscripcion)
-    values (${tournamentId}, ${t.nombre}, ${t.tag}, ${t.rama}, ${t.estado}, ${hash(t.password)}, ${t.orden})
+    insert into team (tournament_id, nombre, tag, rama, estado, password_hash, orden_inscripcion, accent)
+    values (${tournamentId}, ${t.nombre}, ${t.tag}, ${t.rama}, ${t.estado}, ${hash(t.password)}, ${t.orden}, ${t.accent})
     returning id
   `;
   const rows = t.players.map((p, i) => ({ team_id: team.id, ...p, orden: i }));
@@ -102,6 +108,7 @@ try {
       rama: "elite",
       estado: "aprobado",
       orden: 1,
+      accent: "violeta",
       password: "jaguares123",
       players: [
         player("Bruno", "Bruno#MX1", "radiante", { cap: true }),
@@ -117,6 +124,7 @@ try {
       rama: "amateur",
       estado: "aprobado",
       orden: 2,
+      accent: "lima",
       password: "quetzal123",
       players: [
         player("Aldo", "Aldo#MX1", "diamante", { cap: true }),
@@ -132,6 +140,7 @@ try {
       rama: "elite",
       estado: "aprobado",
       orden: 3,
+      accent: "cobalto",
       password: "aztlan123",
       players: [
         player("Rex", "Rex#MX1", "inmortal", { cap: true }),
@@ -147,6 +156,7 @@ try {
       rama: "elite",
       estado: "aprobado",
       orden: 4,
+      accent: "rosa",
       password: "norte123",
       players: [
         player("Van", "Van#MX1", "radiante", { cap: true }),

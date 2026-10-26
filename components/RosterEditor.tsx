@@ -5,7 +5,7 @@ import type { Player, RankId, Rol } from "@/lib/types";
 import type { DbPlayer } from "@/lib/repo";
 import { RANKS, rankPoints, ROSTER_RULES } from "@/lib/ranks";
 import { validateRoster } from "@/lib/validation";
-import { saveRosterAction } from "@/app/equipo/actions";
+import { saveRosterAction } from "@/app/(site)/equipo/actions";
 
 const NACIONALIDADES = [
   { code: "MX", label: "México 🇲🇽" },

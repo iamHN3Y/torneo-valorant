@@ -1,7 +1,12 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import type { DbMatch, GroupWithTeams, DbRankingAdjustment } from "@/lib/repo";
+import type {
+  DbMatch,
+  GroupWithTeams,
+  DbRankingAdjustment,
+  DbAuditEntry,
+} from "@/lib/repo";
 import {
   createGroupAction,
   addGroupTeamAction,
@@ -11,7 +16,9 @@ import {
   deleteMatchAction,
   createAdjustmentAction,
   deleteAdjustmentAction,
-} from "@/app/admin/competicion/actions";
+  undoMatchResultAction,
+  publishSorteoAction,
+} from "@/app/(site)/admin/competicion/actions";
 
 interface Team {
   id: string;
@@ -27,18 +34,127 @@ export default function CompeticionManager({
   groups,
   matches,
   adjustments,
+  audit,
+  sorteoPublicadoAt,
 }: {
   teams: Team[];
   groups: GroupWithTeams[];
   matches: DbMatch[];
   adjustments: DbRankingAdjustment[];
+  audit: DbAuditEntry[];
+  sorteoPublicadoAt: string | null;
 }) {
   return (
     <div className="space-y-12">
-      <GroupsSection teams={teams} groups={groups} />
+      <GroupsSection
+        teams={teams}
+        groups={groups}
+        sorteoPublicadoAt={sorteoPublicadoAt}
+      />
       <MatchesSection teams={teams} groups={groups} matches={matches} />
       <AdjustmentsSection teams={teams} adjustments={adjustments} />
+      <AuditFeedSection entries={audit} />
     </div>
+  );
+}
+
+/* ------------------------- FEED DE AUDITORÍA ------------------------- */
+
+const AUDIT_TIPO_LABEL: Record<string, string> = {
+  match_result: "Resultado",
+  match_delete: "Partido eliminado",
+  match_create: "Partido creado",
+  team_estado: "Estado de equipo",
+  roster_lock: "Roster",
+  team_nota: "Nota de equipo",
+  adjustment_create: "Ajuste de ranking",
+  adjustment_delete: "Ajuste eliminado",
+  revert: "Deshacer",
+  tournament_create: "Torneo creado",
+  tournament_estado: "Estado de torneo",
+  tournament_gratuito: "Modalidad de torneo",
+  tournament_cuota: "Cuota de torneo",
+  group_create: "Grupo creado",
+  group_team_add: "Equipo agregado a grupo",
+  group_team_remove: "Equipo quitado de grupo",
+  sorteo_publish: "Sorteo publicado",
+};
+
+function formatAuditTime(iso: string): string {
+  const d = new Date(iso);
+  return d.toLocaleString("es-MX", {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function AuditFeedSection({ entries }: { entries: DbAuditEntry[] }) {
+  const [pending, start] = useTransition();
+  const [undoingId, setUndoingId] = useState<string | null>(null);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // ids que ya fueron revertidos por otra entrada 'revert' en este feed.
+  const revertedIds = new Set(
+    entries.filter((e) => e.revierteAuditId).map((e) => e.revierteAuditId as string)
+  );
+
+  function undo(auditId: string) {
+    setUndoingId(auditId);
+    setErrors((prev) => ({ ...prev, [auditId]: "" }));
+    start(async () => {
+      const r = await undoMatchResultAction(auditId);
+      if (r.error) {
+        setErrors((prev) => ({ ...prev, [auditId]: r.error as string }));
+      }
+      setUndoingId(null);
+    });
+  }
+
+  return (
+    <section>
+      <h2 className="font-head text-xl font-semibold uppercase tracking-wide">
+        Bitácora de auditoría
+      </h2>
+      <p className="mt-1 text-sm text-muted">
+        Últimas acciones del Comité Organizador. Los resultados de partido
+        recientes se pueden deshacer si nadie más los modificó después.
+      </p>
+
+      <div className="mt-4 space-y-2">
+        {entries.length === 0 && (
+          <p className="text-sm text-muted2">Sin actividad registrada.</p>
+        )}
+        {entries.map((e) => {
+          const canUndo = e.tipo === "match_result" && !revertedIds.has(e.id);
+          return (
+            <div
+              key={e.id}
+              className="surface flex flex-wrap items-center gap-3 p-3 text-sm"
+            >
+              <span className="hud-chip">{AUDIT_TIPO_LABEL[e.tipo] ?? e.tipo}</span>
+              <span className="min-w-0 flex-1 text-bone-dim">{e.descripcion}</span>
+              <span className="font-mono text-[10px] text-muted2">
+                {e.coNombre ?? "CO"} · {formatAuditTime(e.createdAt)}
+              </span>
+              {canUndo && (
+                <button
+                  onClick={() => undo(e.id)}
+                  disabled={pending && undoingId === e.id}
+                  className="border border-teal px-3 py-1 font-head text-xs uppercase text-teal transition hover:bg-teal/10 disabled:opacity-40"
+                >
+                  {pending && undoingId === e.id ? "…" : "Deshacer"}
+                </button>
+              )}
+              {errors[e.id] && (
+                <span className="w-full text-xs text-brand">{errors[e.id]}</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -168,13 +284,18 @@ function AdjustmentsSection({
 function GroupsSection({
   teams,
   groups,
+  sorteoPublicadoAt,
 }: {
   teams: Team[];
   groups: GroupWithTeams[];
+  sorteoPublicadoAt: string | null;
 }) {
   const [pending, start] = useTransition();
   const [nombre, setNombre] = useState("");
   const [err, setErr] = useState<string | null>(null);
+  const [publishing, startPublish] = useTransition();
+  const [publishErr, setPublishErr] = useState<string | null>(null);
+  const [publishedAt, setPublishedAt] = useState(sorteoPublicadoAt);
 
   function crear() {
     setErr(null);
@@ -185,11 +306,47 @@ function GroupsSection({
     });
   }
 
+  const hayEquiposAsignados = groups.some((g) => g.teams.length > 0);
+
+  function publicar() {
+    setPublishErr(null);
+    startPublish(async () => {
+      const r = await publishSorteoAction();
+      if (r.error) setPublishErr(r.error);
+      else setPublishedAt(new Date().toISOString());
+    });
+  }
+
   return (
     <section>
-      <h2 className="font-head text-xl font-semibold uppercase tracking-wide">
-        Grupos
-      </h2>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <h2 className="font-head text-xl font-semibold uppercase tracking-wide">
+          Grupos
+        </h2>
+        {publishedAt ? (
+          <span className="hud-chip text-teal">
+            Sorteo publicado el{" "}
+            {new Date(publishedAt).toLocaleString("es-MX", {
+              dateStyle: "short",
+              timeStyle: "short",
+            })}
+          </span>
+        ) : (
+          <button
+            onClick={publicar}
+            disabled={publishing || !hayEquiposAsignados}
+            title={
+              hayEquiposAsignados
+                ? undefined
+                : "Asigna al menos un equipo a un grupo para publicar."
+            }
+            className="border border-teal px-3 py-1.5 font-head text-xs uppercase text-teal transition hover:bg-teal/10 disabled:opacity-40"
+          >
+            {publishing ? "Publicando…" : "Publicar sorteo"}
+          </button>
+        )}
+      </div>
+      {publishErr && <p className="mt-2 text-sm text-brand">{publishErr}</p>}
       <div className="mt-4 flex flex-wrap gap-2">
         <input
           value={nombre}

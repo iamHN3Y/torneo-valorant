@@ -6,9 +6,11 @@ import {
   getGroupsWithTeams,
   getAllMatches,
   listRankingAdjustments,
+  listAudit,
   type DbMatch,
   type GroupWithTeams,
   type DbRankingAdjustment,
+  type DbAuditEntry,
 } from "@/lib/repo";
 import CompeticionManager from "@/components/admin/CompeticionManager";
 
@@ -23,19 +25,23 @@ export default async function AdminCompeticionPage() {
   let groups: GroupWithTeams[] = [];
   let matches: DbMatch[] = [];
   let adjustments: DbRankingAdjustment[] = [];
+  let audit: DbAuditEntry[] = [];
   let dbError = false;
   let noTournament = false;
+  let sorteoPublicadoAt: string | null = null;
 
   try {
     const tour = await getActiveTournament();
     if (!tour) {
       noTournament = true;
     } else {
-      const [allTeams, g, m, adj] = await Promise.all([
+      sorteoPublicadoAt = tour.sorteoPublicadoAt;
+      const [allTeams, g, m, adj, aud] = await Promise.all([
         listTeams(tour.id),
         getGroupsWithTeams(tour.id),
         getAllMatches(tour.id),
         listRankingAdjustments(),
+        listAudit(20),
       ]);
       teams = allTeams
         .filter((t) => t.estado !== "rechazado")
@@ -43,6 +49,7 @@ export default async function AdminCompeticionPage() {
       groups = g;
       matches = m;
       adjustments = adj;
+      audit = aud;
     }
   } catch {
     dbError = true;
@@ -78,6 +85,8 @@ export default async function AdminCompeticionPage() {
             groups={groups}
             matches={matches}
             adjustments={adjustments}
+            audit={audit}
+            sorteoPublicadoAt={sorteoPublicadoAt}
           />
         </div>
       )}

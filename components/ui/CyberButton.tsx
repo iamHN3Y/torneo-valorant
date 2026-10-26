@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRef } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /** Botón/enlace con ripple Material + glow neón. */
 export default function CyberButton({
@@ -20,7 +21,7 @@ export default function CyberButton({
   function spawnRipple(e: React.PointerEvent<HTMLAnchorElement>) {
     const el = ref.current;
     if (!el) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion()) return;
     const rect = el.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
     const ink = document.createElement("span");

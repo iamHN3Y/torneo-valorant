@@ -1,10 +1,102 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState, useTransition } from "react";
 import type { Player, Rama, RankId } from "@/lib/types";
 import { RANKS, rankPoints, ROSTER_RULES } from "@/lib/ranks";
 import { validateRoster, type Requisito } from "@/lib/validation";
+import { prefersReducedMotion } from "@/lib/motion";
 import { registerTeamAction } from "./actions";
+
+/** Autosave del borrador de inscripción — allow-list explícita, JAMÁS password. */
+const DRAFT_KEY = "cmx_inscripcion_draft_v1";
+const DRAFT_TTL_MS = 24 * 60 * 60 * 1000; // 24 h
+
+interface DraftPayload {
+  ts: number;
+  nombre: string;
+  tag: string;
+  rama: Rama;
+  jugadores: Player[];
+}
+
+/** Valida que un elemento del array `jugadores` de un draft tenga la forma esperada. */
+function isValidDraftPlayer(p: unknown): p is Player {
+  if (!p || typeof p !== "object") return false;
+  const j = p as Record<string, unknown>;
+  return (
+    typeof j.id === "string" &&
+    typeof j.nombre === "string" &&
+    typeof j.riotId === "string" &&
+    typeof j.rankId === "string" &&
+    typeof j.nacionalidad === "string" &&
+    (j.rol === "titular" || j.rol === "suplente") &&
+    (j.esCapitan === undefined || typeof j.esCapitan === "boolean") &&
+    (j.riotVerificado === undefined || typeof j.riotVerificado === "boolean")
+  );
+}
+
+function readDraft(): DraftPayload | null {
+  try {
+    const raw = window.localStorage.getItem(DRAFT_KEY);
+    if (!raw) return null;
+    let parsed: Partial<DraftPayload>;
+    try {
+      parsed = JSON.parse(raw) as Partial<DraftPayload>;
+    } catch {
+      // JSON corrupto: no sirve, bórralo.
+      try {
+        window.localStorage.removeItem(DRAFT_KEY);
+      } catch {}
+      return null;
+    }
+    if (
+      !parsed ||
+      typeof parsed.ts !== "number" ||
+      typeof parsed.nombre !== "string" ||
+      typeof parsed.tag !== "string" ||
+      (parsed.rama !== "amateur" && parsed.rama !== "elite") ||
+      !Array.isArray(parsed.jugadores) ||
+      !parsed.jugadores.every(isValidDraftPlayer)
+    ) {
+      window.localStorage.removeItem(DRAFT_KEY);
+      return null;
+    }
+    if (Date.now() - parsed.ts > DRAFT_TTL_MS) {
+      window.localStorage.removeItem(DRAFT_KEY);
+      return null;
+    }
+    return parsed as DraftPayload;
+  } catch {
+    return null;
+  }
+}
+
+function clearDraft() {
+  try {
+    window.localStorage.removeItem(DRAFT_KEY);
+  } catch {
+    // localStorage no disponible: nada que limpiar.
+  }
+}
+
+/** true si no hay nada significativo que valga la pena persistir todavía. */
+function isPayloadEmpty(nombre: string, tag: string, jugadores: Player[]): boolean {
+  if (nombre.trim().length > 0 || tag.trim().length > 0) return false;
+  return !jugadores.some(
+    (j) => j.nombre.trim().length > 0 || j.riotId.trim().length > 0
+  );
+}
+
+/** Detecta si un error lanzado desde una Server Action es en realidad un redirect() exitoso. */
+function isRedirectThrow(err: unknown): boolean {
+  return (
+    !!err &&
+    typeof err === "object" &&
+    "digest" in err &&
+    typeof (err as { digest?: unknown }).digest === "string" &&
+    (err as { digest: string }).digest.startsWith("NEXT_REDIRECT")
+  );
+}
 
 const NACIONALIDADES = [
   { code: "MX", label: "México 🇲🇽" },
@@ -20,7 +112,7 @@ type VerifyState = "idle" | "loading" | "ok" | "notfound" | "error";
 
 /** Ripple Material para botones (respeta reduced-motion). */
 function ripple(e: React.PointerEvent<HTMLElement>) {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (prefersReducedMotion()) return;
   const el = e.currentTarget;
   const rect = el.getBoundingClientRect();
   const size = Math.max(rect.width, rect.height);
@@ -81,6 +173,16 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, startSubmit] = useTransition();
 
+  // Autosave: hidratación desde localStorage y aviso de borrador recuperado.
+  const [hydrated, setHydrated] = useState(false);
+  const [draftRestored, setDraftRestored] = useState(false);
+
+  // Refs para foco automático al primer campo/elemento inválido.
+  const nombreRef = useRef<HTMLInputElement>(null);
+  const tagRef = useRef<HTMLInputElement>(null);
+  const rosterStatusRef = useRef<HTMLDivElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
   const titulares = jugadores.filter((j) => j.rol === "titular");
   const suplentes = jugadores.filter((j) => j.rol === "suplente");
 
@@ -91,6 +193,85 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
 
   const paso1Ok = nombre.trim().length >= 3 && tag.trim().length >= 2;
   const passwordOk = password.length >= 6 && password === password2;
+
+  // Restaura un borrador válido (dentro del TTL de 24h) al montar. Nunca toca password.
+  useEffect(() => {
+    const draft = readDraft();
+    if (draft) {
+      setNombre(draft.nombre);
+      setTag(draft.tag);
+      setRama(draft.rama);
+      if (draft.jugadores.length > 0) setJugadores(draft.jugadores);
+      setDraftRestored(true);
+    }
+    setHydrated(true);
+  }, []);
+
+  // Autosave con debounce — allow-list explícita: SOLO nombre/tag/rama/jugadores.
+  useEffect(() => {
+    if (!hydrated) return;
+    const handle = window.setTimeout(() => {
+      try {
+        // Guarda contra el síntoma real (no el timing): si el formulario está
+        // vacío en un sentido significativo, no escribas nada. Esto cubre tanto
+        // el caso normal (visitante que no llega a teclear nada) como la carrera
+        // de remount tras un envío exitoso (RedirectBoundary remonta el árbol con
+        // estado vacío antes de que la navegación a /equipo desmonte el
+        // formulario; con esta guarda, su propio timer de autosave no tiene nada
+        // significativo que guardar y no toca localStorage).
+        if (isPayloadEmpty(nombre, tag, jugadores)) return;
+        const payload: DraftPayload = {
+          ts: Date.now(),
+          nombre,
+          tag,
+          rama,
+          jugadores: jugadores.map((j) => ({
+            id: j.id,
+            nombre: j.nombre,
+            riotId: j.riotId,
+            rankId: j.rankId,
+            nacionalidad: j.nacionalidad,
+            rol: j.rol,
+            esCapitan: !!j.esCapitan,
+            riotVerificado: !!j.riotVerificado,
+          })),
+        };
+        window.localStorage.setItem(DRAFT_KEY, JSON.stringify(payload));
+      } catch {
+        // localStorage no disponible (modo privado, cuota, etc.): el formulario sigue funcionando.
+      }
+    }, 700);
+    return () => window.clearTimeout(handle);
+  }, [hydrated, nombre, tag, rama, jugadores]);
+
+  function descartarDraft() {
+    clearDraft();
+    setDraftRestored(false);
+  }
+
+  function focusPaso1Invalido() {
+    if (nombre.trim().length < 3) {
+      nombreRef.current?.focus();
+    } else if (tag.trim().length < 2) {
+      tagRef.current?.focus();
+    }
+  }
+
+  function intentarAvanzarPaso1() {
+    if (!paso1Ok) {
+      focusPaso1Invalido();
+      return;
+    }
+    setStep(1);
+  }
+
+  function intentarAvanzarPaso2() {
+    if (!validacion.valido) {
+      rosterStatusRef.current?.focus();
+      return;
+    }
+    setStep(2);
+  }
 
   function enviarInscripcion() {
     setSubmitError(null);
@@ -104,15 +285,44 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
       riotVerificado: !!j.riotVerificado,
     }));
     startSubmit(async () => {
-      const res = await registerTeamAction({
-        nombre,
-        tag,
-        rama,
-        password,
-        players,
-      });
-      if (res?.error) setSubmitError(res.error);
+      try {
+        const res = await registerTeamAction({
+          nombre,
+          tag,
+          rama,
+          password,
+          players,
+        });
+        if (res?.error) {
+          setSubmitError(res.error);
+          return;
+        }
+        // No hubo redirect ni error explícito: por seguridad, limpia el borrador.
+        clearDraft();
+      } catch (err) {
+        if (isRedirectThrow(err)) {
+          // Registro exitoso: la Server Action redirige a /equipo. Limpia el
+          // borrador; si el RedirectBoundary remonta el formulario con estado
+          // vacío antes de que la navegación termine, la guarda de payload
+          // vacío en el efecto de autosave evita que ese remount vuelva a
+          // escribir un draft en localStorage.
+          clearDraft();
+        }
+        throw err;
+      }
     });
+  }
+
+  function intentarEnviar() {
+    if (!validacion.valido) {
+      rosterStatusRef.current?.focus();
+      return;
+    }
+    if (!passwordOk) {
+      passwordRef.current?.focus();
+      return;
+    }
+    enviarInscripcion();
   }
 
   function canGoTo(i: number) {
@@ -181,6 +391,22 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
         hace falta tener todo listo de golpe.
       </p>
 
+      {draftRestored && (
+        <div className="surface clip-corner-tl border-teal mt-6 flex flex-wrap items-center justify-between gap-3 px-4 py-3 text-sm">
+          <span className="text-bone-dim">
+            Recuperamos tu progreso anterior en este dispositivo. Revísalo y
+            continúa donde te quedaste.
+          </span>
+          <button
+            type="button"
+            onClick={descartarDraft}
+            className="shrink-0 font-mono text-xs uppercase tracking-wide text-muted underline decoration-dotted hover:text-brand"
+          >
+            Descartar
+          </button>
+        </div>
+      )}
+
       {/* Stepper con progreso */}
       <Stepper step={step} canGoTo={canGoTo} onGo={setStep} />
 
@@ -194,6 +420,7 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
                 hint="Como aparecerá en transmisión (mín. 3 caracteres)."
               >
                 <input
+                  ref={nombreRef}
                   value={nombre}
                   onChange={(e) => setNombre(e.target.value)}
                   placeholder="Ej. Jaguares Esports"
@@ -205,6 +432,7 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
                 hint="Abreviatura corta de 2 a 5 letras."
               >
                 <input
+                  ref={tagRef}
                   value={tag}
                   onChange={(e) => setTag(e.target.value.toUpperCase())}
                   maxLength={5}
@@ -251,10 +479,12 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
                 </div>
               </Field>
               <button
-                disabled={!paso1Ok}
-                onPointerDown={ripple}
-                onClick={() => setStep(1)}
-                className="ripple-host cyber-btn cyber-btn-primary disabled:cursor-not-allowed disabled:opacity-40"
+                aria-disabled={!paso1Ok}
+                onPointerDown={(e) => paso1Ok && ripple(e)}
+                onClick={intentarAvanzarPaso1}
+                className={`ripple-host cyber-btn cyber-btn-primary ${
+                  !paso1Ok ? "cursor-not-allowed opacity-40" : ""
+                }`}
               >
                 Continuar al roster →
               </button>
@@ -300,10 +530,12 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
                   ← Atrás
                 </button>
                 <button
-                  disabled={!validacion.valido}
-                  onPointerDown={ripple}
-                  onClick={() => setStep(2)}
-                  className="ripple-host cyber-btn cyber-btn-primary disabled:cursor-not-allowed disabled:opacity-40"
+                  aria-disabled={!validacion.valido}
+                  onPointerDown={(e) => validacion.valido && ripple(e)}
+                  onClick={intentarAvanzarPaso2}
+                  className={`ripple-host cyber-btn cyber-btn-primary ${
+                    !validacion.valido ? "cursor-not-allowed opacity-40" : ""
+                  }`}
                 >
                   Continuar →
                 </button>
@@ -349,6 +581,7 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   <Field label="Contraseña" hint="Mínimo 6 caracteres.">
                     <input
+                      ref={passwordRef}
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -410,10 +643,17 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
                   </p>
                 )}
                 <button
-                  onPointerDown={ripple}
-                  onClick={enviarInscripcion}
-                  disabled={!passwordOk || !validacion.valido || submitting}
-                  className="ripple-host cyber-btn cyber-btn-primary mt-4 disabled:cursor-not-allowed disabled:opacity-40"
+                  onPointerDown={(e) =>
+                    passwordOk && validacion.valido && !submitting && ripple(e)
+                  }
+                  onClick={intentarEnviar}
+                  aria-disabled={!passwordOk || !validacion.valido || submitting}
+                  disabled={submitting}
+                  className={`ripple-host cyber-btn cyber-btn-primary mt-4 ${
+                    !passwordOk || !validacion.valido || submitting
+                      ? "cursor-not-allowed opacity-40"
+                      : ""
+                  }`}
                 >
                   {submitting ? "Enviando…" : "Confirmar inscripción"}
                 </button>
@@ -437,6 +677,7 @@ export default function InscripcionForm({ torneo }: { torneo: TorneoInfo }) {
         {/* PANEL DE PROGRESO EN VIVO */}
         <aside className="lg:sticky lg:top-24 lg:self-start">
           <ProgresoPanel
+            statusRef={rosterStatusRef}
             puntos={validacion.puntosTitulares}
             tope={validacion.topePuntos}
             requisitos={validacion.requisitos}
@@ -725,12 +966,14 @@ function PlayerRow({
 /* --------------------------- PANEL PROGRESO --------------------------- */
 
 function ProgresoPanel({
+  statusRef,
   puntos,
   tope,
   requisitos,
   avisos,
   valido,
 }: {
+  statusRef: React.RefObject<HTMLDivElement | null>;
   puntos: number;
   tope: number | null;
   requisitos: Requisito[];
@@ -779,7 +1022,9 @@ function ProgresoPanel({
 
       {/* Estado global */}
       <div
-        className={`mt-4 border-l-2 px-3 py-2 text-sm ${
+        ref={statusRef}
+        tabIndex={-1}
+        className={`mt-4 border-l-2 px-3 py-2 text-sm outline-none ${
           valido
             ? "border-teal bg-teal/5 text-teal"
             : "border-gold bg-gold/5 text-gold"
@@ -812,6 +1057,14 @@ function ProgresoPanel({
               <span className="block font-mono text-[10px] uppercase tracking-wider text-muted2">
                 {r.hint}
               </span>
+              {!r.ok && (
+                <a
+                  href={`/reglamento?art=${r.articulo}`}
+                  className="mt-0.5 inline-block font-mono text-[10px] uppercase tracking-wider text-teal underline decoration-dotted hover:text-bone"
+                >
+                  Ver Art. {r.articulo} →
+                </a>
+              )}
             </span>
           </li>
         ))}
@@ -826,8 +1079,19 @@ function ProgresoPanel({
       )}
 
       <p className="mt-4 font-mono text-[10px] leading-relaxed text-muted2">
-        Reglas: Art. 11 (base nacional) · Art. 12 (5+2) · Art. 16 (puntos y
-        rangos).
+        Reglas:{" "}
+        <a href="/reglamento?art=11" className="underline decoration-dotted hover:text-teal">
+          Art. 11
+        </a>{" "}
+        (base nacional) ·{" "}
+        <a href="/reglamento?art=12" className="underline decoration-dotted hover:text-teal">
+          Art. 12
+        </a>{" "}
+        (5+2) ·{" "}
+        <a href="/reglamento?art=16" className="underline decoration-dotted hover:text-teal">
+          Art. 16
+        </a>{" "}
+        (puntos y rangos).
       </p>
     </div>
   );

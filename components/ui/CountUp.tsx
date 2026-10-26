@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /** Número que cuenta hasta `to` al entrar en viewport. */
 export default function CountUp({
@@ -24,9 +25,7 @@ export default function CountUp({
         if (!entry.isIntersecting || started.current) return;
         started.current = true;
 
-        const reduce = window.matchMedia(
-          "(prefers-reduced-motion: reduce)"
-        ).matches;
+        const reduce = prefersReducedMotion();
         if (reduce) {
           setVal(to);
           return;

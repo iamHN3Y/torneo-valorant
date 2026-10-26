@@ -1,11 +1,20 @@
+import type { CSSProperties } from "react";
+import Link from "next/link";
 import {
   getActiveTournament,
   getGroupsWithStandings,
+  getGroupsWithTeams,
   getBracketMatches,
+  TEAM_ACCENT_HEX,
   type DbMatch,
   type GroupWithStandings,
 } from "@/lib/repo";
 import Reveal from "@/components/ui/Reveal";
+import Sigil from "@/components/ui/Sigil";
+
+function accentHexOf(accent: string | null): string {
+  return TEAM_ACCENT_HEX[accent as keyof typeof TEAM_ACCENT_HEX] ?? "#7E8C99";
+}
 
 export const metadata = {
   title: "Competición · Copa México VALORANT 2026",
@@ -16,11 +25,21 @@ export default async function BracketPage() {
   let matches: DbMatch[] = [];
   let dbError = false;
   let noTournament = false;
+  let sorteoPendiente = false;
+  let gruposFormados = 0;
 
   try {
     const tour = await getActiveTournament();
     if (!tour) {
       noTournament = true;
+    } else if (!tour.sorteoPublicadoAt) {
+      // Sorteo (Fase 6): mientras no esté publicado, NO se llama a
+      // getGroupsWithStandings (que revelaría qué equipo está en qué
+      // grupo). Solo se cuentan los grupos formados para dar contexto.
+      const rawGroups = await getGroupsWithTeams(tour.id);
+      gruposFormados = rawGroups.length;
+      if (gruposFormados > 0) sorteoPendiente = true;
+      matches = await getBracketMatches(tour.id);
     } else {
       [groups, matches] = await Promise.all([
         getGroupsWithStandings(tour.id),
@@ -68,7 +87,20 @@ export default async function BracketPage() {
                 Fase de grupos
               </h2>
             </Reveal>
-            {groups.length === 0 ? (
+            {sorteoPendiente ? (
+              <div className="surface clip-corner mt-6 p-6 text-center">
+                <p className="text-sm text-muted">
+                  {gruposFormados} {gruposFormados === 1 ? "grupo formado" : "grupos formados"},
+                  sorteo por publicar.
+                </p>
+                <Link
+                  href="/bracket/sorteo"
+                  className="mt-3 inline-block font-head text-xs uppercase tracking-wide text-teal transition hover:text-teal/80"
+                >
+                  Ver estado del sorteo →
+                </Link>
+              </div>
+            ) : groups.length === 0 ? (
               <Notice text="El Comité todavía no ha formado los grupos." small />
             ) : (
               <div className="mt-6 grid gap-6 lg:grid-cols-2">
@@ -149,9 +181,10 @@ function GroupTable({ group }: { group: GroupWithStandings }) {
           {group.standings.map((row, i) => (
             <tr
               key={row.teamId}
-              className={`border-t border-line/40 transition hover:bg-teal/[0.04] ${
+              className={`accent-stripe border-t border-line/40 transition hover:bg-teal/[0.04] ${
                 row.clasificado ? "" : "opacity-80"
               }`}
+              style={{ "--team-accent": accentHexOf(row.accent) } as CSSProperties}
             >
               <td className="p-3">
                 <span
@@ -163,10 +196,13 @@ function GroupTable({ group }: { group: GroupWithStandings }) {
                 </span>
               </td>
               <td className="p-3">
-                <span className="font-head font-semibold text-bone">
-                  {row.nombre}
+                <span className="inline-flex items-center gap-2">
+                  <Sigil teamId={row.teamId} accent={accentHexOf(row.accent)} size={20} />
+                  <span className="font-head font-semibold text-bone">
+                    {row.nombre}
+                  </span>
+                  <span className="font-mono text-xs text-muted">[{row.tag}]</span>
                 </span>
-                <span className="ml-2 font-mono text-xs text-muted">[{row.tag}]</span>
               </td>
               <td className="p-3 font-mono text-teal">{row.v}</td>
               <td className="p-3 font-mono text-brand">{row.d}</td>
@@ -218,15 +254,19 @@ function MatchCard({ m }: { m: DbMatch }) {
         </span>
       </div>
       <TeamLine
+        teamId={m.teamAId}
         nombre={m.teamANombre}
         tag={m.teamATag}
+        accent={m.teamAAccent}
         score={m.estado === "programado" ? undefined : m.scoreA}
         win={winner === "a"}
       />
       <div className="h-px bg-line/40" />
       <TeamLine
+        teamId={m.teamBId}
         nombre={m.teamBNombre}
         tag={m.teamBTag}
+        accent={m.teamBAccent}
         score={m.estado === "programado" ? undefined : m.scoreB}
         win={winner === "b"}
       />
@@ -243,25 +283,37 @@ function MatchCard({ m }: { m: DbMatch }) {
 }
 
 function TeamLine({
+  teamId,
   nombre,
   tag,
+  accent,
   score,
   win,
 }: {
+  teamId: string | null;
   nombre: string | null;
   tag: string | null;
+  accent: string | null;
   score?: number;
   win?: boolean;
 }) {
   return (
-    <div className={`flex items-center justify-between px-3 py-2 ${win ? "bg-teal/5" : ""}`}>
+    <div
+      className={`flex items-center justify-between px-3 py-2 ${win ? "bg-teal/5" : ""} ${
+        teamId ? "accent-stripe" : ""
+      }`}
+      style={teamId ? ({ "--team-accent": accentHexOf(accent) } as CSSProperties) : undefined}
+    >
       <span
-        className={`truncate text-sm ${
+        className={`flex min-w-0 items-center gap-1.5 truncate text-sm ${
           win ? "font-semibold text-bone" : "text-bone-dim"
         }`}
       >
-        {nombre ?? "Por definir"}
-        {tag && <span className="ml-1 font-mono text-[10px] text-muted">[{tag}]</span>}
+        {teamId && (
+          <Sigil teamId={teamId} accent={accentHexOf(accent)} size={16} className="shrink-0" />
+        )}
+        <span className="truncate">{nombre ?? "Por definir"}</span>
+        {tag && <span className="font-mono text-[10px] text-muted">[{tag}]</span>}
       </span>
       <span
         className={`font-display text-lg ${win ? "text-teal text-glow-teal" : "text-muted"}`}

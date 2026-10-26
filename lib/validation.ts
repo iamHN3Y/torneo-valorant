@@ -7,6 +7,7 @@ export interface Requisito {
   label: string;
   ok: boolean;
   hint: string; // qué falta o cómo se cumple
+  articulo: number; // artículo del reglamento que sustenta la regla
 }
 
 export interface ValidationResult {
@@ -42,41 +43,48 @@ export function validateRoster(
 
   // Composición (Art. 12)
   if (titulares.length !== ROSTER_RULES.titularesRequeridos) {
+    const faltan = ROSTER_RULES.titularesRequeridos - titulares.length;
     errores.push(
-      `Se requieren exactamente ${ROSTER_RULES.titularesRequeridos} titulares (hay ${titulares.length}).`
+      faltan > 0
+        ? `Faltan ${faltan} titular(es): tienes ${titulares.length} y se requieren exactamente ${ROSTER_RULES.titularesRequeridos}. Agrega jugadores con rol "titular" para completar la alineación (Art. 12).`
+        : `Tienes ${titulares.length} titulares y solo se permiten ${ROSTER_RULES.titularesRequeridos}. Mueve el excedente a suplente o quítalo (Art. 12).`
     );
   }
   if (suplentes.length > ROSTER_RULES.suplentesMax) {
     errores.push(
-      `Máximo ${ROSTER_RULES.suplentesMax} suplentes (hay ${suplentes.length}).`
+      `Tienes ${suplentes.length} suplentes y el máximo permitido es ${ROSTER_RULES.suplentesMax}. Quita al suplente sobrante para continuar (Art. 12).`
     );
   }
 
   // Capitán (Art. 14)
   const capitanes = jugadores.filter((j) => j.esCapitan);
   if (capitanes.length === 0) {
-    errores.push("Debe designarse un capitán.");
+    errores.push(
+      "No hay ningún jugador marcado como capitán. Selecciona el radio \"Capitán\" junto a un titular para designarlo (Art. 14)."
+    );
   } else if (capitanes.length > 1) {
-    errores.push("Solo puede haber un capitán.");
+    errores.push(
+      `Hay ${capitanes.length} jugadores marcados como capitán y solo puede haber uno. Deja marcado solo a un jugador como capitán (Art. 14).`
+    );
   }
 
   // Tope de puntos y límites por rango — Art. 16 (solo amateur)
   if (rama === "amateur") {
     if (puntosTitulares > ROSTER_RULES.topePuntosAmateur) {
       errores.push(
-        `El roster suma ${puntosTitulares} pts y el tope amateur es ${ROSTER_RULES.topePuntosAmateur}.`
+        `El roster suma ${puntosTitulares} pts y el tope amateur es ${ROSTER_RULES.topePuntosAmateur}. Baja de rango a alguno de tus titulares o cambia a la rama Élite (sin tope) para continuar (Art. 16).`
       );
     }
     const inmortales = titulares.filter((j) => j.rankId === "inmortal").length;
     const radiantes = titulares.filter((j) => j.rankId === "radiante").length;
     if (inmortales > ROSTER_RULES.maxInmortal) {
       errores.push(
-        `Máximo ${ROSTER_RULES.maxInmortal} jugadores Inmortal (hay ${inmortales}).`
+        `Tienes ${inmortales} titulares Inmortal y el máximo en rama amateur es ${ROSTER_RULES.maxInmortal}. Cambia a alguno de rango o pasa el equipo a Élite (Art. 16).`
       );
     }
     if (radiantes > ROSTER_RULES.maxRadiante) {
       errores.push(
-        `Máximo ${ROSTER_RULES.maxRadiante} jugador Radiante (hay ${radiantes}).`
+        `Tienes ${radiantes} titulares Radiante y el máximo en rama amateur es ${ROSTER_RULES.maxRadiante}. Cambia a alguno de rango o pasa el equipo a Élite (Art. 16).`
       );
     }
   }
@@ -85,7 +93,7 @@ export function validateRoster(
   const mexicanos = titulares.filter((j) => j.nacionalidad === "MX").length;
   if (mexicanos < ROSTER_RULES.minMexicanos) {
     errores.push(
-      `Al menos ${ROSTER_RULES.minMexicanos} titular debe ser de nacionalidad mexicana.`
+      `Ningún titular tiene nacionalidad mexicana registrada (se requiere al menos ${ROSTER_RULES.minMexicanos}). Marca la nacionalidad "México" en al menos un titular (Art. 11).`
     );
   }
 
@@ -109,7 +117,8 @@ export function validateRoster(
       hint:
         titulares.length === ROSTER_RULES.titularesRequeridos
           ? "Alineación completa"
-          : `Llevas ${titulares.length} de ${ROSTER_RULES.titularesRequeridos}`,
+          : `Llevas ${titulares.length} de ${ROSTER_RULES.titularesRequeridos}. Agrega o quita titulares para cuadrar el número.`,
+      articulo: 12,
     },
     {
       id: "capitan",
@@ -120,7 +129,8 @@ export function validateRoster(
           ? "Listo"
           : capitanes.length === 0
             ? "Marca a un jugador como capitán"
-            : "Solo puede haber uno",
+            : "Hay más de uno marcado: deja solo a uno",
+      articulo: 14,
     },
     {
       id: "mexicano",
@@ -129,7 +139,8 @@ export function validateRoster(
       hint:
         mexicanos >= ROSTER_RULES.minMexicanos
           ? `${mexicanos} en el roster`
-          : "Base nacional obligatoria (Art. 11)",
+          : "Base nacional obligatoria: marca 'México' en al menos un titular",
+      articulo: 11,
     },
   ];
 
@@ -139,7 +150,11 @@ export function validateRoster(
         id: "tope",
         label: `Tope de ${ROSTER_RULES.topePuntosAmateur} puntos`,
         ok: puntosTitulares <= ROSTER_RULES.topePuntosAmateur,
-        hint: `${puntosTitulares} / ${ROSTER_RULES.topePuntosAmateur} pts`,
+        hint:
+          puntosTitulares <= ROSTER_RULES.topePuntosAmateur
+            ? `${puntosTitulares} / ${ROSTER_RULES.topePuntosAmateur} pts`
+            : `${puntosTitulares} / ${ROSTER_RULES.topePuntosAmateur} pts: baja de rango a algún titular`,
+        articulo: 16,
       },
       {
         id: "rangos",
@@ -148,6 +163,7 @@ export function validateRoster(
           inmortales <= ROSTER_RULES.maxInmortal &&
           radiantes <= ROSTER_RULES.maxRadiante,
         hint: `Máx. ${ROSTER_RULES.maxInmortal} Inmortal · ${ROSTER_RULES.maxRadiante} Radiante`,
+        articulo: 16,
       }
     );
   }

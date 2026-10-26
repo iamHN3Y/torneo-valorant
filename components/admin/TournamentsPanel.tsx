@@ -7,7 +7,7 @@ import {
   setTournamentEstadoAction,
   setTournamentGratuitoAction,
   setTournamentCuotaAction,
-} from "@/app/admin/actions";
+} from "@/app/(site)/admin/actions";
 
 const ESTADOS: { value: TournamentEstado; label: string; color: string }[] = [
   { value: "borrador", label: "Borrador", color: "text-muted" },

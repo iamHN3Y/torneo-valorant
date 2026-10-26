@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import { redirect } from "next/navigation";
 import { requireTeam } from "@/lib/session";
 import { getTeamById, getPlayers, getTournamentById } from "@/lib/repo";
@@ -5,7 +6,10 @@ import { validateRoster } from "@/lib/validation";
 import { ESTADO_LABEL } from "@/lib/data";
 import RosterEditor from "@/components/RosterEditor";
 import GlitchText from "@/components/ui/GlitchText";
-import { logout } from "@/app/ingresar/actions";
+import Sigil from "@/components/ui/Sigil";
+import AccentSelector from "@/components/AccentSelector";
+import { TEAM_ACCENT_HEX } from "@/lib/repo";
+import { logout } from "@/app/(site)/ingresar/actions";
 
 export const metadata = {
   title: "Mi equipo · Copa México VALORANT 2026",
@@ -41,21 +45,34 @@ export default async function EquipoPage() {
   const isSideState =
     team.estado === "rechazado" || team.estado === "lista_espera";
 
+  const accentHex =
+    TEAM_ACCENT_HEX[team.accent as keyof typeof TEAM_ACCENT_HEX] ?? "#7E8C99";
+  // Elegibilidad para cambiar de acento: mismo criterio que el roster
+  // (Art. 13) — congelado si el CO bloqueó el roster o el equipo ya fue
+  // aprobado. Ver justificación en app/(site)/equipo/actions.ts.
+  const accentEditable = !team.rosterLocked && team.estado !== "aprobado";
+
   return (
-    <div className="mx-auto max-w-6xl px-5 py-12">
+    <div
+      className="mx-auto max-w-6xl px-5 py-12"
+      style={{ "--team-accent": accentHex } as CSSProperties}
+    >
       {/* Encabezado */}
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div>
-          <div className="font-mono text-xs uppercase tracking-[0.3em] text-teal">
-            // Panel de equipo
-          </div>
-          <h1 className="mt-2 font-display text-4xl uppercase sm:text-5xl">
-            <GlitchText text={team.nombre} />
-          </h1>
-          <div className="mt-2 flex flex-wrap items-center gap-2">
-            <span className="hud-chip text-bone-dim">#{team.tag}</span>
-            <span className="hud-chip text-gold uppercase">{team.rama}</span>
-            <span className={`hud-chip ${est.color}`}>{est.label}</span>
+      <div className="surface glow-accent flex flex-wrap items-start justify-between gap-4 p-5">
+        <div className="flex items-start gap-4">
+          <Sigil teamId={team.id} accent={accentHex} size={52} className="mt-1 shrink-0" />
+          <div>
+            <div className="font-mono text-xs uppercase tracking-[0.3em] text-teal">
+              // Panel de equipo
+            </div>
+            <h1 className="mt-2 font-display text-4xl uppercase sm:text-5xl">
+              <GlitchText text={team.nombre} />
+            </h1>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <span className="hud-chip text-bone-dim">#{team.tag}</span>
+              <span className="hud-chip text-gold uppercase">{team.rama}</span>
+              <span className={`hud-chip ${est.color}`}>{est.label}</span>
+            </div>
           </div>
         </div>
         <form action={logout}>
@@ -161,6 +178,24 @@ export default async function EquipoPage() {
           rama={team.rama}
           locked={team.rosterLocked}
         />
+      </section>
+
+      {/* Identidad visual del equipo */}
+      <section className="mt-12">
+        <div className="mb-1 font-head text-xl font-semibold uppercase tracking-wide">
+          Identidad visual
+        </div>
+        <p className="mb-4 text-sm text-muted">
+          Elige el acento de color de tu equipo. Se aplica junto a tu nombre
+          en el ranking y la competición.
+        </p>
+        <div className="surface clip-corner p-5">
+          <AccentSelector
+            teamId={team.id}
+            current={team.accent}
+            editable={accentEditable}
+          />
+        </div>
       </section>
     </div>
   );

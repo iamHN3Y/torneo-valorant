@@ -32,6 +32,15 @@ CREATE TABLE IF NOT EXISTS tournament (
 -- Torneos gratuitos vs. de pago (por defecto gratuito).
 ALTER TABLE tournament ADD COLUMN IF NOT EXISTS gratuito boolean NOT NULL DEFAULT true;
 
+-- ============================================================
+--  Fase 6: ceremonial de sorteo de grupos
+-- ============================================================
+
+-- Momento en que el CO publicó el sorteo de grupos (revela la asignación de
+-- equipos a grupos en las vistas públicas). Nula mientras el sorteo está
+-- pendiente.
+ALTER TABLE tournament ADD COLUMN IF NOT EXISTS sorteo_publicado_at timestamptz;
+
 -- Equipos. El login es NOMBRE#TAG (único a nivel global).
 CREATE TABLE IF NOT EXISTS team (
   id                 uuid PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -52,6 +61,15 @@ CREATE TABLE IF NOT EXISTS team (
 -- Identificador de login case-insensitive único.
 CREATE UNIQUE INDEX IF NOT EXISTS team_login_uidx
   ON team (lower(nombre), lower(tag));
+
+-- ============================================================
+--  Fase 5: identidad visual por equipo (acento de color, paleta cerrada)
+-- ============================================================
+
+-- Acento de color del equipo (paleta cerrada de 6, ninguno reutiliza
+-- --color-brand/--color-teal/--color-gold de la UI existente).
+ALTER TABLE team ADD COLUMN IF NOT EXISTS accent text NOT NULL DEFAULT 'azul'
+  CHECK (accent IN ('violeta','azul','cobalto','magenta','lima','rosa'));
 
 -- Jugadores del roster de un equipo.
 CREATE TABLE IF NOT EXISTS player (
@@ -123,3 +141,42 @@ CREATE TABLE IF NOT EXISTS ranking_adjustment (
 );
 
 CREATE INDEX IF NOT EXISTS ranking_adjustment_team_idx ON ranking_adjustment (team_id);
+
+-- ============================================================
+--  Fase 3: auditoría del Comité Organizador + timestamp de cierre
+-- ============================================================
+
+-- Momento en que un partido pasó a 'finalizado' (para trazabilidad/orden).
+ALTER TABLE tournament_match ADD COLUMN IF NOT EXISTS finalizado_at timestamptz;
+
+-- Backfill de partidos ya finalizados antes de que existiera esta columna.
+UPDATE tournament_match SET finalizado_at = coalesce(fecha, created_at)
+  WHERE estado = 'finalizado' AND finalizado_at IS NULL;
+
+-- Bitácora de auditoría append-only de todas las acciones mutantes del CO.
+-- co_user_id es NOT NULL con ON DELETE RESTRICT: nunca queremos que borrar
+-- un usuario CO deje huérfana o nula una entrada de auditoría (si algún día
+-- se necesita borrar un co_user con historial, debe manejarse explícitamente).
+CREATE TABLE IF NOT EXISTS audit_log (
+  id                 uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  co_user_id         uuid NOT NULL REFERENCES co_user(id) ON DELETE RESTRICT,
+  tipo               text NOT NULL
+                      CONSTRAINT audit_log_tipo_check
+                      CHECK (tipo IN ('match_result','match_delete','match_create','team_estado','roster_lock','team_nota','adjustment_create','adjustment_delete','revert','tournament_create','tournament_estado','tournament_gratuito','tournament_cuota','group_create','group_team_add','group_team_remove')),
+  entidad_id         uuid,
+  revierte_audit_id  uuid REFERENCES audit_log(id) ON DELETE SET NULL,
+  before_data        jsonb,
+  after_data         jsonb,
+  descripcion        text NOT NULL,
+  created_at         timestamptz NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS audit_log_created_idx ON audit_log (created_at DESC);
+
+-- Migraciones reales para bases de datos donde audit_log ya existía con el
+-- CHECK/FK anteriores (CREATE TABLE IF NOT EXISTS no los actualiza). Ambas
+-- son idempotentes: DROP ... IF EXISTS + ADD con el mismo nombre de destino.
+ALTER TABLE audit_log DROP CONSTRAINT IF EXISTS audit_log_tipo_check;
+ALTER TABLE audit_log ADD CONSTRAINT audit_log_tipo_check CHECK (tipo IN ('match_result','match_delete','match_create','team_estado','roster_lock','team_nota','adjustment_create','adjustment_delete','revert','tournament_create','tournament_estado','tournament_gratuito','tournament_cuota','group_create','group_team_add','group_team_remove','sorteo_publish'));
+ALTER TABLE audit_log DROP CONSTRAINT IF EXISTS audit_log_co_user_id_fkey;
+ALTER TABLE audit_log ADD CONSTRAINT audit_log_co_user_id_fkey FOREIGN KEY (co_user_id) REFERENCES co_user(id) ON DELETE RESTRICT;

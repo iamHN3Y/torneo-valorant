@@ -7,7 +7,7 @@ import {
   setTeamEstadoAction,
   toggleRosterLockAction,
   setTeamNotaAction,
-} from "@/app/admin/actions";
+} from "@/app/(site)/admin/actions";
 
 const ESTADOS = Object.keys(ESTADO_LABEL);
 

@@ -2,7 +2,26 @@ export const metadata = {
   title: "Reglamento · Copa México VALORANT 2026",
 };
 
-export default function ReglamentoPage() {
+/** Cantidad total de artículos anclados en public/reglamento.html (id="art-N"). */
+const MAX_ARTICULO = 50;
+
+function parseArticulo(raw: string | undefined): number | null {
+  if (!raw) return null;
+  if (!/^\d+$/.test(raw)) return null;
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n < 1 || n > MAX_ARTICULO) return null;
+  return n;
+}
+
+export default async function ReglamentoPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ art?: string }>;
+}) {
+  const { art: artRaw } = await searchParams;
+  const art = parseArticulo(artRaw);
+  const src = art ? `/reglamento.html#art-${art}` : "/reglamento.html";
+
   return (
     <div className="mx-auto max-w-6xl px-5 py-12">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -29,7 +48,8 @@ export default function ReglamentoPage() {
 
       <div className="mt-8 overflow-hidden border border-line">
         <iframe
-          src="/reglamento.html"
+          key={art ?? "base"}
+          src={src}
           title="Reglamento Copa México VALORANT 2026"
           className="h-[80vh] w-full bg-white"
         />

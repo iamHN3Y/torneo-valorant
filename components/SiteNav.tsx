@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { logout } from "@/app/ingresar/actions";
+import { logout } from "@/app/(site)/ingresar/actions";
+import MotionToggle from "@/components/ui/MotionToggle";
+import type { MotionPref } from "@/lib/motion";
 
 const PUBLIC_LINKS = [
   { href: "/", label: "Inicio" },
@@ -18,7 +20,13 @@ function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname.startsWith(href);
 }
 
-export default function SiteNav({ session }: { session: NavSession }) {
+export default function SiteNav({
+  session,
+  motionPref,
+}: {
+  session: NavSession;
+  motionPref: MotionPref;
+}) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -78,6 +86,8 @@ export default function SiteNav({ session }: { session: NavSession }) {
               </Link>
             );
           })}
+
+          <MotionToggle current={motionPref} className="ml-2 border-l border-line pl-2" />
 
           {session ? (
             <form action={logout} className="ml-2">
@@ -172,6 +182,13 @@ export default function SiteNav({ session }: { session: NavSession }) {
               </Link>
             );
           })}
+
+          <div className="mt-3 flex items-center justify-between gap-3 border-t border-line pt-3">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-muted">
+              Animación
+            </span>
+            <MotionToggle current={motionPref} />
+          </div>
 
           {session ? (
             <form action={logout} className="mt-3">

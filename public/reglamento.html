@@ -763,6 +763,7 @@ footer{padding-bottom:96px}
   footer p{font-size:8.5pt;color:var(--ink-soft)!important;max-width:none}
   footer .legal{font-size:6.8pt;color:#69737D!important}
 }
+.art:target{border-left:3px solid var(--teal);background:rgba(25,232,200,.06);box-shadow:inset 0 0 0 1px rgba(25,232,200,.18)}
 </style>
 </head>
 <body>
@@ -834,22 +835,22 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título I</div>
     <h2><span class="romano">I</span> Disposiciones generales</h2><div class="rule"></div></div>
 
-  <div class="art"><div class="num"><b>01</b><span>Art.</span></div>
+  <div class="art" id="art-1"><div class="num"><b>01</b><span>Art.</span></div>
     <h3>Objeto del reglamento</h3>
     <p>Este documento regula la organización, la competición y la conducta en la Copa México VALORANT 2026 (<strong>"la Copa"</strong>). Su finalidad es garantizar una competencia justa, transparente y reproducible en todas sus fases.</p>
   </div>
 
-  <div class="art"><div class="num"><b>02</b><span>Art.</span></div>
+  <div class="art" id="art-2"><div class="num"><b>02</b><span>Art.</span></div>
     <h3>Ámbito y aceptación</h3>
     <p>Aplica a todo participante: jugadores, suplentes, capitanes, entrenadores, mánagers, equipos, personal técnico y staff. El registro implica aceptación íntegra. El desconocimiento no exime de sanción.</p>
   </div>
 
-  <div class="art"><div class="num"><b>03</b><span>Art.</span></div>
+  <div class="art" id="art-3"><div class="num"><b>03</b><span>Art.</span></div>
     <h3>Vigencia y modificaciones</h3>
     <p>El reglamento entra en vigor con su publicación y rige hasta la entrega de premios. El CO puede modificarlo con <span class="field">24 h</span> de anticipación, salvo correcciones urgentes de integridad competitiva, que aplican de inmediato.</p>
   </div>
 
-  <div class="art"><div class="num"><b>04</b><span>Art.</span></div>
+  <div class="art" id="art-4"><div class="num"><b>04</b><span>Art.</span></div>
     <h3>Jerarquía interpretativa</h3>
     <ol class="clauses">
       <li>Resolución expresa del <strong>Comité de Competición</strong> para el caso concreto.</li>
@@ -860,7 +861,7 @@ footer{padding-bottom:96px}
     <div class="box note"><div class="bx-h">Criterio rector</div><p>Ante vacío normativo, el Comité resuelve buscando el resultado más justo y deportivo, deja constancia escrita y el criterio sienta precedente dentro de la misma edición.</p></div>
   </div>
 
-  <div class="art"><div class="num"><b>05</b><span>Art.</span></div>
+  <div class="art" id="art-5"><div class="num"><b>05</b><span>Art.</span></div>
     <h3>Definiciones</h3>
     <ol class="clauses">
       <li><span class="term">Roster</span>: conjunto de jugadores inscritos y elegibles por un equipo en una fase.</li>
@@ -887,22 +888,22 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título II</div>
     <h2><span class="romano">II</span> Gobernanza del torneo</h2><div class="rule"></div></div>
 
-  <div class="art"><div class="num"><b>06</b><span>Art.</span></div>
+  <div class="art" id="art-6"><div class="num"><b>06</b><span>Art.</span></div>
     <h3>Comité Organizador</h3>
     <p>El CO es la máxima autoridad administrativa. Aprueba inscripciones, fija calendario, sedes y premios, designa al arbitraje y resuelve en última instancia las apelaciones disciplinarias. Sus decisiones son definitivas e inapelables.</p>
   </div>
 
-  <div class="art"><div class="num"><b>07</b><span>Art.</span></div>
+  <div class="art" id="art-7"><div class="num"><b>07</b><span>Art.</span></div>
     <h3>Comité de Competición y arbitraje</h3>
     <p>El Cc interpreta el reglamento y resuelve protestas en primera instancia. Los admins ejercen autoridad directa sobre el lobby: validan rosters, autorizan pausas y rehosts, y registran incidencias. Sus instrucciones in-game son de cumplimiento inmediato; toda inconformidad se canaliza por la vía del Título IX.</p>
   </div>
 
-  <div class="art"><div class="num"><b>08</b><span>Art.</span></div>
+  <div class="art" id="art-8"><div class="num"><b>08</b><span>Art.</span></div>
     <h3>Canales oficiales</h3>
     <p>Las comunicaciones válidas son únicamente las emitidas por los canales oficiales del torneo (servidor de Discord y correo del CO). El capitán es responsable de mantenerse disponible e informado durante todas las jornadas en que su equipo compita.</p>
   </div>
 
-  <div class="art"><div class="num"><b>09</b><span>Art.</span></div>
+  <div class="art" id="art-9"><div class="num"><b>09</b><span>Art.</span></div>
     <h3>Conflictos de interés</h3>
     <ol class="clauses">
       <li>Ningún integrante del arbitraje puede dirigir una partida en la que participe un equipo con el que tenga vínculo personal, familiar, económico o de pertenencia pasada o presente.</li>
@@ -919,7 +920,7 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título III</div>
     <h2><span class="romano">III</span> Elegibilidad y registro</h2><div class="rule"></div></div>
 
-  <div class="art"><div class="num"><b>10</b><span>Art.</span></div>
+  <div class="art" id="art-10"><div class="num"><b>10</b><span>Art.</span></div>
     <h3>Requisitos del jugador</h3>
     <ol class="clauses">
       <li>Edad mínima de <strong>16 años</strong> cumplidos al inicio del torneo. Menores de 18 requieren consentimiento escrito de padre, madre o tutor legal.</li>
@@ -929,13 +930,13 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>11</b><span>Art.</span></div>
+  <div class="art" id="art-11"><div class="num"><b>11</b><span>Art.</span></div>
     <h3>Nacionalidad y representación</h3>
     <p>La nacionalidad <strong>no es requisito</strong> para competir. La única condición de origen es que cada roster mantenga permanentemente <strong>al menos un (1) jugador de nacionalidad mexicana</strong> entre sus 5 titulares. No hay límite de jugadores extranjeros, siempre que se respete esta base y los requisitos de cuenta del Art. 10.</p>
     <p>La participación en la Selección Nacional y en torneos internacionales del circuito (Título X) requiere acreditar nacionalidad mexicana de cada representante.</p>
   </div>
 
-  <div class="art"><div class="num"><b>12</b><span>Art.</span></div>
+  <div class="art" id="art-12"><div class="num"><b>12</b><span>Art.</span></div>
     <h3>Cupos máximos y registro</h3>
     <ol class="clauses">
       <li>El torneo admite un máximo de <strong>64 equipos</strong>: tope de <strong>448 jugadores registrados</strong> (64 × 7).</li>
@@ -947,17 +948,17 @@ footer{padding-bottom:96px}
     <div class="box note"><div class="bx-h">Cupos del torneo</div><p><strong>64 equipos</strong> máximo · roster de <strong>5 + 2</strong> · hasta <strong>448 jugadores</strong> en total. Inscripción por orden de llegada.</p></div>
   </div>
 
-  <div class="art"><div class="num"><b>13</b><span>Art.</span></div>
+  <div class="art" id="art-13"><div class="num"><b>13</b><span>Art.</span></div>
     <h3>Cierre de roster</h3>
     <p>Al cierre de inscripciones el roster queda bloqueado para la fase de grupos. Entre fases se abre una ventana de ajustes de <span class="field">72 h</span>. Un jugador eliminado no puede reintegrarse a un equipo distinto dentro de la misma edición.</p>
   </div>
 
-  <div class="art"><div class="num"><b>14</b><span>Art.</span></div>
+  <div class="art" id="art-14"><div class="num"><b>14</b><span>Art.</span></div>
     <h3>Capitán y responsables</h3>
     <p>El capitán es el único habilitado para realizar vetos, solicitar pausas, presentar protestas y recibir notificaciones. Responde por la conducta de su equipo. Puede delegar por escrito en un co-capitán ante el arbitraje.</p>
   </div>
 
-  <div class="art"><div class="num"><b>15</b><span>Art.</span></div>
+  <div class="art" id="art-15"><div class="num"><b>15</b><span>Art.</span></div>
     <h3>Sustituciones y stand-ins</h3>
     <ol class="clauses">
       <li>Las sustituciones entre jugadores inscritos son libres <strong>entre mapas</strong>; nunca a mitad de un mapa salvo desconexión irrecuperable.</li>
@@ -966,7 +967,7 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>16</b><span>Art.</span></div>
+  <div class="art" id="art-16"><div class="num"><b>16</b><span>Art.</span></div>
     <h3>Restricciones competitivas · Puntos por roster</h3>
     <p>Para la rama amateur, ningún roster puede superar <strong>30 puntos</strong> entre sus 5 titulares. La rama élite no tiene tope de puntos.</p>
     <div class="tbl"><table>
@@ -988,7 +989,7 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título IV</div>
     <h2><span class="romano">IV</span> Formato competitivo</h2><div class="rule"></div></div>
 
-  <div class="art"><div class="num"><b>17</b><span>Art.</span></div>
+  <div class="art" id="art-17"><div class="num"><b>17</b><span>Art.</span></div>
     <h3>Estructura general</h3>
     <ol class="clauses">
       <li><strong>Clasificatorias abiertas</strong> — Eliminación simple, Bo1; semis y final del bracket en Bo3.</li>
@@ -998,17 +999,17 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>18</b><span>Art.</span></div>
+  <div class="art" id="art-18"><div class="num"><b>18</b><span>Art.</span></div>
     <h3>Fase de grupos</h3>
     <p>Formato GSL: partida de apertura ganadores, apertura perdedores, ganadores, perdedores y decisiva. Clasifican los dos primeros de cada grupo. Todas las series son Bo3.</p>
   </div>
 
-  <div class="art"><div class="num"><b>19</b><span>Art.</span></div>
+  <div class="art" id="art-19"><div class="num"><b>19</b><span>Art.</span></div>
     <h3>Playoffs</h3>
     <p>Doble eliminación. Una derrota envía al lower bracket; la segunda elimina. Series Bo3 hasta la Gran Final (Bo5). Sembrado determinado por posición en grupos.</p>
   </div>
 
-  <div class="art"><div class="num"><b>20</b><span>Art.</span></div>
+  <div class="art" id="art-20"><div class="num"><b>20</b><span>Art.</span></div>
     <h3>Puntualidad y W.O.</h3>
     <ol class="clauses">
       <li>Hora oficial: <strong>UTC−6 (CDMX)</strong>.</li>
@@ -1017,7 +1018,7 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>21</b><span>Art.</span></div>
+  <div class="art" id="art-21"><div class="num"><b>21</b><span>Art.</span></div>
     <h3>Desempates de grupo</h3>
     <p>Igualdad de récord se resuelve, en estricto orden, por: resultado directo (head-to-head) → diferencia de mapas → diferencia de rondas → rondas a favor → mapa de desempate Bo1.</p>
   </div>
@@ -1028,7 +1029,7 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título V</div>
     <h2><span class="romano">V</span> Reglas de partida</h2><div class="rule"></div></div>
 
-  <div class="art"><div class="num"><b>22</b><span>Art.</span></div>
+  <div class="art" id="art-22"><div class="num"><b>22</b><span>Art.</span></div>
     <h3>Configuración del servidor</h3>
     <ol class="clauses">
       <li>Modo <strong>Torneo</strong> con código de partida personalizado, sin trampas activadas.</li>
@@ -1038,7 +1039,7 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>23</b><span>Art.</span></div>
+  <div class="art" id="art-23"><div class="num"><b>23</b><span>Art.</span></div>
     <h3>Pool de mapas oficial</h3>
     <p>El pool replica el competitivo activo de VALORANT al inicio de cada fase. Para la Temporada V26, Acto 3:</p>
     <div class="map-lab" id="pool-mapas" data-map-lab>
@@ -1120,7 +1121,7 @@ footer{padding-bottom:96px}
     <div class="box note"><div class="bx-h">Sincronía con Riot</div><p>Si Riot rota el pool entre fases, el CO publica el pool actualizado al menos 72 h antes de la jornada afectada. El pool queda congelado al inicio de cada fase.</p></div>
   </div>
 
-  <div class="art"><div class="num"><b>24</b><span>Art.</span></div>
+  <div class="art" id="art-24"><div class="num"><b>24</b><span>Art.</span></div>
     <h3>Sistema de vetos</h3>
     <p>El derecho a iniciar el veto se decide por volado administrado, o en playoffs lo ejerce el equipo mejor sembrado.</p>
     <div class="veto-lab" id="veto-simulador" data-veto-lab>
@@ -1168,12 +1169,12 @@ footer{padding-bottom:96px}
     <p>Quien no elige el mapa escoge el lado inicial. En el mapa decisivo, el lado se define por knife round.</p>
   </div>
 
-  <div class="art"><div class="num"><b>25</b><span>Art.</span></div>
+  <div class="art" id="art-25"><div class="num"><b>25</b><span>Art.</span></div>
     <h3>Protocolo de lobby</h3>
     <p>El admin crea o valida el lobby, fija la contraseña y verifica las cinco cuentas por equipo. Ambos capitanes confirman alineación y configuración antes del primer disparo. Discrepancias detectadas después del inicio se resuelven por protesta sin detener la partida, salvo orden expresa del arbitraje.</p>
   </div>
 
-  <div class="art"><div class="num"><b>26</b><span>Art.</span></div>
+  <div class="art" id="art-26"><div class="num"><b>26</b><span>Art.</span></div>
     <h3>Pausas técnicas y tácticas</h3>
     <div class="tbl"><table>
       <thead><tr><th>Tipo</th><th>Quién la solicita</th><th>Duración</th><th>Límite</th></tr></thead>
@@ -1185,7 +1186,7 @@ footer{padding-bottom:96px}
     <p>Pausar sin causa o de forma reiterada para alterar el ritmo rival constituye conducta antideportiva (Título VI).</p>
   </div>
 
-  <div class="art"><div class="num"><b>27</b><span>Art.</span></div>
+  <div class="art" id="art-27"><div class="num"><b>27</b><span>Art.</span></div>
     <h3>Desconexiones y rehosts</h3>
     <ol class="clauses">
       <li>Desconexión en fase de compra o en el primer cruce, antes de que se produzca daño: procede rehost.</li>
@@ -1195,7 +1196,7 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>28</b><span>Art.</span></div>
+  <div class="art" id="art-28"><div class="num"><b>28</b><span>Art.</span></div>
     <h3>Reprogramaciones</h3>
     <p>Solicitudes con al menos <span class="field">24 h</span> de anticipación, acuerdo de ambos capitanes y visto bueno del CO. No proceden en playoffs salvo fuerza mayor documentada. Ningún partido puede salirse de la ventana de la fase.</p>
   </div>
@@ -1206,32 +1207,32 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título VI</div>
     <h2><span class="romano">VI</span> Integridad y conducta</h2><div class="rule"></div></div>
 
-  <div class="art"><div class="num"><b>29</b><span>Art.</span></div>
+  <div class="art" id="art-29"><div class="num"><b>29</b><span>Art.</span></div>
     <h3>Anti-trampas</h3>
     <p>Es obligatorio mantener activo <strong>Riot Vanguard</strong>. Se prohíbe todo software de trampa: aimbots, wallhacks, triggerbots, macros y scripts que automaticen acciones de juego. El equipo debe cooperar con toda investigación, incluida revisión de demos y, si se requiere, grabación de pantalla.</p>
   </div>
 
-  <div class="art"><div class="num"><b>30</b><span>Art.</span></div>
+  <div class="art" id="art-30"><div class="num"><b>30</b><span>Art.</span></div>
     <h3>Hardware y software prohibido</h3>
     <p>Quedan vedados: dispositivos que ejecuten macros de juego, overlays que entreguen información no disponible para el rival, y cualquier herramienta que comunique a un jugador datos de la partida desde el exterior.</p>
   </div>
 
-  <div class="art"><div class="num"><b>31</b><span>Art.</span></div>
+  <div class="art" id="art-31"><div class="num"><b>31</b><span>Art.</span></div>
     <h3>Smurfing</h3>
     <p>Se prohíbe competir con una cuenta que no refleje el nivel real del jugador para eludir el tope competitivo (Art. 16) o falsear el sembrado. La verificación de identidad y de historial de cuenta puede ser ejercida por el arbitraje en cualquier momento.</p>
   </div>
 
-  <div class="art"><div class="num"><b>32</b><span>Art.</span></div>
+  <div class="art" id="art-32"><div class="num"><b>32</b><span>Art.</span></div>
     <h3>Suplantación de identidad</h3>
     <p>Que una persona distinta a la registrada dispute una partida (<em>ringer</em>) es una falta muy grave: implica derrota inmediata del mapa o serie y puede derivar en descalificación del equipo y veto del infractor en ediciones futuras.</p>
   </div>
 
-  <div class="art"><div class="num"><b>33</b><span>Art.</span></div>
+  <div class="art" id="art-33"><div class="num"><b>33</b><span>Art.</span></div>
     <h3>Conducta antideportiva</h3>
     <p>Comprende toxicidad, acoso, discurso de odio, amenazas, evasión de reglas, stream sniping y el aprovechamiento de información del adversario por canales indebidos. La Copa es un espacio de respeto dentro y fuera del servidor.</p>
   </div>
 
-  <div class="art"><div class="num"><b>34</b><span>Art.</span></div>
+  <div class="art" id="art-34"><div class="num"><b>34</b><span>Art.</span></div>
     <h3>Amaño de resultados y apuestas</h3>
     <ol class="clauses">
       <li>Se prohíbe absolutamente pactar, ofrecer, aceptar o insinuar la manipulación de resultados (<em>match-fixing</em>), ya sea mediante acuerdo entre equipos, con terceros, a cambio de dinero, ítems, posicionamiento futuro o cualquier otra contraprestación.</li>
@@ -1242,7 +1243,7 @@ footer{padding-bottom:96px}
     <div class="box warn"><div class="bx-h">Tolerancia cero</div><p>El match-fixing daña a toda la comunidad. No hay atenuantes ni segunda oportunidad: descalificación, anulación de resultados y veto indefinido para todos los implicados.</p></div>
   </div>
 
-  <div class="art" id="sanciones"><div class="num"><b>35</b><span>Art.</span></div>
+  <div class="art" id="art-35"><div class="num"><b>35</b><span>Art.</span></div>
     <h3>Régimen disciplinario completo</h3>
     <p>Las faltas se tipifican en tres niveles de gravedad. La reincidencia eleva la gravedad un nivel. Toda sanción se notifica por escrito al capitán en un plazo máximo de <strong>6 horas</strong> tras la resolución.</p>
     <div class="tbl"><table>
@@ -1271,7 +1272,7 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título VII</div>
     <h2><span class="romano">VII</span> Medios, marca y comercial</h2><div class="rule"></div></div>
 
-  <div class="art"><div class="num"><b>36</b><span>Art.</span></div>
+  <div class="art" id="art-36"><div class="num"><b>36</b><span>Art.</span></div>
     <h3>Transmisión oficial — producción y estándares</h3>
     <ol class="clauses">
       <li>La transmisión oficial se emite únicamente por plataformas digitales (Twitch, YouTube u otras acordadas). <strong>Está prohibida la emisión por televisión lineal.</strong></li>
@@ -1283,7 +1284,7 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>37</b><span>Art.</span></div>
+  <div class="art" id="art-37"><div class="num"><b>37</b><span>Art.</span></div>
     <h3>Streaming de jugadores</h3>
     <ol class="clauses">
       <li>Los jugadores pueden retransmitir su perspectiva con un <strong>retraso mínimo de 3 minutos</strong> respecto a la partida en vivo.</li>
@@ -1293,12 +1294,12 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>38</b><span>Art.</span></div>
+  <div class="art" id="art-38"><div class="num"><b>38</b><span>Art.</span></div>
     <h3>Derechos audiovisuales</h3>
     <p>Al inscribirse, los participantes ceden al CO su imagen, nombre de juego y voz para la cobertura, difusión y archivo del torneo, sin contraprestación adicional salvo acuerdo expreso. Riot puede usar, adaptar y distribuir material del torneo conforme a sus directrices comunitarias.</p>
   </div>
 
-  <div class="art"><div class="num"><b>39</b><span>Art.</span></div>
+  <div class="art" id="art-39"><div class="num"><b>39</b><span>Art.</span></div>
     <h3>Patrocinios</h3>
     <p>Los equipos y el CO pueden cerrar acuerdos de patrocinio sujetos a aprobación previa. Un patrocinador puede figurar como "presenta" o "con el apoyo de", pero <strong>no puede incorporarse al nombre del torneo</strong>. Categorías prohibidas por las directrices de Riot:</p>
     <ol class="clauses">
@@ -1316,7 +1317,7 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>40</b><span>Art.</span></div>
+  <div class="art" id="art-40"><div class="num"><b>40</b><span>Art.</span></div>
     <h3>Propiedad intelectual y licencia comunitaria</h3>
     <ol class="clauses">
       <li><em>VALORANT</em> y todos sus elementos son marcas registradas de <strong>Riot Games, Inc.</strong></li>
@@ -1333,7 +1334,7 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título VIII</div>
     <h2><span class="romano">VIII</span> Premios y ranking</h2><div class="rule"></div></div>
 
-  <div class="art"><div class="num"><b>41</b><span>Art.</span></div>
+  <div class="art" id="art-41"><div class="num"><b>41</b><span>Art.</span></div>
     <h3>Premiación</h3>
     <p>La bolsa total es de <span class="field">$ por definir MXN</span>, distribuida así:</p>
     <div class="tbl"><table>
@@ -1348,12 +1349,12 @@ footer{padding-bottom:96px}
     <p>Pago dentro de los <span class="field">30</span> días posteriores a la final, previa entrega de datos fiscales. Las retenciones conforme a la legislación mexicana corren por cuenta del beneficiario.</p>
   </div>
 
-  <div class="art"><div class="num"><b>42</b><span>Art.</span></div>
+  <div class="art" id="art-42"><div class="num"><b>42</b><span>Art.</span></div>
     <h3>MVP y reconocimientos individuales</h3>
     <p>Se otorga MVP de torneo y MVP de la Gran Final. Se reconocen además el quinteto ideal y la jugada del torneo. La selección combina métricas objetivas (ACS ≥ 220, KDA, KAST, impacto en mapas decisivos) con votación del panel de transmisión. Un jugador sancionado durante el torneo no puede ser nominado a reconocimientos individuales.</p>
   </div>
 
-  <div class="art" id="ranking-equipos"><div class="num"><b>43</b><span>Art.</span></div>
+  <div class="art" id="art-43"><div class="num"><b>43</b><span>Art.</span></div>
     <h3>Ranking nacional de equipos — sistema de puntuación</h3>
     <p>El <strong>Ranking Nacional de Equipos</strong> es una clasificación acumulada e independiente del bracket de cada edición. Funciona como una tabla histórica de rendimiento, similar al ranking FIFA: no cambia el resultado oficial de una partida ya jugada, pero mide la fuerza competitiva reciente de cada equipo para siembras, invitaciones, cupos preferentes y reconocimiento nacional.</p>
     <ol class="clauses">
@@ -1436,7 +1437,7 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título IX</div>
     <h2><span class="romano">IX</span> Apelaciones, ética y disposiciones finales</h2><div class="rule"></div></div>
 
-  <div class="art" id="apelaciones"><div class="num"><b>44</b><span>Art.</span></div>
+  <div class="art" id="art-44"><div class="num"><b>44</b><span>Art.</span></div>
     <h3>Procedimiento formal de apelaciones</h3>
     <p>Toda protesta se tramita en las siguientes etapas, sin excepción:</p>
     <div class="appeal-tabs" data-appeal-tabs>
@@ -1492,17 +1493,17 @@ footer{padding-bottom:96px}
     <div class="box note"><div class="bx-h">Partida en curso durante apelación</div><p>Las series no se interrumpen por una protesta pendiente salvo orden expresa del arbitraje. Los resultados pueden ser modificados retroactivamente si el dictamen así lo determina.</p></div>
   </div>
 
-  <div class="art"><div class="num"><b>45</b><span>Art.</span></div>
+  <div class="art" id="art-45"><div class="num"><b>45</b><span>Art.</span></div>
     <h3>Protección de datos personales</h3>
     <p>Los datos recabados se tratan conforme a la <strong>Ley Federal de Protección de Datos Personales en Posesión de los Particulares</strong> y al aviso de privacidad del torneo, únicamente para organización, competición y difusión. El titular puede ejercer sus derechos ARCO por los canales oficiales.</p>
   </div>
 
-  <div class="art"><div class="num"><b>46</b><span>Art.</span></div>
+  <div class="art" id="art-46"><div class="num"><b>46</b><span>Art.</span></div>
     <h3>Código de ética</h3>
     <p>Participar en la Copa supone: competir con respeto, honestidad y juego limpio; aceptar las decisiones del arbitraje sin agredir al staff; y representar dignamente a la comunidad mexicana de VALORANT dentro y fuera del servidor. La buena fe es la norma, no la excepción.</p>
   </div>
 
-  <div class="art"><div class="num"><b>47</b><span>Art.</span></div>
+  <div class="art" id="art-47"><div class="num"><b>47</b><span>Art.</span></div>
     <h3>Aceptación, separabilidad y jurisdicción</h3>
     <p>La inscripción constituye aceptación plena. La nulidad de una cláusula no afecta la validez de las demás. Para interpretación y cumplimiento, las partes se sujetan a la legislación mexicana y a los tribunales competentes de <span class="field">por definir</span>.</p>
   </div>
@@ -1513,7 +1514,7 @@ footer{padding-bottom:96px}
   <div class="titulo"><div class="kicker">// Título X</div>
     <h2><span class="romano">X</span> Circuito internacional</h2><div class="rule"></div></div>
 
-  <div class="art"><div class="num"><b>48</b><span>Art.</span></div>
+  <div class="art" id="art-48"><div class="num"><b>48</b><span>Art.</span></div>
     <h3>Copa América — estructura y clasificación</h3>
     <ol class="clauses">
       <li>La Copa América es el torneo regional de la organización para <strong>LATAM-Norte</strong> (México, Guatemala, Honduras, El Salvador, Costa Rica, Panamá y, eventualmente, Colombia y Venezuela).</li>
@@ -1525,7 +1526,7 @@ footer{padding-bottom:96px}
     </ol>
   </div>
 
-  <div class="art"><div class="num"><b>49</b><span>Art.</span></div>
+  <div class="art" id="art-49"><div class="num"><b>49</b><span>Art.</span></div>
     <h3>Mundial de Naciones — estructura y clasificación</h3>
     <ol class="clauses">
       <li>El Mundial de Naciones es el evento máximo del circuito comunitario. Congrega a <strong>16 selecciones nacionales</strong> de diversas regiones.</li>
@@ -1537,7 +1538,7 @@ footer{padding-bottom:96px}
     <div class="box ex"><div class="bx-h">Camino de México</div><p>Copa México (2 cupos) → Copa América (clasificado como LATAM-N #1) → Mundial de Naciones. El ranking acumulado de temporada desempata cupos en caso de empate.</p></div>
   </div>
 
-  <div class="art"><div class="num"><b>50</b><span>Art.</span></div>
+  <div class="art" id="art-50"><div class="num"><b>50</b><span>Art.</span></div>
     <h3>Selección Nacional — criterios de convocatoria</h3>
     <p>La Selección Nacional se forma con los mejores jugadores mexicanos del circuito. Para ser convocado:</p>
     <ol class="clauses">

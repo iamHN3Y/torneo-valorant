@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { prefersReducedMotion } from "@/lib/motion";
 
 /**
  * Aparición al entrar en viewport (progressive disclosure).
@@ -29,10 +30,7 @@ export default function Reveal({
     if (!el) return;
 
     // Sin animación: mostrar tal cual.
-    if (
-      typeof IntersectionObserver === "undefined" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
+    if (typeof IntersectionObserver === "undefined" || prefersReducedMotion()) {
       setVisible(true);
       return;
     }

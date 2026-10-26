@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Anton, Oswald, Barlow, JetBrains_Mono } from "next/font/google";
+import { cookies } from "next/headers";
 import "./globals.css";
-import SiteNav from "@/components/SiteNav";
-import SiteFooter from "@/components/SiteFooter";
-import { getSession } from "@/lib/session";
+import { MOTION_COOKIE, type MotionPref } from "@/lib/motion";
 
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
 const oswald = Oswald({ subsets: ["latin"], variable: "--font-oswald" });
@@ -20,25 +19,30 @@ export const metadata: Metadata = {
     "Portal oficial del torneo comunitario Copa México VALORANT 2026: registro de equipos, brackets, calendario y ranking nacional.",
 };
 
+/**
+ * Root layout: solo <html>/<body>, fuentes y el atributo data-motion (que
+ * debe vivir en <html>, por lo que su cookie se lee aquí). La navegación,
+ * el footer y la sesión del CO/equipo se resuelven en app/(site)/layout.tsx
+ * para que la ruta pública /marcador (fuera del grupo "site") no los herede.
+ */
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const session = await getSession();
-  const navSession = session
-    ? { role: session.role, name: session.name }
-    : null;
+  const motionCookie = (await cookies()).get(MOTION_COOKIE)?.value;
+  const motionPref: MotionPref =
+    motionCookie === "reduced" || motionCookie === "full" ? motionCookie : "auto";
+
   return (
     <html
       lang="es-MX"
       data-scroll-behavior="smooth"
+      {...(motionPref !== "auto" ? { "data-motion": motionPref } : {})}
       className={`${anton.variable} ${oswald.variable} ${barlow.variable} ${jetmono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-void text-bone font-sans">
         <div className="grid-bg" aria-hidden />
         <div className="scanline-overlay" aria-hidden />
-        <SiteNav session={navSession} />
-        <main className="relative z-10 flex-1">{children}</main>
-        <SiteFooter />
+        {children}
       </body>
     </html>
   );

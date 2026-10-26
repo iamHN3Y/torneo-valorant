@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState, useState } from "react";
-import { loginTeam, loginCo, type LoginState } from "@/app/ingresar/actions";
+import { loginTeam, loginCo, type LoginState } from "@/app/(site)/ingresar/actions";
 
 const inputCls =
   "w-full min-h-[46px] border border-line bg-void2 px-3 text-bone placeholder:text-muted2 transition focus:border-teal focus:outline-none focus:[box-shadow:0_0_0_1px_var(--color-teal),0_0_18px_rgba(25,232,200,.2)]";

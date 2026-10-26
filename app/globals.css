@@ -17,6 +17,15 @@
   --color-gold: #E8C37A;
   --color-gold-deep: #B8943A;
 
+  /* Identidad de equipo (Fase 5) — paleta cerrada de 6 acentos, ninguno
+     reutiliza brand/teal/gold. Ver AGENTS.md para el criterio de contraste. */
+  --color-accent-violeta: #A78BFA;
+  --color-accent-azul: #4FB8E8;
+  --color-accent-cobalto: #5B7FEA;
+  --color-accent-magenta: #D874E0;
+  --color-accent-lima: #B8D93C;
+  --color-accent-rosa: #DE5FB0;
+
   --font-display: var(--font-anton), Impact, sans-serif;
   --font-head: var(--font-oswald), system-ui, sans-serif;
   --font-sans: var(--font-barlow), system-ui, sans-serif;
@@ -31,6 +40,12 @@
   /* Motion — curvas Material */
   --ease-standard: cubic-bezier(.2,0,0,1);
   --ease-emphasized: cubic-bezier(.2,.8,.2,1);
+
+  /* Motion — duraciones tokenizadas */
+  --dur-micro: 160ms;
+  --dur-enter: 240ms;
+  --dur-exit: 140ms;
+  --dur-complex: 380ms;
 }
 
 html {
@@ -107,6 +122,13 @@ body {
 .glow-gold { box-shadow: 0 0 0 1px rgba(232,195,122,.45), 0 0 22px rgba(232,195,122,.20); }
 .text-glow-teal { text-shadow: 0 0 12px rgba(25,232,200,.55); }
 .text-glow-brand { text-shadow: 0 0 14px rgba(255,70,85,.55); }
+
+/* ---- Acento de equipo (Fase 5) ----
+   `--team-accent` se define inline (style) con el hex del acento elegido.
+   Reutiliza la misma intensidad que .glow-teal/.glow-gold, nunca reemplaza
+   los tokens de marca globales. */
+.glow-accent { box-shadow: 0 0 0 1px color-mix(in srgb, var(--team-accent) 45%, transparent), 0 0 22px color-mix(in srgb, var(--team-accent) 22%, transparent); }
+.accent-stripe { border-left: 3px solid var(--team-accent); }
 
 /* ---- Surface: card Material con borde cyber ---- */
 .surface {
@@ -218,6 +240,12 @@ body {
   transform: translateY(26px);
 }
 
+/* ---- Fallback sin JS de DrawShow (Fase 6): visible por defecto, solo se
+   oculta cuando el JS "arma" la capa animada encima. ---- */
+.sorteo-fallback[data-hidden="true"] {
+  display: none;
+}
+
 /* ---- Texto glitch ---- */
 .glitch { position: relative; display: inline-block; }
 .glitch::before,
@@ -299,6 +327,20 @@ body {
 }
 @keyframes meter-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 
+/* ---- Marquee (loop infinito CSS puro) ---- */
+.marquee { position: relative; }
+.marquee-track {
+  animation: marquee-scroll 20s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
 /* ---- Chip HUD ---- */
 .hud-chip {
   font-family: var(--font-mono);
@@ -324,7 +366,10 @@ body {
 }
 
 /* =====================================================================
-   Accesibilidad: respeta prefers-reduced-motion
+   Accesibilidad: respeta prefers-reduced-motion (preferencia del SO)
+   NOTA: si tocas este bloque, toca también su espejo
+   `html[data-motion="reduced"]` de abajo (toggle explícito "Mínimo") para
+   que ambos mecanismos desactiven exactamente las mismas animaciones.
    ===================================================================== */
 @media (prefers-reduced-motion: reduce) {
   .reveal, .reveal[data-hidden="true"] { opacity: 1 !important; transform: none !important; transition: none !important; }
@@ -333,7 +378,31 @@ body {
   .anim-float,
   .anim-flicker,
   .hero-sweep,
-  .meter > span { animation: none !important; }
+  .meter > span,
+  .marquee-track { animation: none !important; }
   .tilt { transform: none !important; transition: none !important; }
   * { scroll-behavior: auto !important; }
 }
+
+/* =====================================================================
+   Accesibilidad: toggle explícito de motion "Mínimo" (data-motion="reduced")
+   NOTA: espejo del bloque @media (prefers-reduced-motion: reduce) de arriba.
+   Si tocas este bloque, toca también aquel para mantenerlos sincronizados.
+   ===================================================================== */
+html[data-motion="reduced"] .reveal,
+html[data-motion="reduced"] .reveal[data-hidden="true"] { opacity: 1 !important; transform: none !important; transition: none !important; }
+html[data-motion="reduced"] .glitch::before,
+html[data-motion="reduced"] .glitch::after { display: none !important; }
+html[data-motion="reduced"] .scanline-overlay,
+html[data-motion="reduced"] .anim-float,
+html[data-motion="reduced"] .anim-flicker,
+html[data-motion="reduced"] .hero-sweep,
+html[data-motion="reduced"] .meter > span,
+html[data-motion="reduced"] .marquee-track { animation: none !important; }
+html[data-motion="reduced"] .tilt { transform: none !important; transition: none !important; }
+/* El original usa el selector universal `*`, que en el bloque @media SÍ
+   alcanza a <html> (donde vive `scroll-behavior: smooth`). Un selector
+   descendiente `html[data-motion="reduced"] *` NO incluye al propio <html>,
+   así que hay que apuntarlo explícitamente además de sus descendientes. */
+html[data-motion="reduced"],
+html[data-motion="reduced"] * { scroll-behavior: auto !important; }

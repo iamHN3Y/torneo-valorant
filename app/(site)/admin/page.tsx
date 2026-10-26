@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { requireCo } from "@/lib/session";
 import { listTeams, listTournaments, type DbTeam, type DbTournament } from "@/lib/repo";
-import { logout } from "@/app/ingresar/actions";
+import { logout } from "@/app/(site)/ingresar/actions";
 import Reveal from "@/components/ui/Reveal";
 import CountUp from "@/components/ui/CountUp";
 import TiltCard from "@/components/ui/TiltCard";
